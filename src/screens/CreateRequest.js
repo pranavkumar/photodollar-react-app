@@ -15,7 +15,7 @@ import * as _ from "lodash";
 export default class Home extends React.Component {
   render() {
     return (
-      <ScrollView style={{padding:8}}>
+      <ScrollView style={{ padding: 8 }}>
         <Text>Create a request</Text>
       </ScrollView>
     );
