@@ -9,7 +9,7 @@ import {
   TextInput
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
-import { PrimaryButton } from "../components/CommonUI";
+import { PrimaryButton, Separator } from "../components/CommonUI";
 import update from "immutability-helper";
 import * as _ from "lodash";
 
@@ -34,6 +34,32 @@ export default class Home extends React.Component {
         { title: "Music and Movies", followersCount: 345, isSelected: false },
         { title: "Gaming", followersCount: 345, isSelected: false },
         { title: "Education", followersCount: 100, isSelected: false }
+      ],
+      locations: [
+        {
+          addressLine1: "8069 Foxrun Rd",
+          addressLine2: "West Hempstead",
+          city: "NY",
+          country: "US",
+          isSelected: false,
+          isCurrent: true
+        },
+        {
+          addressLine1: "15 Selby St.",
+          addressLine2: "Oak Creek",
+          city: "WI",
+          country: "US",
+          isSelected: false,
+          isCurrent: false
+        },
+        {
+          addressLine1: "8069 Foxrun Rd",
+          addressLine2: "West Hempstead",
+          city: "NY",
+          country: "US",
+          isSelected: false,
+          isCurrent: false
+        }
       ]
     };
   }
@@ -54,7 +80,7 @@ export default class Home extends React.Component {
           />
         </View>
         <View>
-          <Text>Suggest categories (at least 1)</Text>
+          <Text>Select categories (at least 1)</Text>
           <View style={{ marginTop: 8 }}>
             <FlatList
               horizontal={true}
@@ -66,18 +92,50 @@ export default class Home extends React.Component {
             />
           </View>
         </View>
+        <View style={{ marginTop: 8 }}>
+          <Text>Select location</Text>
+          <View style={{ marginTop: 8 }}>
+            <FlatList
+              extraData={this.state.refresh}
+              keyExtractor={(item, index) => index.toString()}
+              data={this.state.locations}
+              renderItem={({ item }) => this.renderLocations(item)}
+            />
+          </View>
+        </View>
       </ScrollView>
+    );
+  }
+  renderLocations(item) {
+    return (
+      <View style={styles.locationLabel}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <View>
+            <Text style={{ color: "#616161" }}>{item.addressLine1}</Text>
+            <Text style={{ fontWeight: "bold" }}>{item.addressLine2}</Text>
+            <Text style={{ fontWeight: "bold" }}>{item.city}</Text>
+          </View>
+          <View style={{ paddingRight: 8 }}>
+            {item.isCurrent && (
+              <Text style={{ fontWeight: "bold" }}>Current</Text>
+            )}
+          </View>
+        </View>
+        <Separator />
+      </View>
     );
   }
   renderCategories(item) {
     return (
-      <TouchableHighlight onPress={this.toggleSelectCategory.bind(this, item)}>
-        <View
-          style={
-            !item.isSelected
-              ? styles.categoryLabel
-              : styles.categoryLabelSelected
-          }
+      <View
+        style={
+          !item.isSelected ? styles.categoryLabel : styles.categoryLabelSelected
+        }
+      >
+        <TouchableHighlight
+          style={{ padding: 6 }}
+          underlayColor="#29B6F6"
+          onPress={this.toggleSelectCategory.bind(this, item)}
         >
           <Text
             style={
@@ -88,8 +146,8 @@ export default class Home extends React.Component {
           >
             {item.title}
           </Text>
-        </View>
-      </TouchableHighlight>
+        </TouchableHighlight>
+      </View>
     );
   }
   toggleSelectCategory(item) {
@@ -101,7 +159,7 @@ const styles = StyleSheet.create({
   categoryLabel: {
     margin: 2,
     borderRadius: 2,
-    padding: 6,
+    padding: 0,
     borderWidth: 1,
     borderColor: "#29B6F6"
   },
@@ -112,7 +170,7 @@ const styles = StyleSheet.create({
   categoryLabelSelected: {
     margin: 2,
     borderRadius: 2,
-    padding: 6,
+    padding: 0,
     backgroundColor: "#29B6F6",
     borderWidth: 1,
     borderColor: "#29B6F6"
@@ -120,5 +178,6 @@ const styles = StyleSheet.create({
   categoryLabelTextSelected: {
     fontSize: 18,
     color: "#FAFAFA"
-  }
+  },
+  locationLabel: {}
 });
