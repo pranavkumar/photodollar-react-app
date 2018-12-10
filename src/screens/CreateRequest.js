@@ -81,14 +81,14 @@ export default class Home extends React.Component {
           />
         </View>
         <View>
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ width: "8%" }}>
-            <Ionicons name="md-bookmark" size={20} color="#BDBDBD" />
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ width: "8%" }}>
+              <Ionicons name="md-bookmark" size={20} color="#BDBDBD" />
+            </View>
+            <View style={{ width: "92%" }}>
+              <Text>Select categories (at least 1)</Text>
+            </View>
           </View>
-          <View style={{ width: "92%" }}>
-            <Text>Select categories (at least 1)</Text>
-          </View>
-        </View>
           <View style={{ marginTop: 8 }}>
             <FlatList
               horizontal={true}
@@ -117,6 +117,31 @@ export default class Home extends React.Component {
               data={this.state.locations}
               renderItem={({ item }) => this.renderLocations(item)}
             />
+            <View>
+              <TouchableHighlight
+                onPress={this.gotoMap.bind(this)}
+                underlayColor="#F5F5F5"
+                style={{ height: 45, justifyContent: "center" }}
+              >
+                <View
+                  style={{ justifyContent: "center", flexDirection: "row" }}
+                >
+                  <Ionicons name="ios-pin" size={20} color="#BDBDBD" />
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      color: "#42A5F5",
+                      marginLeft: 8,
+                      marginRight: 8,
+                      fontSize: 16
+                    }}
+                  >
+                    SELECT FROM MAP
+                  </Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+            <Separator />
           </View>
         </View>
       </ScrollView>
@@ -187,6 +212,9 @@ export default class Home extends React.Component {
   }
   toggleSelectCategory(item) {
     console.log(item);
+  }
+  gotoMap() {
+    this.props.navigation.navigate('Map');
   }
 }
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Home from "./src/screens/Home";
+import Map from "./src/screens/Map";
 import CoverageCategories from "./src/screens/CoverageCategories";
 import CreateRequest from "./src/screens/CreateRequest";
 import { createStackNavigator, createAppContainer } from "react-navigation";
@@ -15,6 +16,7 @@ export default class App extends React.Component {
 const RootStack = createStackNavigator(
   {
     Home: Home,
+    Map:Map,
     CoverageCategories: CoverageCategories,
     CreateRequest: CreateRequest
   },
