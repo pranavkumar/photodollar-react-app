@@ -21,7 +21,7 @@ const RootStack = createStackNavigator(
     CreateRequest: CreateRequest
   },
   {
-    initialRouteName: "CreateRequest"
+    initialRouteName: "Map"
   }
 );
 
