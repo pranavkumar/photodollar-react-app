@@ -14,6 +14,7 @@ import update from "immutability-helper";
 import * as _ from "lodash";
 import { Ionicons } from "@expo/vector-icons";
 import MapView from "react-native-maps";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 export default class Home extends React.Component {
   static navigationOptions = {
@@ -29,6 +30,32 @@ export default class Home extends React.Component {
   render() {
     return (
       <ScrollView>
+        <GooglePlacesAutocomplete
+          placeholder="Enter Location"
+          minLength={2}
+          autoFocus={false}
+          returnKeyType={"default"}
+          fetchDetails={true}
+          query={{ key: "AIzaSyCb93X2vjYdxfyFhHZrMG2eYB2dY-b7Vk4" }}
+          styles={{
+            textInputContainer: {
+              backgroundColor: "rgba(0,0,0,0)",
+              borderTopWidth: 0,
+              borderBottomWidth: 0
+            },
+            textInput: {
+              marginLeft: 0,
+              marginRight: 0,
+              height: 38,
+              color: "#5d5d5d",
+              fontSize: 16
+            },
+            predefinedPlacesDescription: {
+              color: "#1faadb"
+            }
+          }}
+          currentLocation={false}
+        />
         <MapView
           style={{ width: "100%", height: 360 }}
           initialRegion={{
