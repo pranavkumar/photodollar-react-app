@@ -9,6 +9,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo/vector-icons": "^8.0.0",
     "expo": "^31.0.2",
     "immutability-helper": "^2.8.1",
     "lodash": "^4.17.11",

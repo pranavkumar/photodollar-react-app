@@ -12,6 +12,7 @@ import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton, Separator } from "../components/CommonUI";
 import update from "immutability-helper";
 import * as _ from "lodash";
+import { Ionicons } from "@expo/vector-icons";
 
 export default class Home extends React.Component {
   static navigationOptions = {
@@ -80,7 +81,14 @@ export default class Home extends React.Component {
           />
         </View>
         <View>
-          <Text>Select categories (at least 1)</Text>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ width: "8%" }}>
+            <Ionicons name="md-bookmark" size={20} color="#BDBDBD" />
+          </View>
+          <View style={{ width: "92%" }}>
+            <Text>Select categories (at least 1)</Text>
+          </View>
+        </View>
           <View style={{ marginTop: 8 }}>
             <FlatList
               horizontal={true}
@@ -93,7 +101,15 @@ export default class Home extends React.Component {
           </View>
         </View>
         <View style={{ marginTop: 8 }}>
-          <Text>Select location</Text>
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ width: "8%" }}>
+              <Ionicons name="ios-locate" size={20} color="#BDBDBD" />
+            </View>
+            <View style={{ width: "92%" }}>
+              <Text>Select location</Text>
+            </View>
+          </View>
+
           <View style={{ marginTop: 8 }}>
             <FlatList
               extraData={this.state.refresh}
@@ -109,16 +125,35 @@ export default class Home extends React.Component {
   renderLocations(item) {
     return (
       <View style={styles.locationLabel}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <View>
-            <Text style={{ color: "#616161" }}>{item.addressLine1}</Text>
-            <Text style={{ fontWeight: "bold" }}>{item.addressLine2}</Text>
-            <Text style={{ fontWeight: "bold" }}>{item.city}</Text>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ width: "8%", paddingTop: "1%" }}>
+            <View
+              style={{
+                borderRadius: 10,
+                borderColor: "#42A5F5",
+                width: 16,
+                height: 16,
+                borderWidth: 1
+              }}
+            />
           </View>
-          <View style={{ paddingRight: 8 }}>
-            {item.isCurrent && (
-              <Text style={{ fontWeight: "bold" }}>Current</Text>
-            )}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "92%"
+            }}
+          >
+            <View>
+              <Text style={{ color: "#616161" }}>{item.addressLine1}</Text>
+              <Text style={{ fontWeight: "bold" }}>{item.addressLine2}</Text>
+              <Text style={{ fontWeight: "bold" }}>{item.city}</Text>
+            </View>
+            <View style={{ paddingRight: 8 }}>
+              {item.isCurrent && (
+                <Text style={{ fontWeight: "bold" }}>Current</Text>
+              )}
+            </View>
           </View>
         </View>
         <Separator />
