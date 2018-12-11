@@ -55,7 +55,6 @@ export default class Home extends React.Component {
       <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
         <View
           style={{
-            backgroundColor: "#3F51B5",
             height: 55,
             marginTop: 24,
             padding: 16,
