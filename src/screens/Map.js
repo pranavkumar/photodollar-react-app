@@ -15,8 +15,6 @@ import update from "immutability-helper";
 import * as _ from "lodash";
 import { Ionicons } from "@expo/vector-icons";
 import MapView from "react-native-maps";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import Autocomplete from "react-native-autocomplete-input";
 import * as Api from "../services/Api.js";
 
 export default class Home extends React.Component {
@@ -36,25 +34,44 @@ export default class Home extends React.Component {
       selectedPrediction: {},
       showPredictions: true
     };
-    this._handleQuery = _.debounce(this.handleQuery, 500);
+    this._handleQuery = _.debounce(this.handleQuery, 300);
   }
   render() {
     return (
       <ScrollView style={styles.container}>
         <View>
-          <TextInput
+          <View
             style={{
-              height: 50,
+              flexDirection: "row",
               borderBottomWidth: 1,
-              fontSize: 18,
-              paddingLeft: 8,
-              paddingRight: 8,
               borderBottomColor: "#BDBDBD"
             }}
-            placeholder={this.state.placeholderQuery}
-            onChangeText={this.onChangeText.bind(this)}
-            value={this.state.query}
-          />
+          >
+            <TextInput
+              style={{
+                height: 50,
+                fontSize: 18,
+                paddingLeft: 8,
+                paddingRight: 8,
+                width: "88%"
+              }}
+              placeholder={this.state.placeholderQuery}
+              onChangeText={this.onChangeText.bind(this)}
+              value={this.state.query}
+            />
+            <View
+              style={{
+                width: "12%",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <TouchableOpacity onPress={this.clearPrediction.bind(this)}>
+                <Ionicons name="md-close" size={20} color="#29B6F6" />
+              </TouchableOpacity>
+            </View>
+          </View>
           <View>
             {this.state.predictions.length > 0 && this.state.showPredictions && (
               <FlatList
@@ -88,7 +105,7 @@ export default class Home extends React.Component {
   }
   componentDidMount() {}
   onChangeText(text) {
-    this.setState({ query: text,showPredictions:true });
+    this.setState({ query: text, showPredictions: true });
     if (text.length > 2) {
       this._handleQuery(text);
     }
@@ -143,6 +160,16 @@ export default class Home extends React.Component {
         selectedPrediction: { $set: prediction },
         showPredictions: { $set: false },
         query: { $set: prediction.description }
+      })
+    );
+  }
+  clearPrediction() {
+    this.setState(
+      update(this.state, {
+        predictions: { $set: [] },
+        selectedPrediction: { $set: {} },
+        showPredictions: { $set: true },
+        query: { $set: "" }
       })
     );
   }
