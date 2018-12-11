@@ -35,8 +35,8 @@ export default class Home extends React.Component {
       selectedPrediction: {},
       showPredictions: true,
       region: {
-        latitude: 37.78825,
-        longitude: -122.4324,
+        latitude: 12.9081,
+        longitude: 77.6476,
         latitudeDelta: 0.0222,
         longitudeDelta: 0.0121
       }
@@ -58,8 +58,8 @@ export default class Home extends React.Component {
               style={{
                 height: 50,
                 fontSize: 18,
-                paddingLeft: 8,
-                paddingRight: 8,
+                paddingLeft: 16,
+                paddingRight: 16,
                 width: "88%"
               }}
               placeholder={this.state.placeholderQuery}
@@ -116,7 +116,6 @@ export default class Home extends React.Component {
   componentDidMount() {}
   onChangeText(text) {
     this.setState({ query: text, showPredictions: true });
-    
     if (text.length > 2) {
       this._handleQuery(text);
     }
@@ -160,7 +159,7 @@ export default class Home extends React.Component {
                 paddingRight: 8
               }}
             >
-              {prediction.description.substring(0, 50)}
+              {this.formatString(prediction.description, 50)}
             </Text>
           </TouchableOpacity>
         </View>
