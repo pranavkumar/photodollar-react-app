@@ -30,14 +30,48 @@ export default class Home extends React.Component {
     super(props);
     // key: "AIzaSyCb93X2vjYdxfyFhHZrMG2eYB2dY-b7Vk4"
     this.state = {
-      query: ""
+      query: "",
+      placeholderQuery: "Search location...",
+      options: ["abc", "efg", "ijk"]
     };
   }
   render() {
-    const films = this.state.films;
-    const query = this.state.query;
     return (
       <ScrollView style={styles.container}>
+        <View>
+          <TextInput
+            style={{
+              height: 50,
+              borderBottomWidth: 1,
+              fontSize: 18,
+              paddingLeft: 8,
+              paddingRight: 8,
+              borderBottomColor: "#BDBDBD"
+            }}
+            placeholder={this.state.placeholderQuery}
+            onChangeText={text => this.setState({ query: text })}
+            value={this.state.query}
+          />
+          <View>
+            {this.state.options.length > 0 && (
+              <FlatList
+                style={{
+                  position: "absolute",
+                  zIndex: 1,
+                  top: 0,
+                  left: 0,
+                  backgroundColor: "white",
+                  width: "100%",
+                  opacity: 1,
+                  paddingTop:8
+                }}
+                keyExtractor={(item, index) => index.toString()}
+                data={this.state.options}
+                renderItem={({ item }) => this.renderOption(item)}
+              />
+            )}
+          </View>
+        </View>
         <MapView
           style={{ width: "100%", height: 360 }}
           initialRegion={{
@@ -48,6 +82,14 @@ export default class Home extends React.Component {
           }}
         />
       </ScrollView>
+    );
+  }
+  renderOption(option) {
+    return (
+      <View>
+        <Text style={{ fontSize: 18,paddingLeft:8, paddingRight:8 }}>{option}</Text>
+        <Separator style={{paddingBottom:0}}/>
+      </View>
     );
   }
 }
