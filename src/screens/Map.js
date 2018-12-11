@@ -16,7 +16,10 @@ import update from "immutability-helper";
 import * as _ from "lodash";
 import { Ionicons } from "@expo/vector-icons";
 import MapView from "react-native-maps";
+import { Marker } from 'react-native-maps';
+
 import * as Api from "../services/Api.js";
+
 
 export default class Home extends React.Component {
   static navigationOptions = {
@@ -109,7 +112,13 @@ export default class Home extends React.Component {
         <MapView
           style={{ width: "100%", height: 360 }}
           region={this.state.region}
-        />
+        >
+          <Marker
+            draggable
+            coordinate={this.state.region}
+            onDragEnd={() => {}}
+          />
+        </MapView>
       </ScrollView>
     );
   }
@@ -156,7 +165,8 @@ export default class Home extends React.Component {
               style={{
                 fontSize: 16,
                 paddingLeft: 8,
-                paddingRight: 8
+                paddingRight: 8,
+                opacity: 0.8
               }}
             >
               {this.formatString(prediction.description, 50)}
