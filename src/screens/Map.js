@@ -33,7 +33,13 @@ export default class Home extends React.Component {
       placeholderQuery: "Search location...",
       predictions: [],
       selectedPrediction: {},
-      showPredictions: true
+      showPredictions: true,
+      region: {
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0222,
+        longitudeDelta: 0.0121
+      }
     };
     this._handleQuery = _.debounce(this.handleQuery, 300);
   }
@@ -68,7 +74,14 @@ export default class Home extends React.Component {
                 justifyContent: "center"
               }}
             >
-              <TouchableOpacity onPress={this.clearPrediction.bind(this)} style={{width:"100%"}}>
+              <TouchableOpacity
+                onPress={this.clearPrediction.bind(this)}
+                style={{
+                  width: "100%",
+                  justifyContent: "center",
+                  flexDirection: "row"
+                }}
+              >
                 <Ionicons name="md-close" size={20} color="#29B6F6" />
               </TouchableOpacity>
             </View>
@@ -95,12 +108,7 @@ export default class Home extends React.Component {
         </View>
         <MapView
           style={{ width: "100%", height: 360 }}
-          initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
-          }}
+          region={this.state.region}
         />
       </ScrollView>
     );
@@ -108,6 +116,7 @@ export default class Home extends React.Component {
   componentDidMount() {}
   onChangeText(text) {
     this.setState({ query: text, showPredictions: true });
+    
     if (text.length > 2) {
       this._handleQuery(text);
     }
@@ -132,12 +141,16 @@ export default class Home extends React.Component {
     return (
       <View>
         <View
-          style={{ flexDirection: "row", alignItems: "center", minHeight: 45,zIndex:100 }}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            minHeight: 45,
+            zIndex: 100
+          }}
         >
           <TouchableOpacity
-
             activeOpacity={0.2}
-            style={{width:"100%"}}
+            style={{ width: "100%" }}
             onPress={this.selectPrediction.bind(this, prediction)}
           >
             <Text
@@ -157,15 +170,44 @@ export default class Home extends React.Component {
   }
   selectPrediction(prediction) {
     console.log("selected " + prediction.description);
+    Keyboard.dismiss();
     this.setState(
       update(this.state, {
         selectedPrediction: { $set: prediction },
         showPredictions: { $set: false },
-        query: { $set: prediction.description }
+        query: { $set: this.formatString(prediction.description, 30) }
       })
     );
-    Keyboard.dismiss();
-    console.log(prediction);
+    this.focusPrediction.call(this, prediction.description);
+  }
+  formatString(str, length) {
+    if (str.length < length) {
+      return str;
+    } else {
+      return str.substring(0, length - 3) + "...";
+    }
+  }
+  focusPrediction(prediction) {
+    Api.geocode(prediction)
+      .then(response => {
+        if (response.data.results[0] != undefined) {
+          let result = response.data.results[0];
+          let location = result.geometry.location;
+          this.setState(
+            update(this.state, {
+              region: {
+                latitude: { $set: location.lat },
+                longitude: { $set: location.lng }
+              }
+            })
+          );
+        } else {
+          console.log(response.status);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
   clearPrediction() {
     this.setState(
