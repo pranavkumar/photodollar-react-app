@@ -17,6 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import MapView from "react-native-maps";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import Autocomplete from "react-native-autocomplete-input";
+import * as Api from "../services/Api.js";
 
 export default class Home extends React.Component {
   static navigationOptions = {
@@ -28,12 +29,14 @@ export default class Home extends React.Component {
   };
   constructor(props) {
     super(props);
-    // key: "AIzaSyCb93X2vjYdxfyFhHZrMG2eYB2dY-b7Vk4"
     this.state = {
       query: "",
       placeholderQuery: "Search location...",
-      options: ["abc", "efg", "ijk"]
+      predictions: [],
+      selectedPrediction: {},
+      showPredictions: true
     };
+    this._handleQuery = _.debounce(this.handleQuery, 500);
   }
   render() {
     return (
@@ -49,11 +52,11 @@ export default class Home extends React.Component {
               borderBottomColor: "#BDBDBD"
             }}
             placeholder={this.state.placeholderQuery}
-            onChangeText={text => this.setState({ query: text })}
+            onChangeText={this.onChangeText.bind(this)}
             value={this.state.query}
           />
           <View>
-            {this.state.options.length > 0 && (
+            {this.state.predictions.length > 0 && this.state.showPredictions && (
               <FlatList
                 style={{
                   position: "absolute",
@@ -62,12 +65,11 @@ export default class Home extends React.Component {
                   left: 0,
                   backgroundColor: "white",
                   width: "100%",
-                  opacity: 1,
-                  paddingTop:8
+                  opacity: 1
                 }}
                 keyExtractor={(item, index) => index.toString()}
-                data={this.state.options}
-                renderItem={({ item }) => this.renderOption(item)}
+                data={this.state.predictions}
+                renderItem={({ item }) => this.renderPrediction(item)}
               />
             )}
           </View>
@@ -84,12 +86,64 @@ export default class Home extends React.Component {
       </ScrollView>
     );
   }
-  renderOption(option) {
+  componentDidMount() {}
+  onChangeText(text) {
+    this.setState({ query: text,showPredictions:true });
+    if (text.length > 2) {
+      this._handleQuery(text);
+    }
+  }
+
+  handleQuery(query) {
+    console.log(query);
+    Api.autocomplete(query)
+      .then(response => {
+        console.log(response.data);
+        if (response.data && response.data.predictions.length > 0) {
+          this.setState(
+            update(this.state, {
+              predictions: { $set: response.data.predictions }
+            })
+          );
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  renderPrediction(prediction) {
     return (
       <View>
-        <Text style={{ fontSize: 18,paddingLeft:8, paddingRight:8 }}>{option}</Text>
-        <Separator style={{paddingBottom:0}}/>
+        <View
+          style={{ flexDirection: "row", alignItems: "center", minHeight: 45 }}
+        >
+          <TouchableOpacity
+            activeOpacity={0.2}
+            onPress={this.selectPrediction.bind(this, prediction)}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                paddingLeft: 8,
+                paddingRight: 8
+              }}
+            >
+              {prediction.description.substring(0, 50)}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <Separator style={{ marginBottom: 0, marginTop: 0 }} />
       </View>
+    );
+  }
+  selectPrediction(prediction) {
+    console.log("selected " + prediction.description);
+    this.setState(
+      update(this.state, {
+        selectedPrediction: { $set: prediction },
+        showPredictions: { $set: false },
+        query: { $set: prediction.description }
+      })
     );
   }
 }

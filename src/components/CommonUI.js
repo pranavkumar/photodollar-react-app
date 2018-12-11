@@ -6,8 +6,12 @@ import * as _ from "lodash";
 import * as Props from "../props";
 
 class Separator extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
-    return <View style={Props.SeparatorProps} />;
+    let props = _.merge({}, Props.SeparatorProps, this.props.style);
+    return <View style={props} />;
   }
 }
 
