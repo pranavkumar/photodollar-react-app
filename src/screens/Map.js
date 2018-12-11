@@ -8,7 +8,9 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   TextInput,
-  Keyboard
+  Keyboard,
+  Platform,
+  StatusBar
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton, Separator } from "../components/CommonUI";
@@ -16,18 +18,20 @@ import update from "immutability-helper";
 import * as _ from "lodash";
 import { Ionicons } from "@expo/vector-icons";
 import MapView from "react-native-maps";
-import { Marker } from 'react-native-maps';
+import { Marker } from "react-native-maps";
 
 import * as Api from "../services/Api.js";
 
-
 export default class Home extends React.Component {
-  static navigationOptions = {
-    title: "Select location",
-    headerTitleStyle: {
-      fontWeight: "normal",
-      fontSize: 18
-    }
+  static navigationOptions = ({ navigation }) => {
+    return {
+      header: ({ state }) => {
+        return null;
+      },
+      headerStyle: {
+        backgroundColor: "transparent"
+      }
+    };
   };
   constructor(props) {
     super(props);
@@ -49,6 +53,40 @@ export default class Home extends React.Component {
   render() {
     return (
       <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
+        <View
+          style={{
+            backgroundColor: "#3F51B5",
+            height: 55,
+            marginTop: 24,
+            padding: 16,
+            paddingBottom: 20
+          }}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ width: "88%" }}>
+              <Text style={{ fontSize: 18, color: "#29B6F6" }}>
+                Select Location
+              </Text>
+            </View>
+            <View
+              style={{
+                width: "12%",
+                flexDirection: "row"
+              }}
+            >
+              <TouchableOpacity
+                onPress={this.onLocationSelected.bind(this)}
+                style={{
+                  width: "100%",
+                  justifyContent: "flex-end",
+                  flexDirection: "row"
+                }}
+              >
+                <Ionicons name="md-checkmark" size={20} color="#29B6F6" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
         <View>
           <View
             style={{
@@ -122,7 +160,14 @@ export default class Home extends React.Component {
       </ScrollView>
     );
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.navigation.setParams({
+      onLocationSelected: this.onLocationSelected
+    });
+  }
+  onLocationSelected() {
+    console.log("onLocationSelected");
+  }
   onChangeText(text) {
     this.setState({ query: text, showPredictions: true });
     if (text.length > 2) {
