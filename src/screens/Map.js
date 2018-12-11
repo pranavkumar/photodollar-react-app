@@ -7,7 +7,8 @@ import {
   ScrollView,
   TouchableHighlight,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  Keyboard
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton, Separator } from "../components/CommonUI";
@@ -38,7 +39,7 @@ export default class Home extends React.Component {
   }
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
         <View>
           <View
             style={{
@@ -67,7 +68,7 @@ export default class Home extends React.Component {
                 justifyContent: "center"
               }}
             >
-              <TouchableOpacity onPress={this.clearPrediction.bind(this)}>
+              <TouchableOpacity onPress={this.clearPrediction.bind(this)} style={{width:"100%"}}>
                 <Ionicons name="md-close" size={20} color="#29B6F6" />
               </TouchableOpacity>
             </View>
@@ -75,6 +76,7 @@ export default class Home extends React.Component {
           <View>
             {this.state.predictions.length > 0 && this.state.showPredictions && (
               <FlatList
+                keyboardShouldPersistTaps="handled"
                 style={{
                   position: "absolute",
                   zIndex: 1,
@@ -112,10 +114,8 @@ export default class Home extends React.Component {
   }
 
   handleQuery(query) {
-    console.log(query);
     Api.autocomplete(query)
       .then(response => {
-        console.log(response.data);
         if (response.data && response.data.predictions.length > 0) {
           this.setState(
             update(this.state, {
@@ -132,10 +132,12 @@ export default class Home extends React.Component {
     return (
       <View>
         <View
-          style={{ flexDirection: "row", alignItems: "center", minHeight: 45 }}
+          style={{ flexDirection: "row", alignItems: "center", minHeight: 45,zIndex:100 }}
         >
           <TouchableOpacity
+
             activeOpacity={0.2}
+            style={{width:"100%"}}
             onPress={this.selectPrediction.bind(this, prediction)}
           >
             <Text
@@ -162,6 +164,8 @@ export default class Home extends React.Component {
         query: { $set: prediction.description }
       })
     );
+    Keyboard.dismiss();
+    console.log(prediction);
   }
   clearPrediction() {
     this.setState(
