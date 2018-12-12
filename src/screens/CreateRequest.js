@@ -66,7 +66,19 @@ export default class Home extends React.Component {
   }
   componentWillReceiveProps(props) {
     let navigation = props.navigation;
-    console.log(navigation.getParam("location", null));
+    let location = navigation.getParam("location", null);
+    if (location) {
+      console.log(location);
+      let _location = {
+        addressLine1: location.description,
+        addressLine2: null,
+        city: null,
+        country: null,
+        isSelected: true,
+        isCurrent: false
+      };
+      this.setState(update(this.state, { locations: { $push: [_location] } }));
+    }
   }
   render() {
     return (

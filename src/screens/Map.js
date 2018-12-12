@@ -175,7 +175,10 @@ export default class Home extends React.Component {
   onLocationSelected() {
     let { navigation } = this.props;
     let from = navigation.getParam("from", null);
-    navigation.navigate(from, { location: this.state.selectedPrediction });
+    if(!from) return;
+    let { selectedPrediction, region } = this.state;
+    selectedPrediction.region = region;
+    navigation.navigate(from, { location: selectedPrediction });
   }
   onChangeText(text) {
     this.setState({ query: text, showPredictions: true });
