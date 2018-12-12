@@ -81,7 +81,7 @@ export default class Home extends React.Component {
                   flexDirection: "row"
                 }}
               >
-                <Ionicons name="md-checkmark" size={20} color="#29B6F6" />
+                <Text style={{ color: "#29B6F6",fontSize:14,fontWeight:"bold" }}>DONE</Text>
               </TouchableOpacity>
             </View>
           </View>
