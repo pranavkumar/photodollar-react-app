@@ -47,24 +47,12 @@ export default class Home extends React.Component {
           addressLine2: "West Hempstead",
           city: "NY",
           country: "US",
+          lat: 22.34,
+          lng: 77.45,
+          latDelta: 0.009,
+          lngDelta: 0.003,
           isSelected: false,
           isCurrent: true
-        },
-        {
-          addressLine1: "15 Selby St.",
-          addressLine2: "Oak Creek",
-          city: "WI",
-          country: "US",
-          isSelected: false,
-          isCurrent: false
-        },
-        {
-          addressLine1: "8069 Foxrun Rd",
-          addressLine2: "West Hempstead",
-          city: "NY",
-          country: "US",
-          isSelected: false,
-          isCurrent: false
         }
       ]
     };
@@ -74,15 +62,16 @@ export default class Home extends React.Component {
     let location = navigation.getParam("location", null);
     if (location) {
       console.log(location);
-      let _location = {
-        addressLine1: location.description,
-        addressLine2: null,
-        city: null,
-        country: null,
-        isSelected: true,
-        isCurrent: false
-      };
-      this.setState(update(this.state, { locations: { $push: [_location] } }));
+      this.state.locations.map((location, i) => {
+        location.isSelected = false;
+        this.setState(
+          update(this.state, { locations: { i: { $set: location } } })
+        );
+      });
+      location.isSelected = true;
+      location.isCurrent = false;
+      this.setState(update(this.state, { locations: { $push: [location] } }));
+
     }
   }
   render() {

@@ -175,10 +175,30 @@ export default class Home extends React.Component {
   onLocationSelected() {
     let { navigation } = this.props;
     let from = navigation.getParam("from", null);
-    if(!from) return;
+    if (!from) return;
     let { selectedPrediction, region } = this.state;
     selectedPrediction.region = region;
-    navigation.navigate(from, { location: selectedPrediction });
+    navigation.navigate(from, {
+      location: this.serializeLocation(selectedPrediction)
+    });
+  }
+  serializeLocation(prediction) {
+    let location = {};
+    location.description = prediction.description;
+    location.lat = prediction.region.latitude;
+    location.lng = prediction.region.longitude;
+    location.latDelta = prediction.region.latitudeDelta;
+    location.lngDelta = prediction.region.longitudeDelta;
+    location.country = prediction.terms[prediction.terms.length - 1].value;
+    location.addressLine1 =
+      prediction.terms[0].value + ", " + prediction.terms[1].value;
+    location.addressLine2 = [];
+    for (var i = 2; i < prediction.terms.length; i++) {
+      location.addressLine2.push(prediction.terms[i].value);
+    }
+    location.addressLine2 = location.addressLine2.join(", ");
+    location.placeId = prediction.place_id;
+    return location;
   }
   onChangeText(text) {
     this.setState({ query: text, showPredictions: true });
