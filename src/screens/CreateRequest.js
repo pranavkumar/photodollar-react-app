@@ -64,6 +64,10 @@ export default class Home extends React.Component {
       ]
     };
   }
+  componentWillReceiveProps(props) {
+    let navigation = props.navigation;
+    console.log(navigation.getParam("location", null));
+  }
   render() {
     return (
       <ScrollView style={{ padding: 8 }}>
@@ -214,7 +218,7 @@ export default class Home extends React.Component {
     console.log(item);
   }
   gotoMap() {
-    this.props.navigation.navigate('Map');
+    this.props.navigation.navigate("Map", { from: "CreateRequest" });
   }
 }
 

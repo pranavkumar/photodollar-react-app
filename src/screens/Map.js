@@ -74,6 +74,10 @@ export default class Home extends React.Component {
               }}
             >
               <TouchableOpacity
+                disabled={
+                  this.state.selectedPrediction.description == undefined ||
+                  this.state.selectedPrediction.description == null
+                }
                 onPress={this.onLocationSelected.bind(this)}
                 style={{
                   width: "100%",
@@ -81,7 +85,11 @@ export default class Home extends React.Component {
                   flexDirection: "row"
                 }}
               >
-                <Text style={{ color: "#29B6F6",fontSize:14,fontWeight:"bold" }}>DONE</Text>
+                <Text
+                  style={{ color: "#29B6F6", fontSize: 14, fontWeight: "bold" }}
+                >
+                  DONE
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -165,7 +173,9 @@ export default class Home extends React.Component {
     });
   }
   onLocationSelected() {
-    console.log("onLocationSelected");
+    let { navigation } = this.props;
+    let from = navigation.getParam("from", null);
+    navigation.navigate(from, { location: this.state.selectedPrediction });
   }
   onChangeText(text) {
     this.setState({ query: text, showPredictions: true });
@@ -294,8 +304,6 @@ const styles = StyleSheet.create({
     margin: 2
   },
   descriptionContainer: {
-    // `backgroundColor` needs to be set otherwise the
-    // autocomplete input will disappear on text input.
     backgroundColor: "#F5FCFF",
     marginTop: 25
   },
