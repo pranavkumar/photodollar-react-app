@@ -31,7 +31,7 @@ export default class Home extends React.Component {
     this.state = {
       title: "",
       placeholderTitle: "Request title e.g. A drowsy cat",
-      refresh:false,
+      refresh: false,
       categories: [
         { title: "Politics", followersCount: 1000, isSelected: true },
         { title: "Sports", followersCount: 500, isSelected: false },
@@ -68,6 +68,7 @@ export default class Home extends React.Component {
         }
       ]
     };
+    
   }
   componentWillReceiveProps(props) {
     let navigation = props.navigation;
@@ -87,7 +88,7 @@ export default class Home extends React.Component {
   }
   render() {
     return (
-      <ScrollView style={{ padding: 8 }}>
+      <ScrollView style={{ padding: 8 }} keyboardShouldPersistTaps="handled">
         <View
           style={{
             height: 55,
@@ -172,6 +173,7 @@ export default class Home extends React.Component {
           <View style={{ marginTop: 8 }}>
             <FlatList
               extraData={this.state.refresh}
+              keyboardShouldPersistTaps="handled"
               keyExtractor={(item, index) => index.toString()}
               data={this.state.locations}
               renderItem={({ item }) => this.renderLocations(item)}
@@ -209,38 +211,40 @@ export default class Home extends React.Component {
   renderLocations(item) {
     return (
       <View style={styles.locationLabel}>
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ width: "8%", paddingTop: "1%" }}>
+        <TouchableOpacity onPress={this.toggleSelectLocation.bind(this, item)}>
+          <View style={{ flexDirection: "row" }}>
             <View
               style={{
-                borderRadius: 10,
-                borderColor: "#42A5F5",
-                width: 16,
-                height: 16,
-                borderWidth: 1
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "92%"
               }}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              width: "92%"
-            }}
-          >
-            <View>
-              <Text style={{ color: "#616161" }}>{item.addressLine1}</Text>
-              <Text style={{ fontWeight: "bold" }}>{item.addressLine2}</Text>
-              <Text style={{ fontWeight: "bold" }}>{item.city}</Text>
+            >
+              <View style={{ width: "65%" }}>
+                <Text style={{ color: "#616161" }}>{item.addressLine1}</Text>
+                <Text style={{ fontWeight: "bold" }}>{item.addressLine2}</Text>
+                <Text style={{ fontWeight: "bold" }}>{item.city}</Text>
+              </View>
+              <View style={{ paddingRight: 8, width: "35%" }}>
+                {item.isCurrent && (
+                  <Text style={{ fontWeight: "bold" }}>Current</Text>
+                )}
+              </View>
             </View>
-            <View style={{ paddingRight: 8 }}>
-              {item.isCurrent && (
-                <Text style={{ fontWeight: "bold" }}>Current</Text>
-              )}
+            <View style={{ width: "8%", paddingTop: "1%" }}>
+              <View
+                style={{
+                  borderRadius: 10,
+                  borderColor: "#42A5F5",
+                  width: 16,
+                  height: 16,
+                  borderWidth: 1
+                }}
+              />
             </View>
           </View>
-        </View>
-        <Separator />
+          <Separator />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -280,6 +284,9 @@ export default class Home extends React.Component {
         refresh: { $set: !this.state.refresh }
       })
     );
+  }
+  toggleSelectLocation(item) {
+    console.log(item);
   }
   gotoMap() {
     this.props.navigation.navigate("Map", { from: "CreateRequest" });
