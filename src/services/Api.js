@@ -9,3 +9,7 @@ export function autocomplete(str) {
 export function geocode(address) {
   return axios.get(endpoint + "/maps/geocode?address=" + address);
 }
+
+export function postRequest(request) {
+  return axios.post(endpoint + "/URequests", request);
+}

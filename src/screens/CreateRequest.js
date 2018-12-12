@@ -14,6 +14,7 @@ import { PrimaryButton, Separator } from "../components/CommonUI";
 import update from "immutability-helper";
 import * as _ from "lodash";
 import { Ionicons } from "@expo/vector-icons";
+import * as Api from "../services/Api";
 
 export default class Home extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -33,24 +34,34 @@ export default class Home extends React.Component {
       placeholderTitle: "Request title e.g. A drowsy cat",
       refresh: false,
       categories: [
-        { title: "Politics", followersCount: 1000, isSelected: true },
-        { title: "Sports", followersCount: 500, isSelected: false },
-        { title: "Fashion", followersCount: 900, isSelected: false },
-        { title: "Food and Drink", followersCount: 788, isSelected: false },
-        { title: "Music and Movies", followersCount: 345, isSelected: false },
-        { title: "Gaming", followersCount: 345, isSelected: false },
-        { title: "Education", followersCount: 100, isSelected: false }
+        { title: "Politics", followersCount: 1000, isSelected: true, id: "1" },
+        { title: "Sports", followersCount: 500, isSelected: false, id: "2" },
+        { title: "Fashion", followersCount: 900, isSelected: false, id: "3" },
+        {
+          title: "Food and Drink",
+          followersCount: 788,
+          isSelected: false,
+          id: "4"
+        },
+        {
+          title: "Music and Movies",
+          followersCount: 345,
+          isSelected: false,
+          id: "5"
+        },
+        { title: "Gaming", followersCount: 345, isSelected: false, id: "6" },
+        { title: "Education", followersCount: 100, isSelected: false, id: "7" }
       ],
       locations: [
         {
-          addressLine1: "8069 Foxrun Rd",
-          addressLine2: "West Hempstead",
-          city: "NY",
-          country: "US",
-          lat: 22.34,
-          lng: 77.45,
-          latDelta: 0.009,
-          lngDelta: 0.003,
+          addressLine1: "1st a main road, 15th cross",
+          addressLine2: "HSR Layout, Sector 6",
+          city: "Bengaluru",
+          country: "Karnataka",
+          lat: 12.9081,
+          lng: 77.6476,
+          latDelta: 0.0222,
+          lngDelta: 0.0121,
           isSelected: false,
           isCurrent: true
         }
@@ -61,7 +72,6 @@ export default class Home extends React.Component {
     let navigation = props.navigation;
     let location = navigation.getParam("location", null);
     if (location) {
-      console.log(location);
       this.state.locations.map((location, i) => {
         location.isSelected = false;
         this.setState(
@@ -71,7 +81,6 @@ export default class Home extends React.Component {
       location.isSelected = true;
       location.isCurrent = false;
       this.setState(update(this.state, { locations: { $push: [location] } }));
-
     }
   }
   render() {
@@ -288,6 +297,30 @@ export default class Home extends React.Component {
   }
   postRequest() {
     console.log("postRequest");
+    let request = {};
+    request.title = this.state.title;
+    request.categoryIds = [];
+    this.state.categories.forEach(category => {
+      if (category.isSelected) {
+        request.categoryIds.push(category.id);
+      }
+    });
+    this.state.locations.forEach(location => {
+      if (location.isSelected) {
+        request._to = location;
+      }
+      if (location.isCurrent) {
+        request._from = location;
+      }
+    });
+    console.log(request);
+    Api.postRequest(request)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 }
 
