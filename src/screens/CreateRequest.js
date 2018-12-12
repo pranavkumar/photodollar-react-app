@@ -68,7 +68,6 @@ export default class Home extends React.Component {
         }
       ]
     };
-    
   }
   componentWillReceiveProps(props) {
     let navigation = props.navigation;
@@ -156,7 +155,7 @@ export default class Home extends React.Component {
               extraData={this.state.refresh}
               keyExtractor={(item, index) => index.toString()}
               data={this.state.categories}
-              renderItem={({ item }) => this.renderCategories(item)}
+              renderItem={({ item }) => this.renderCategory(item)}
             />
           </View>
         </View>
@@ -176,7 +175,7 @@ export default class Home extends React.Component {
               keyboardShouldPersistTaps="handled"
               keyExtractor={(item, index) => index.toString()}
               data={this.state.locations}
-              renderItem={({ item }) => this.renderLocations(item)}
+              renderItem={({ item, index }) => this.renderLocation(item, index)}
             />
             <View>
               <TouchableHighlight
@@ -208,10 +207,12 @@ export default class Home extends React.Component {
       </ScrollView>
     );
   }
-  renderLocations(item) {
+  renderLocation(item, index) {
     return (
       <View style={styles.locationLabel}>
-        <TouchableOpacity onPress={this.toggleSelectLocation.bind(this, item)}>
+        <TouchableOpacity
+          onPress={this.toggleSelectLocation.bind(this, item, index)}
+        >
           <View style={{ flexDirection: "row" }}>
             <View
               style={{
@@ -233,13 +234,11 @@ export default class Home extends React.Component {
             </View>
             <View style={{ width: "8%", paddingTop: "1%" }}>
               <View
-                style={{
-                  borderRadius: 10,
-                  borderColor: "#42A5F5",
-                  width: 16,
-                  height: 16,
-                  borderWidth: 1
-                }}
+                style={
+                  item.isSelected
+                    ? styles.locationRadioSelected
+                    : styles.locationRadio
+                }
               />
             </View>
           </View>
@@ -248,7 +247,7 @@ export default class Home extends React.Component {
       </View>
     );
   }
-  renderCategories(item) {
+  renderCategory(item) {
     return (
       <View
         style={
@@ -285,8 +284,15 @@ export default class Home extends React.Component {
       })
     );
   }
-  toggleSelectLocation(item) {
-    console.log(item);
+  toggleSelectLocation(item, index) {
+    this.state.locations.map((location, i) => {
+      location.isSelected = false;
+      this.setState(
+        update(this.state, { locations: { i: { $set: location } } })
+      );
+    });
+    item.isSelected = !item.isSelected;
+    this.setState(update(this.state, { locations: { index: { $set: item } } }));
   }
   gotoMap() {
     this.props.navigation.navigate("Map", { from: "CreateRequest" });
@@ -320,5 +326,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#FAFAFA"
   },
-  locationLabel: {}
+  locationRadio: {
+    borderRadius: 10,
+    borderColor: "#42A5F5",
+    width: 16,
+    height: 16,
+    borderWidth: 1
+  },
+  locationRadioSelected: {
+    borderRadius: 10,
+    borderColor: "#42A5F5",
+    width: 16,
+    height: 16,
+    borderWidth: 1,
+    backgroundColor: "#42A5F5"
+  }
 });
