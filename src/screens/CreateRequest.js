@@ -6,7 +6,8 @@ import {
   FlatList,
   ScrollView,
   TouchableHighlight,
-  TextInput
+  TextInput,
+  TouchableOpacity
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton, Separator } from "../components/CommonUI";
@@ -15,18 +16,22 @@ import * as _ from "lodash";
 import { Ionicons } from "@expo/vector-icons";
 
 export default class Home extends React.Component {
-  static navigationOptions = {
-    title: "Create Request",
-    headerTitleStyle: {
-      fontWeight: "normal",
-      fontSize: 18
-    }
+  static navigationOptions = ({ navigation }) => {
+    return {
+      header: ({ state }) => {
+        return null;
+      },
+      headerStyle: {
+        backgroundColor: "transparent"
+      }
+    };
   };
   constructor(props) {
     super(props);
     this.state = {
       title: "",
       placeholderTitle: "Request title e.g. A drowsy cat",
+      refresh:false,
       categories: [
         { title: "Politics", followersCount: 1000, isSelected: true },
         { title: "Sports", followersCount: 500, isSelected: false },
@@ -83,6 +88,44 @@ export default class Home extends React.Component {
   render() {
     return (
       <ScrollView style={{ padding: 8 }}>
+        <View
+          style={{
+            height: 55,
+            marginTop: 24,
+            padding: 16,
+            paddingBottom: 20
+          }}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ width: "88%" }}>
+              <Text style={{ fontSize: 18, color: "#29B6F6" }}>
+                Create request
+              </Text>
+            </View>
+            <View
+              style={{
+                width: "12%",
+                flexDirection: "row"
+              }}
+            >
+              <TouchableOpacity
+                disabled={false}
+                onPress={this.postRequest.bind(this)}
+                style={{
+                  width: "100%",
+                  justifyContent: "flex-end",
+                  flexDirection: "row"
+                }}
+              >
+                <Text
+                  style={{ color: "#29B6F6", fontSize: 14, fontWeight: "bold" }}
+                >
+                  DONE
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
         <View style={{ marginBottom: 8 }}>
           <TextInput
             style={{
@@ -227,10 +270,22 @@ export default class Home extends React.Component {
     );
   }
   toggleSelectCategory(item) {
-    console.log(item);
+    let index = _.findIndex(this.state.categories, function(o) {
+      return o.title == item.title;
+    });
+    item.isSelected = !item.isSelected;
+    this.setState(
+      update(this.state, {
+        categories: { index: { $set: item } },
+        refresh: { $set: !this.state.refresh }
+      })
+    );
   }
   gotoMap() {
     this.props.navigation.navigate("Map", { from: "CreateRequest" });
+  }
+  postRequest() {
+    console.log("postRequest");
   }
 }
 
