@@ -15,3 +15,7 @@ export function geocode(address) {
 export function postRequest(request) {
   return axios.post(endpoint + "/URequests", request);
 }
+
+export function getRequests() {
+  return axios.get(endpoint + "/URequests");
+}

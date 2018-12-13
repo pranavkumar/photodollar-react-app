@@ -30,6 +30,7 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      UUserId:"5c11ff3f19d3da6e905ec39c",
       title: "",
       placeholderTitle: "Request title e.g. A drowsy cat",
       refresh: false,
@@ -298,6 +299,7 @@ export default class Home extends React.Component {
   postRequest() {
     console.log("postRequest");
     let request = {};
+    request.UUserId = this.state.UUserId;
     request.title = this.state.title;
     request.categoryIds = [];
     this.state.categories.forEach(category => {

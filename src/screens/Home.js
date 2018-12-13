@@ -2,23 +2,15 @@ import React from "react";
 import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
+import * as Api from "../services/Api";
+import update from "immutability-helper";
+import { Ionicons } from "@expo/vector-icons";
 
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      coverageRequests: [
-        {
-          title: "A giant cat in neighborhood",
-          avatarUrl: "https://robohash.org/",
-          username: "Aditya"
-        },
-        {
-          title: "How you woke up tonight",
-          avatarUrl: "https://robohash.org/",
-          username: "Shankar"
-        }
-      ]
+      coverageRequests: []
     };
   }
   render() {
@@ -36,31 +28,41 @@ export default class Home extends React.Component {
     return (
       <Card containerStyle={{ margin: 0, marginBottom: 10, paddingBottom: 0 }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Avatar
-            medium
-            rounded
-            source={{
-              uri: item.avatarUrl + item.username
-            }}
-            onPress={() => console.log("Works!")}
-            activeOpacity={0.7}
-          />
           <View style={{ flexDirection: "column", marginLeft: 8 }}>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+            <Text style={{ fontSize: 16, fontWeight: "normal" }}>
               {item.title}
             </Text>
-            <Text style={{ fontSize: 16 }}>Bio</Text>
           </View>
         </View>
-        <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+        <View style={{ flexDirection: "row", justifyContent: "flex-end",alignItems:"center" }}>
+
+
+          <Text style={{alignItems:"center",color:"#42A5F5",marginLeft:8}}>
+            Audience 100
+          </Text>
+
           <PrimaryButton
-            title="Post"
+            title="Reply"
             containerStyle={{ paddingLeft: 0 }}
             type="outline"
           />
         </View>
       </Card>
     );
+  }
+  componentDidMount() {
+    console.log("fetching requests...");
+    Api.getRequests()
+      .then(({ status, data }) => {
+        if (status == 200) {
+          this.setState(
+            update(this.state, { coverageRequests: { $set: data } })
+          );
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 }
 
