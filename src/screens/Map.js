@@ -167,11 +167,7 @@ export default class Home extends React.Component {
       </ScrollView>
     );
   }
-  componentDidMount() {
-    this.props.navigation.setParams({
-      onLocationSelected: this.onLocationSelected
-    });
-  }
+  
   onLocationSelected() {
     let { navigation } = this.props;
     let from = navigation.getParam("from", null);
