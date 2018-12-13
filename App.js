@@ -5,6 +5,7 @@ import Map from "./src/screens/Map";
 import CoverageCategories from "./src/screens/CoverageCategories";
 import CreateRequest from "./src/screens/CreateRequest";
 import { createStackNavigator, createAppContainer } from "react-navigation";
+import CameraReply from "./src/screens/CameraReply";
 
 export default class App extends React.Component {
   render() {
@@ -18,10 +19,11 @@ const RootStack = createStackNavigator(
     Home: Home,
     Map:Map,
     CoverageCategories: CoverageCategories,
-    CreateRequest: CreateRequest
+    CreateRequest: CreateRequest,
+    CameraReply: CameraReply
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "CameraReply"
   }
 );
 

@@ -34,24 +34,52 @@ export default class Home extends React.Component {
             </Text>
           </View>
         </View>
-        <View style={{ flexDirection: "row", justifyContent: "flex-end",alignItems:"center" }}>
-
-
-          <Text style={{alignItems:"center",color:"#42A5F5",marginLeft:8}}>
-            Audience 100
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-start",
+            alignItems: "center"
+          }}
+        >
+          <Text
+            style={{
+              alignItems: "center",
+              color: "#BDBDBD",
+              marginLeft: 8,
+              fontSize: 16
+            }}
+          >
+            #Fashion, #Books
           </Text>
-
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
           <PrimaryButton
-            title="Reply"
+            title="Forward"
             containerStyle={{ paddingLeft: 0 }}
             type="outline"
+          />
+          <PrimaryButton
+            title="Expect"
+            containerStyle={{ paddingLeft: 0 }}
+            type="outline"
+          />
+          <PrimaryButton
+            onPress={()=>{this.props.navigation.navigate('CameraReply')}}
+            title="Reply"
+            containerStyle={{ paddingLeft: 0 }}
+
           />
         </View>
       </Card>
     );
   }
   componentDidMount() {
-    console.log("fetching requests...");
     Api.getRequests()
       .then(({ status, data }) => {
         if (status == 200) {
