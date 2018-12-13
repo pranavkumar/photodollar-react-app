@@ -4494,14 +4494,6 @@ react-native-button@^2.3.0:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-camera@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-1.6.1.tgz#ea1e4adb68ddeca07c622d1195aefa3007cc80d1"
-  integrity sha512-CqC+zXG2ocy6xrSTOh5HNWfrnQ/50PUTc0zrrZNHMvAEVJpxVdp2XPK+a1VrBQDX3fTG2sy0lGOlh/L39U5PXg==
-  dependencies:
-    lodash "^4.17.10"
-    prop-types "^15.6.2"
-
 react-native-elements@^0.19.1:
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-0.19.1.tgz#f92b69d864a150215d01f81fe3c52a9cada83e45"
