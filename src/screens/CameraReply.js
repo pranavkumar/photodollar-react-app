@@ -20,7 +20,8 @@ export default class CameraReply extends React.Component {
     super(props);
     this.state = {
       hasCameraPermission: null,
-      type: Camera.Constants.Type.back
+      type: Camera.Constants.Type.back,
+      isTakingPicture: false
     };
   }
   async componentDidMount() {
@@ -30,16 +31,41 @@ export default class CameraReply extends React.Component {
   render() {
     const { hasCameraPermission } = this.state;
     if (!hasCameraPermission) {
-      return <Text>CAMERA NOT ALLOWED</Text>;
+      return null;
     } else {
       return (
         <View style={{ flexDirection: "row", height: "100%" }}>
-          <CameraControls />
+          <Camera
+            style={{ flex: 1, flexDirection: "row" }}
+            type={this.state.type}
+            ref={ref => {
+              this.camera = ref;
+            }}
+          >
+            <CameraControls
+              isTakingPicture={this.state.isTakingPicture}
+              onSnap={this.snap}
+              onToggleFlash={this.toggleFlash}
+              onToggleSide={this.toggleSide}
+            />
+          </Camera>
         </View>
       );
     }
   }
   snap = async () => {
     console.log("snap");
+    if (this.camera) {
+      this.setState({ isTakingPicture: true });
+      let photo = await this.camera.takePictureAsync();
+      console.log("we have a photo " + photo.uri);
+      this.setState({ isTakingPicture: false });
+    }
   };
+  toggleFlash() {
+    console.log("toggleFlash");
+  }
+  toggleSide() {
+    console.log("toggleSide");
+  }
 }
