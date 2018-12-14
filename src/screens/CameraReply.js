@@ -55,12 +55,12 @@ export default class CameraReply extends React.Component {
   }
   snap = async () => {
     console.log("snap");
-    if (this.camera) {
-      this.setState({ isTakingPicture: true });
-      let photo = await this.camera.takePictureAsync();
-      console.log("we have a photo " + photo.uri);
-      this.setState({ isTakingPicture: false });
-    }
+    // if (this.camera) {
+    //   this.setState({ isTakingPicture: true });
+    //   let photo = await this.camera.takePictureAsync();
+    //   console.log("we have a photo " + photo.uri);
+    //   this.setState({ isTakingPicture: false });
+    // }
   };
   toggleFlash() {
     console.log("toggleFlash");
