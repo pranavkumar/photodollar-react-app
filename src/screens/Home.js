@@ -5,6 +5,7 @@ import { PrimaryButton } from "../components/CommonUI";
 import * as Api from "../services/Api";
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";
+import { ImagePicker, Permissions } from "expo";
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -73,7 +74,6 @@ export default class Home extends React.Component {
             onPress={this.handleCreateReply.bind(this)}
             title="Reply"
             containerStyle={{ paddingLeft: 0 }}
-
           />
         </View>
       </Card>
@@ -92,9 +92,23 @@ export default class Home extends React.Component {
         console.log(err);
       });
   }
-  handleCreateReply(){
+  handleCreateReply = async () => {
     console.log("handling reply...");
-  }
+    const { status } = await Permissions.getAsync(Permissions.CAMERA);
+    console.log(status);
+    if (status == "granted") {
+      try {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3]
+        });
+        console.log(result);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
 }
 
 const styles = StyleSheet.create({
