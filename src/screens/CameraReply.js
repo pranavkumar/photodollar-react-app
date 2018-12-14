@@ -16,6 +16,16 @@ import { Camera, Permissions } from "expo";
 import CameraControls from "../components/CameraControls";
 
 export default class CameraReply extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      header: ({ state }) => {
+        return null;
+      },
+      headerStyle: {
+        backgroundColor: "transparent"
+      }
+    };
+  };
   constructor(props) {
     super(props);
     this.state = {

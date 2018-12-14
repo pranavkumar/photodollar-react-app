@@ -70,7 +70,7 @@ export default class Home extends React.Component {
             type="outline"
           />
           <PrimaryButton
-            onPress={()=>{this.props.navigation.navigate('CameraReply')}}
+            onPress={this.handleCreateReply.bind(this)}
             title="Reply"
             containerStyle={{ paddingLeft: 0 }}
 
@@ -91,6 +91,9 @@ export default class Home extends React.Component {
       .catch(err => {
         console.log(err);
       });
+  }
+  handleCreateReply(){
+    console.log("handling reply...");
   }
 }
 
