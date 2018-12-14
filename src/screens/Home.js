@@ -99,10 +99,10 @@ export default class Home extends React.Component {
       try {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [4, 3]
+          allowsEditing: false
         });
         console.log(result);
+        this.props.navigation.navigate("CreateResponse", { image: result });
       } catch (err) {
         console.log(err);
       }

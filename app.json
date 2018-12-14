@@ -22,9 +22,6 @@
     ],
     "ios": {
       "supportsTablet": true
-    },
-    "android":{
-      "permisssions":[]
     }
   }
 }
