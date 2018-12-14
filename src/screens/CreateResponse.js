@@ -30,8 +30,6 @@ export default class CreateResponse extends React.Component {
     this.state = {
       image: this.props.navigation.getParam("image", null)
     };
-
-    console.log(this.state);
   }
   render() {
     let { image } = this.state;
@@ -52,7 +50,7 @@ export default class CreateResponse extends React.Component {
       </ScrollView>
     );
   }
-  postResponse() {
+  postResponse = async () => {
     let { image } = this.state;
     let data = new FormData();
     let filename = image.uri.split("/").pop();
@@ -62,12 +60,11 @@ export default class CreateResponse extends React.Component {
       name: filename,
       type: "image/" + ext
     });
-    Api.postFile("responseImages", data)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+    try {
+      let response = await Api.postFile("responseImages", data);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
