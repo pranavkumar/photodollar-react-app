@@ -47,9 +47,27 @@ export default class CreateResponse extends React.Component {
           )}
         </View>
         <View>
-          <PrimaryButton title="Post" />
+          <PrimaryButton title="Post" onPress={this.postResponse.bind(this)} />
         </View>
       </ScrollView>
     );
+  }
+  postResponse() {
+    let { image } = this.state;
+    let data = new FormData();
+    let filename = image.uri.split("/").pop();
+    let ext = filename.split(".").pop();
+    data.append("image", {
+      uri: image.uri,
+      name: filename,
+      type: "image/" + ext
+    });
+    Api.postFile("responseImages", data)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 }

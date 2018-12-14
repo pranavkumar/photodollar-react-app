@@ -19,3 +19,10 @@ export function postRequest(request) {
 export function getRequests() {
   return axios.get(endpoint + "/URequests");
 }
+
+export function postFile(container, formData) {
+  return fetch(endpoint + "/storage/" + container + "/upload", {
+    method: "POST",
+    body: formData
+  });
+}
