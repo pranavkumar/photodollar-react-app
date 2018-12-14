@@ -13,6 +13,7 @@ import * as Api from "../services/Api";
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";
 import { ImagePicker, Permissions } from "expo";
+import * as Utils from "../services/Utils";
 
 export default class CreateResponse extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -52,17 +53,11 @@ export default class CreateResponse extends React.Component {
   }
   postResponse = async () => {
     let { image } = this.state;
-    let data = new FormData();
-    let filename = image.uri.split("/").pop();
-    let ext = filename.split(".").pop();
-    data.append("image", {
-      uri: image.uri,
-      name: filename,
-      type: "image/" + ext
-    });
+    let formData = Utils.formDataFromImage(image);
     try {
-      let response = await Api.postFile("responseImages", data);
-      console.log(response);
+      let response = await Api.postFile("responseImages", formData);
+      let responseJson = await response.json();
+      console.log(responseJson);
     } catch (err) {
       console.log(err);
     }

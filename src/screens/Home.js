@@ -101,7 +101,6 @@ export default class Home extends React.Component {
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: false
         });
-        console.log(result);
         this.props.navigation.navigate("CreateResponse", { image: result });
       } catch (err) {
         console.log(err);
