@@ -6,7 +6,8 @@ import {
   FlatList,
   ScrollView,
   Image,
-  TextInput
+  TextInput,
+  Dimensions
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
@@ -38,23 +39,28 @@ export default class CreateResponse extends React.Component {
       width: 750
     };
     //image: this.props.navigation.getParam("image", null)
+    let { height, width } = Dimensions.get("window");
     this.state = {
-      image: mockImage,
+      image: this.props.navigation.getParam("image", null),
       comment: null,
       placeholderComment: "Optional comment...",
-      UUserId: "5c10b94950726f47d9c1a626"
+      UUserId: "5c10b94950726f47d9c1a626",
+      height: height,
+      width: width
     };
   }
   render() {
     let { image } = this.state;
+    let screen = ({ height, width } = this.state);
+    let { width, height } = this.getImageDimensions(image, screen);
+    // console.log(this.getImageDimensions(image, screen));
     return (
       <ScrollView>
         <View style={{ backgroundColor: "#424242" }}>
           {this.state.image && (
             <Image
               source={{ uri: image.uri }}
-              style={{ flex: 1, height: 400, width: "100%" }}
-              resizeMode="center"
+              style={{ flex: 1, height: height, width: width }}
             />
           )}
         </View>
@@ -72,11 +78,23 @@ export default class CreateResponse extends React.Component {
             onChangeText={text => this.setState({ comment: text })}
             value={this.state.comment}
           />
-          <PrimaryButton title="Post" onPress={this.postResponse.bind(this)} />
+          <PrimaryButton
+            title="Post"
+            onPress={this.postResponse.bind(this)}
+            buttonStyle={{ backgroundColor: "#42A5F5" }}
+          />
         </View>
       </ScrollView>
     );
   }
+
+  getImageDimensions(image, screen) {
+    return {
+      height: (image.height / image.width) * screen.width,
+      width: screen.width
+    };
+  }
+
   postResponse = async () => {
     let { image } = this.state;
     let formData = Utils.formDataFromImage(image);

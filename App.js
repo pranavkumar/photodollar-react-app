@@ -25,7 +25,7 @@ const RootStack = createStackNavigator(
     CreateResponse:CreateResponse
   },
   {
-    initialRouteName: "CreateResponse"
+    initialRouteName: "Home"
   }
 );
 
