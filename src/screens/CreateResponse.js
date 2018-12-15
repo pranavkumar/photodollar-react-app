@@ -32,25 +32,32 @@ export default class CreateResponse extends React.Component {
   };
   constructor(props) {
     super(props);
-    let mockImage = {
-      cancelled: false,
-      height: 420,
-      type: "image",
-      uri:
-        "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540pranav.fullstack%252Fapp/ImagePicker/84fd529a-9686-4b34-9f5f-fb02ac518712.jpg",
-      width: 480
-    };
+    // let mockImage = {
+    //   cancelled: false,
+    //   height: 420,
+    //   type: "image",
+    //   uri:
+    //     "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540pranav.fullstack%252Fapp/ImagePicker/84fd529a-9686-4b34-9f5f-fb02ac518712.jpg",
+    //   width: 480
+    // };
     //image: this.props.navigation.getParam("image", null)
     let { height, width } = Dimensions.get("window");
+    let { navigation } = this.props;
+    let image = navigation.getParam("image", null);
+    let request = navigation.getParam("request", null);
+
     this.state = {
-      image: mockImage,
+      image,
       comment: null,
       placeholderComment: "Optional comment...",
-      UUserId: "5c10b94950726f47d9c1a626",
-      height: height,
-      width: width,
-      isShowingOptions: false
+      UUserId: request.UUserId,
+      height,
+      width,
+      isShowingOptions: false,
+      request
     };
+
+    console.log(this.state);
   }
   render() {
     let { image, isShowingOptions } = this.state;

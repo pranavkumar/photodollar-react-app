@@ -71,7 +71,7 @@ export default class Home extends React.Component {
             type="outline"
           />
           <PrimaryButton
-            onPress={this.handleCreateReply.bind(this)}
+            onPress={this.handleCreateReply.bind(this, item)}
             title="Reply"
             containerStyle={{ paddingLeft: 0 }}
           />
@@ -92,8 +92,8 @@ export default class Home extends React.Component {
         console.log(err);
       });
   }
-  handleCreateReply = async () => {
-    console.log("handling reply...");
+  handleCreateReply = async item => {
+    console.log(`handling reply...${item.id}`);
     const { status } = await Permissions.getAsync(Permissions.CAMERA);
     if (status == "granted") {
       try {
@@ -101,7 +101,10 @@ export default class Home extends React.Component {
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: false
         });
-        this.props.navigation.navigate("CreateResponse", { image: result });
+        this.props.navigation.navigate("CreateResponse", {
+          image: result,
+          request: item
+        });
       } catch (err) {
         console.log(err);
       }
