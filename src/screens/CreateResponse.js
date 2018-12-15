@@ -8,7 +8,8 @@ import {
   Image,
   TextInput,
   Dimensions,
-  ImageBackground
+  ImageBackground,
+  TouchableOpacity
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton, Separator } from "../components/CommonUI";
@@ -47,14 +48,15 @@ export default class CreateResponse extends React.Component {
       placeholderComment: "Optional comment...",
       UUserId: "5c10b94950726f47d9c1a626",
       height: height,
-      width: width
+      width: width,
+      isShowingOptions: false
     };
-    console.log(this.state.image);
   }
   render() {
-    let { image } = this.state;
+    let { image, isShowingOptions } = this.state;
     let screen = ({ height, width } = this.state);
     let { width, height } = this.getImageDimensions(image, screen);
+
     // console.log(this.getImageDimensions(image, screen));
     return (
       <ScrollView>
@@ -81,10 +83,10 @@ export default class CreateResponse extends React.Component {
                 }}
               >
                 <Text style={{ color: "#42A5F5", fontSize: 16 }}>
-                  Reply: Where is Mowgli
+                  "Where is Mowgli"
                 </Text>
                 <Text style={{ color: "#F5F5F5", fontSize: 14 }}>
-                  Posted by : Anamika
+                  By Anamika
                 </Text>
               </View>
             </ImageBackground>
@@ -103,10 +105,34 @@ export default class CreateResponse extends React.Component {
             onChangeText={text => this.setState({ comment: text })}
             value={this.state.comment}
           />
-          <View style={{marginBottom:8}}>
-            <Text style={{ color: "#616161" }}>View more options</Text>
+          <View style={{ marginBottom: 8 }}>
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({ isShowingOptions: !isShowingOptions });
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between"
+                }}
+              >
+                <Text style={{ color: "#616161" }}>View more options</Text>
+                <Ionicons
+                  name={isShowingOptions ? "ios-arrow-up" : "ios-arrow-down"}
+                  size={16}
+                  color="#424242"
+                  style={{ marginRight: 8 }}
+                />
+              </View>
+            </TouchableOpacity>
+            {isShowingOptions && (
+              <View style={{ marginTop: 8 }}>
+                <Text>Some options</Text>
+              </View>
+            )}
           </View>
-          <Separator/>
+          <Separator />
           <View style={{ alignItems: "center" }}>
             <PrimaryButton
               title="Post Reply"
@@ -116,7 +142,7 @@ export default class CreateResponse extends React.Component {
                 backgroundColor: "#42A5F5",
                 borderRadius: 16,
                 width: "100%",
-                height:35
+                height: 35
               }}
             />
           </View>
@@ -146,8 +172,8 @@ export default class CreateResponse extends React.Component {
       } = await imageResponse.json();
       let { comment, UUserId } = this.state;
       let { data } = await Api.postResponse({
-        comment: comment,
-        UUserId: UUserId,
+        comment,
+        UUserId,
         image: firstImage
       });
       console.log(data);
