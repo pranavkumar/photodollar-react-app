@@ -74,6 +74,7 @@ export default class Home extends React.Component {
             onPress={this.handleCreateReply.bind(this, item)}
             title="Reply"
             containerStyle={{ paddingLeft: 0 }}
+            buttonStyle={{backgroundColor:"#42A5F5"}}
           />
         </View>
       </Card>
