@@ -5,7 +5,8 @@ import {
   View,
   FlatList,
   ScrollView,
-  Image
+  Image,
+  TextInput
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
@@ -28,8 +29,20 @@ export default class CreateResponse extends React.Component {
   };
   constructor(props) {
     super(props);
+    let mockImage = {
+      cancelled: false,
+      height: 1200,
+      type: "image",
+      uri:
+        "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540pranav.fullstack%252Fapp/ImagePicker/557e48d1-6da8-4b9c-a0cd-b0f4cb1f32fe.jpg",
+      width: 750
+    };
+    //image: this.props.navigation.getParam("image", null)
     this.state = {
-      image: this.props.navigation.getParam("image", null)
+      image: mockImage,
+      comment: null,
+      placeholderComment: "Optional comment...",
+      UUserId: "5c10b94950726f47d9c1a626"
     };
   }
   render() {
@@ -46,6 +59,19 @@ export default class CreateResponse extends React.Component {
           )}
         </View>
         <View>
+          <TextInput
+            style={{
+              height: 45,
+              borderBottomWidth: 1,
+              fontSize: 18,
+              borderBottomColor: "#BDBDBD",
+              marginLeft: 8,
+              marginRight: 8
+            }}
+            placeholder={this.state.placeholderComment}
+            onChangeText={text => this.setState({ comment: text })}
+            value={this.state.comment}
+          />
           <PrimaryButton title="Post" onPress={this.postResponse.bind(this)} />
         </View>
       </ScrollView>
@@ -55,9 +81,21 @@ export default class CreateResponse extends React.Component {
     let { image } = this.state;
     let formData = Utils.formDataFromImage(image);
     try {
-      let response = await Api.postFile("responseImages", formData);
-      let responseJson = await response.json();
-      console.log(responseJson);
+      let imageResponse = await Api.postFile("responseImages", formData);
+      let {
+        result: {
+          files: {
+            image: [firstImage]
+          }
+        }
+      } = await imageResponse.json();
+      let { comment, UUserId } = this.state;
+      let { data } = await Api.postResponse({
+        comment: comment,
+        UUserId: UUserId,
+        image: firstImage
+      });
+      console.log(data);
     } catch (err) {
       console.log(err);
     }
