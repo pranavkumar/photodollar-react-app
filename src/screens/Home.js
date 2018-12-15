@@ -94,13 +94,14 @@ export default class Home extends React.Component {
   }
   handleCreateReply = async item => {
     console.log(`handling reply...${item.id}`);
-    const { status } = await Permissions.getAsync(Permissions.CAMERA);
-    if (status == "granted") {
+    // const { status } = await Permissions.getAsync(Permissions.CAMERA);
+    if (true) {
       try {
         let result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: false
         });
+        if(result.cancelled) return;
         this.props.navigation.navigate("CreateResponse", {
           image: result,
           request: item

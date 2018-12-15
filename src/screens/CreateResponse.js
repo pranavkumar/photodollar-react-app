@@ -50,14 +50,13 @@ export default class CreateResponse extends React.Component {
       image,
       comment: null,
       placeholderComment: "Optional comment...",
-      UUserId: request.UUserId,
       height,
       width,
       isShowingOptions: false,
       request
     };
 
-    console.log(this.state);
+    // console.log(this.state);
   }
   render() {
     let { image, isShowingOptions } = this.state;
@@ -177,10 +176,11 @@ export default class CreateResponse extends React.Component {
           }
         }
       } = await imageResponse.json();
-      let { comment, UUserId } = this.state;
+      let { comment, request } = this.state;
       let { data } = await Api.postResponse({
         comment,
-        UUserId,
+        UUserId: "1234",
+        requestId: request.id,
         image: firstImage
       });
       console.log(data);
