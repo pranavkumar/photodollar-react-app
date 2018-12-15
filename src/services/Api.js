@@ -28,5 +28,8 @@ export function postFile(container, formData) {
 }
 
 export function postResponse(response) {
-  return axios.post(`${endpoint}/UResponses/`, response);
+  return axios.post(
+    `${endpoint}/URequests/${response.requestId}/UResponses/`,
+    response
+  );
 }
