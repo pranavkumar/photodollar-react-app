@@ -5,7 +5,7 @@ import { PrimaryButton } from "../components/CommonUI";
 import * as Api from "../services/Api";
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";
-import { ImagePicker, Permissions } from "expo";
+import { ImagePicker, Permissions, Contacts } from "expo";
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -13,7 +13,26 @@ export default class Home extends React.Component {
     this.state = {
       coverageRequests: []
     };
+    this.getContacts();
   }
+  getContacts = async () => {
+    let newStatus = "denied";
+    const { status } = await Permissions.getAsync(Permissions.CONTACTS);
+    if (status != "granted") {
+      const { status } = await Permissions.askAsync(Permissions.CONTACTS);
+      newStatus = status;
+    }
+
+    if (status == "granted" || newStatus == "granted") {
+      const { data } = await Contacts.getContactsAsync({
+        fields: [Contacts.PHONE_NUMBERS]
+      });
+
+      data.forEach((contact)=>{
+        console.log(contact);
+      })
+    }
+  };
   render() {
     return (
       <ScrollView style={{ padding: 10 }}>
@@ -74,7 +93,7 @@ export default class Home extends React.Component {
             onPress={this.handleCreateReply.bind(this, item)}
             title="Reply"
             containerStyle={{ paddingLeft: 0 }}
-            buttonStyle={{backgroundColor:"#42A5F5"}}
+            buttonStyle={{ backgroundColor: "#42A5F5" }}
           />
         </View>
       </Card>
@@ -102,7 +121,7 @@ export default class Home extends React.Component {
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: false
         });
-        if(result.cancelled) return;
+        if (result.cancelled) return;
         this.props.navigation.navigate("CreateResponse", {
           image: result,
           request: item
