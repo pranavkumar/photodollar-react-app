@@ -27,14 +27,62 @@ export default class UserProfile extends React.Component {
     const { UUser } = this.state;
     return (
       <ScrollView style={{ padding: 10 }}>
-        {UUser && <Text>{`${UUser.firstname} ${UUser.lastname}`}</Text>}
+        {UUser && (
+          <View>
+            <View style={{ alignItems: "center" }}>
+              <Avatar
+                rounded
+                medium
+                source={{
+                  uri: `${Api.FILE_ENDPOINT}userProfileImages/${
+                    UUser.profileImage.name
+                  }`
+                }}
+                onPress={() => console.log("Works!")}
+                activeOpacity={0.7}
+                containerStyle={{ marginBottom: 8 }}
+              />
+              <Text style={{ fontSize: 16 }}>{`${UUser.firstname} ${
+                UUser.lastname
+              }`}</Text>
+              <Text>{`${UUser.points} Pts`}</Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Text>Mobile</Text>
+              <Text>{UUser.mobile}</Text>
+            </View>
+            <View>
+              <Text>Location</Text>
+              <Text>{`${UUser.location.addressLine1}`}</Text>
+              <Text>{`${UUser.location.addressLine2}`}</Text>
+              <Text>{`${UUser.location.country}`}</Text>
+              <Text />
+            </View>
+          </View>
+        )}
       </ScrollView>
     );
   }
+
   componentDidMount = async () => {
     try {
       let res = await Api.getUserProfile(this.state.UUserId);
       if (res.status == 200) {
+        let UUser = res.data;
+        UUser.profileImage = UUser.profileImage || { name: "default.png" };
+        UUser.location = UUser.location || {
+          lat: 0,
+          lng: 0,
+          latDelta: 0,
+          lngDelta: 0,
+          addressLine1: "46, 4th B Cross Road",
+          addressLine2: "5th Block, Koramangala, Bengaluru",
+          country: "India",
+          placeId: "abc",
+          id: "123"
+        };
         this.setState(update(this.state, { UUser: { $set: res.data } }));
         console.log(this.state);
       }
