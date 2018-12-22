@@ -55,7 +55,9 @@ export default class Home extends React.Component {
     return (
       <Card containerStyle={{ margin: 0, marginBottom: 10, paddingBottom: 0 }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View style={{ flexDirection: "column", marginLeft: 8 }}>
+          <View
+            style={{ flexDirection: "column", marginLeft: 8, marginBottom: 8 }}
+          >
             <Text style={{ fontSize: 16, fontWeight: "normal" }}>
               {item.title}
             </Text>

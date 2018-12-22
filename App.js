@@ -7,6 +7,7 @@ import CreateRequest from "./src/screens/CreateRequest";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import CameraReply from "./src/screens/CameraReply";
 import CreateResponse from "./src/screens/CreateResponse";
+import UserProfile from "./src/screens/UserProfile";
 
 export default class App extends React.Component {
   render() {
@@ -22,10 +23,11 @@ const RootStack = createStackNavigator(
     CoverageCategories: CoverageCategories,
     CreateRequest: CreateRequest,
     CameraReply: CameraReply,
-    CreateResponse:CreateResponse
+    CreateResponse:CreateResponse,
+    UserProfile:UserProfile
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "UserProfile"
   }
 );
 
