@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ScrollView,
+  Image
+} from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
 import * as Api from "../services/Api";
@@ -13,7 +20,7 @@ export default class Home extends React.Component {
     this.state = {
       coverageRequests: []
     };
-    this.getContacts();
+    // this.getContacts();
   }
   getContacts = async () => {
     let newStatus = "denied";
@@ -28,9 +35,9 @@ export default class Home extends React.Component {
         fields: [Contacts.PHONE_NUMBERS]
       });
 
-      data.forEach((contact)=>{
-        console.log(contact);
-      })
+      data.forEach(contact => {
+        // console.log(contact);
+      });
     }
   };
   render() {
@@ -60,18 +67,11 @@ export default class Home extends React.Component {
             justifyContent: "flex-start",
             alignItems: "center"
           }}
-        >
-          <Text
-            style={{
-              alignItems: "center",
-              color: "#BDBDBD",
-              marginLeft: 8,
-              fontSize: 16
-            }}
-          >
-            #Fashion, #Books
-          </Text>
-        </View>
+        />
+        {item.UResponses &&
+          item.UResponses.length > 0 &&
+          this.renderResponses(item.UResponses)}
+        <View />
         <View
           style={{
             flexDirection: "row",
@@ -99,10 +99,32 @@ export default class Home extends React.Component {
       </Card>
     );
   }
+  renderResponses(items) {
+    return (
+      <FlatList
+        keyExtractor={(item, index) => index.toString()}
+        data={items}
+        renderItem={({ item }) => this.renderResponse(item)}
+      />
+    );
+  }
+  renderResponse(item) {
+    return (
+      <View style={{marginBottom:16}}>
+        <Image
+          style={{ width: "100%", height: 100 }}
+          source={{
+            uri: Api.FILE_ENDPOINT + "responseImages/" + item.image.name
+          }}
+        />
+      </View>
+    );
+  }
   componentDidMount() {
     Api.getRequests()
       .then(({ status, data }) => {
         if (status == 200) {
+          console.log(data[0]);
           this.setState(
             update(this.state, { coverageRequests: { $set: data } })
           );
