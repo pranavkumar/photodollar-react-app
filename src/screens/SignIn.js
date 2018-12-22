@@ -3,10 +3,9 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList,
-  ScrollView,
   Image,
-  TextInput
+  TextInput,
+  TouchableHighlight
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
@@ -33,7 +32,8 @@ export default class UserProfile extends React.Component {
   componentDidMount = async () => {
     await Font.loadAsync({
       semiBold: require("../../assets/fonts/OpenSans-SemiBold.ttf"),
-      light: require("../../assets/fonts/OpenSans-Light.ttf")
+      light: require("../../assets/fonts/OpenSans-Light.ttf"),
+      regular: require("../../assets/fonts/OpenSans-Regular.ttf")
     });
     this.setState({ fontLoaded: true });
   };
@@ -63,7 +63,7 @@ export default class UserProfile extends React.Component {
             Coveraze
           </Text>
           <Text style={{ fontSize: 16, color: "#FAFAFA", fontFamily: "light" }}>
-            Request pics from all over Bangalore.
+            Request pics from all over Bengaluru.
           </Text>
         </View>
         <View
@@ -76,18 +76,43 @@ export default class UserProfile extends React.Component {
             padding: 16
           }}
         >
-          <TextInput
-            keyboardType="numeric"
-            placeholder="Mobile no"
-            style={{
-              width: "100%",
-              height: 40,
-              fontSize: 18,
-              fontFamily: "light"
-            }}
-          />
+          <View style={{ flexDirection: "row" }}>
+            <TextInput
+              keyboardType="numeric"
+              placeholder="Mobile no"
+              style={{
+                width: "70%",
+                height: 40,
+                fontSize: 18,
+                fontFamily: "light"
+              }}
+            />
+            <View
+              style={{
+                width: "30%",
+                flexDirection: "column"
+              }}
+            >
+              <TouchableHighlight
+                onPress={this.onNext.bind(this)}
+                underlayColor="#E0E0E0"
+                style={{
+                  width: "100%",
+                  alignItems: "center",
+                  height: 40,
+                  justifyContent: "center",
+
+                }}
+              >
+                <Text style={{fontFamily:"regular",color:"#64B5F6",fontWeight:"bold"}}>NEXT</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
         </View>
       </View>
     );
+  }
+  onNext() {
+    console.log("on next");
   }
 }
