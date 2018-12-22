@@ -13,7 +13,7 @@ import { PrimaryButton } from "../components/CommonUI";
 import * as Api from "../services/Api";
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";
-import { ImagePicker, Permissions, Contacts } from "expo";
+import { Font } from "expo";
 
 export default class UserProfile extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -28,8 +28,17 @@ export default class UserProfile extends React.Component {
   };
   constructor(props) {
     super(props);
+    this.state = { fontLoaded: false };
   }
+  componentDidMount = async () => {
+    await Font.loadAsync({
+      semiBold: require("../../assets/fonts/OpenSans-SemiBold.ttf"),
+      light: require("../../assets/fonts/OpenSans-Light.ttf")
+    });
+    this.setState({ fontLoaded: true });
+  };
   render() {
+    if (!this.state.fontLoaded) return null;
     return (
       <View
         style={{
@@ -48,8 +57,12 @@ export default class UserProfile extends React.Component {
             marginRight: 16
           }}
         >
-          <Text style={{ fontSize: 38, color: "#FAFAFA" }}>Coveraze</Text>
-          <Text style={{ fontSize: 16, color: "#FAFAFA" }}>
+          <Text
+            style={{ fontSize: 38, color: "#FAFAFA", fontFamily: "semiBold" }}
+          >
+            Coveraze
+          </Text>
+          <Text style={{ fontSize: 16, color: "#FAFAFA", fontFamily: "light" }}>
             Request pics from all over Bangalore.
           </Text>
         </View>
@@ -66,7 +79,12 @@ export default class UserProfile extends React.Component {
           <TextInput
             keyboardType="numeric"
             placeholder="Mobile no"
-            style={{ width: "100%", height: 40, fontSize: 18 }}
+            style={{
+              width: "100%",
+              height: 40,
+              fontSize: 18,
+              fontFamily: "light"
+            }}
           />
         </View>
       </View>
