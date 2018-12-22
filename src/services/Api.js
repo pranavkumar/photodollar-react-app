@@ -19,7 +19,7 @@ export function postRequest(request) {
 
 export function getRequests() {
   return axios.get(API_ENDPOINT + "/URequests", {
-    params: { filter: JSON.stringify({ include: "UResponses" }) }
+    params: { filter: JSON.stringify({ include: ["UResponses","UUser"] }) }
   });
 }
 

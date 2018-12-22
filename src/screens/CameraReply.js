@@ -28,10 +28,12 @@ export default class CameraReply extends React.Component {
   };
   constructor(props) {
     super(props);
+
     this.state = {
       hasCameraPermission: null,
       type: Camera.Constants.Type.back,
-      isTakingPicture: false
+      isTakingPicture: false,
+      request: props.navigation.getParam("request", null)
     };
   }
   async componentDidMount() {
@@ -64,13 +66,17 @@ export default class CameraReply extends React.Component {
     }
   }
   snap = async () => {
-    console.log("snap");
-    // if (this.camera) {
-    //   this.setState({ isTakingPicture: true });
-    //   let photo = await this.camera.takePictureAsync();
-    //   console.log("we have a photo " + photo.uri);
-    //   this.setState({ isTakingPicture: false });
-    // }
+    console.log("taking pic...");
+    if (this.camera) {
+      this.setState({ isTakingPicture: true });
+      let photo = await this.camera.takePictureAsync();
+      console.log(photo);
+      this.setState({ isTakingPicture: false });
+      this.props.navigation.navigate("CreateResponse", {
+        image: photo,
+        request: this.state.request
+      });
+    }
   };
   toggleFlash() {
     console.log("toggleFlash");

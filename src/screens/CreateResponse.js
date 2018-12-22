@@ -59,7 +59,7 @@ export default class CreateResponse extends React.Component {
     // console.log(this.state);
   }
   render() {
-    let { image, isShowingOptions } = this.state;
+    let { image, isShowingOptions, request } = this.state;
     let screen = ({ height, width } = this.state);
     let { width, height } = this.getImageDimensions(image, screen);
 
@@ -89,10 +89,10 @@ export default class CreateResponse extends React.Component {
                 }}
               >
                 <Text style={{ color: "#42A5F5", fontSize: 16 }}>
-                  "Where is Mowgli"
+                  {request.title}
                 </Text>
                 <Text style={{ color: "#F5F5F5", fontSize: 14 }}>
-                  By Anamika
+                  By {`${request.UUser.firstname} ${request.UUser.lastname}`}
                 </Text>
               </View>
             </ImageBackground>

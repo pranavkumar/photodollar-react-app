@@ -110,7 +110,7 @@ export default class Home extends React.Component {
   }
   renderResponse(item) {
     return (
-      <View style={{marginBottom:16}}>
+      <View style={{ marginBottom: 16 }}>
         <Image
           style={{ width: "100%", height: 100 }}
           source={{
@@ -134,24 +134,25 @@ export default class Home extends React.Component {
         console.log(err);
       });
   }
-  handleCreateReply = async item => {
-    console.log(`handling reply...${item.id}`);
+  handleCreateReply = async request => {
+    console.log(`handling reply...${request.id}`);
+    this.props.navigation.navigate("CameraReply", { request: request });
     // const { status } = await Permissions.getAsync(Permissions.CAMERA);
-    if (true) {
-      try {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: false
-        });
-        if (result.cancelled) return;
-        this.props.navigation.navigate("CreateResponse", {
-          image: result,
-          request: item
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    // if (true) {
+    //   try {
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //       allowsEditing: false
+    //     });
+    //     if (result.cancelled) return;
+    //     this.props.navigation.navigate("CreateResponse", {
+    //       image: result,
+    //       request: item
+    //     });
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
   };
 }
 
