@@ -47,18 +47,26 @@ export default class UserProfile extends React.Component {
               }`}</Text>
               <Text>{`${UUser.points} Pts`}</Text>
             </View>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <Text>Mobile</Text>
-              <Text>{UUser.mobile}</Text>
-            </View>
-            <View>
-              <Text>Location</Text>
-              <Text>{`${UUser.location.addressLine1}`}</Text>
-              <Text>{`${UUser.location.addressLine2}`}</Text>
-              <Text>{`${UUser.location.country}`}</Text>
-              <Text />
+
+            <View style={{ marginTop: 16 }}>
+              <Card containerStyle={{marginLeft:0,marginRight:0}}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                  }}
+                >
+                  <Text>Mobile</Text>
+                  <Text>{`+91 ${UUser.mobile}`}</Text>
+                </View>
+                <View>
+                  <Text>Location</Text>
+                  <Text>{`${UUser.location.addressLine1}`}</Text>
+                  <Text>{`${UUser.location.addressLine2}`}</Text>
+                  <Text>{`${UUser.location.country}`}</Text>
+                  <Text />
+                </View>
+              </Card>
             </View>
           </View>
         )}
