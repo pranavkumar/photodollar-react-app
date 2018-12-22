@@ -4,7 +4,9 @@ export const API_ENDPOINT = "http://192.168.0.100:3000/api/";
 export const FILE_ENDPOINT = "http://192.168.0.100:5500/files/";
 
 export function autocomplete(str) {
-  return axios.get(API_ENDPOINT + "/maps/autocomplete", { params: { input: str } });
+  return axios.get(API_ENDPOINT + "/maps/autocomplete", {
+    params: { input: str }
+  });
 }
 
 export function geocode(address) {
@@ -19,8 +21,12 @@ export function postRequest(request) {
 
 export function getRequests() {
   return axios.get(API_ENDPOINT + "/URequests", {
-    params: { filter: JSON.stringify({ include: ["UResponses","UUser"] }) }
+    params: { filter: JSON.stringify({ include: ["UResponses", "UUser"] }) }
   });
+}
+
+export function getUserProfile(id) {
+  return axios.get(`${API_ENDPOINT}UUsers/${id}`);
 }
 
 export function postFile(container, formData) {
