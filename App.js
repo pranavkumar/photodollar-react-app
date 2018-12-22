@@ -8,6 +8,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import CameraReply from "./src/screens/CameraReply";
 import CreateResponse from "./src/screens/CreateResponse";
 import UserProfile from "./src/screens/UserProfile";
+import SignIn from "./src/screens/SignIn";
 
 export default class App extends React.Component {
   render() {
@@ -24,10 +25,11 @@ const RootStack = createStackNavigator(
     CreateRequest: CreateRequest,
     CameraReply: CameraReply,
     CreateResponse:CreateResponse,
-    UserProfile:UserProfile
+    UserProfile:UserProfile,
+    SignIn:SignIn
   },
   {
-    initialRouteName: "UserProfile"
+    initialRouteName: "SignIn"
   }
 );
 
