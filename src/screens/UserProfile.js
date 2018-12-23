@@ -49,10 +49,10 @@ export default class UserProfile extends React.Component {
               style={{
                 alignItems: "center",
                 backgroundColor: "#42A5F5",
-                height: "50%",
+                height: "60%",
                 padding: 10,
                 paddingTop: 24,
-                paddingBottom:0,
+                paddingBottom: 0,
                 justifyContent: "center"
               }}
             >
@@ -76,23 +76,40 @@ export default class UserProfile extends React.Component {
               } Pts`}</Text>
             </View>
 
-            <View style={{ marginTop: 0,paddingTop:0 }}>
-              <Card containerStyle={{ marginLeft: 0, marginRight: 0,marginTop:0 }}>
+            <View style={{ marginTop: 0, paddingTop: 0 }}>
+              <Card
+                containerStyle={{ marginLeft: 0, marginRight: 0, marginTop: 0 }}
+              >
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between"
                   }}
                 >
-                  <Text style={{fontFamily:"semiBold"}}>Mobile</Text>
-                  <Text style={{fontFamily:"regular"}}>{`+91 ${UUser.mobile}`}</Text>
+                  <Text style={{ fontFamily: "semiBold" }}>Mobile</Text>
+                  <Text style={{ fontFamily: "regular" }}>{`+91 ${
+                    UUser.mobile
+                  }`}</Text>
                 </View>
-                <View>
-                  <Text style={{fontFamily:"semiBold"}}>Location</Text>
-                  <Text style={{fontFamily:"regular"}}>{`${UUser.location.addressLine1}`}</Text>
-                  <Text style={{fontFamily:"regular"}}>{`${UUser.location.addressLine2}`}</Text>
-                  <Text style={{fontFamily:"regular"}}>{`${UUser.location.country}`}</Text>
-                  <Text />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between"
+                  }}
+                >
+                  <Text style={{ fontFamily: "semiBold" }}>Location</Text>
+                  <View style={{ alignItems: "flex-end" }}>
+                    <Text style={{ fontFamily: "regular" }}>{`${
+                      UUser.location.addressLine1
+                    }`}</Text>
+                    <Text style={{ fontFamily: "regular" }}>{`${
+                      UUser.location.addressLine2
+                    }`}</Text>
+                    <Text style={{ fontFamily: "regular" }}>{`${
+                      UUser.location.country
+                    }`}</Text>
+                    <Text />
+                  </View>
                 </View>
               </Card>
             </View>

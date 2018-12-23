@@ -10,45 +10,43 @@ import {
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
 import * as Api from "../services/Api";
+import * as Util from "../utils";
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";
 import { ImagePicker, Permissions, Contacts } from "expo";
 
 export default class Home extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      header: ({ state }) => {
+        return null;
+      }
+    };
+  };
   constructor(props) {
     super(props);
     this.state = {
       coverageRequests: []
     };
-    // this.getContacts();
+    this.loadFonts = Util.loadFonts.bind(this);
   }
-  getContacts = async () => {
-    let newStatus = "denied";
-    const { status } = await Permissions.getAsync(Permissions.CONTACTS);
-    if (status != "granted") {
-      const { status } = await Permissions.askAsync(Permissions.CONTACTS);
-      newStatus = status;
-    }
 
-    if (status == "granted" || newStatus == "granted") {
-      const { data } = await Contacts.getContactsAsync({
-        fields: [Contacts.PHONE_NUMBERS]
-      });
-
-      data.forEach(contact => {
-        // console.log(contact);
-      });
-    }
-  };
   render() {
+    let {fontLoaded} = this.state;
+    if(!fontLoaded) return null;
     return (
-      <ScrollView style={{ padding: 10 }}>
-        <FlatList
-          keyExtractor={(item, index) => index.toString()}
-          data={this.state.coverageRequests}
-          renderItem={({ item }) => this.renderRequest(item)}
-        />
-      </ScrollView>
+      <View style={{ padding: 0 }}>
+        <View style={{height:60,backgroundColor:"#448AFF",padding:10}}>
+          <Text style={{fontFamily:"light",fontSize:22,color:"white"}}>KyaScene</Text>
+        </View>
+        <ScrollView>
+          <FlatList
+            keyExtractor={(item, index) => index.toString()}
+            data={this.state.coverageRequests}
+            renderItem={({ item }) => this.renderRequest(item)}
+          />
+        </ScrollView>
+      </View>
     );
   }
   renderRequest(item) {
@@ -58,7 +56,7 @@ export default class Home extends React.Component {
           <View
             style={{ flexDirection: "column", marginLeft: 8, marginBottom: 8 }}
           >
-            <Text style={{ fontSize: 16, fontWeight: "normal" }}>
+            <Text style={{ fontSize: 16, fontWeight: "normal", fontFamily:"regular" }}>
               {item.title}
             </Text>
           </View>
@@ -122,11 +120,14 @@ export default class Home extends React.Component {
       </View>
     );
   }
+  componentWillMount = async()=>{
+    console.log("gonna mount");
+    await this.loadFonts();
+  }
   componentDidMount() {
     Api.getRequests()
       .then(({ status, data }) => {
         if (status == 200) {
-          console.log(data[0]);
           this.setState(
             update(this.state, { coverageRequests: { $set: data } })
           );
@@ -139,22 +140,6 @@ export default class Home extends React.Component {
   handleCreateReply = async request => {
     console.log(`handling reply...${request.id}`);
     this.props.navigation.navigate("CameraReply", { request: request });
-    // const { status } = await Permissions.getAsync(Permissions.CAMERA);
-    // if (true) {
-    //   try {
-    //     let result = await ImagePicker.launchImageLibraryAsync({
-    //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //       allowsEditing: false
-    //     });
-    //     if (result.cancelled) return;
-    //     this.props.navigation.navigate("CreateResponse", {
-    //       image: result,
-    //       request: item
-    //     });
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }
   };
 }
 

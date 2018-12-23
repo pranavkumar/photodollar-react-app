@@ -29,7 +29,7 @@ const RootStack = createStackNavigator(
     SignIn:SignIn
   },
   {
-    initialRouteName: "UserProfile"
+    initialRouteName: "Home"
   }
 );
 
