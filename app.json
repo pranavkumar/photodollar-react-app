@@ -25,6 +25,10 @@
     },
     "android":{
       "permissions":["CONTACTS"]
+    },
+    "androidStatusBar":{
+      "barStyle":"light-content",
+      "backgroundColor":"#42A5F5"
     }
   }
 }

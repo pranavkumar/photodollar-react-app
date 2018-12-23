@@ -5,34 +5,60 @@ import {
   View,
   FlatList,
   ScrollView,
-  Image
+  Image,
+  StatusBar
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
 import * as Api from "../services/Api";
+import * as Util from "../utils/index.js";
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";
 import { ImagePicker, Permissions, Contacts } from "expo";
 
 export default class UserProfile extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      header: ({ state }) => {
+        return null;
+      }
+    };
+  };
   constructor(props) {
     super(props);
     this.state = {
       UUserId: props.navigation.getParam("UUserId", "5c11ff3f19d3da6e905ec39c"),
-      UUser: null
+      UUser: null,
+      avatarHeight: 55,
+      avatarWidth: 55
     };
-    console.log(this.state);
+    this.loadFonts = Util.loadFonts.bind(this);
+    console.log(this.loadFonts);
   }
+  componentWillMount = async () => {
+    await this.loadFonts();
+  };
   render() {
-    const { UUser } = this.state;
+    const { UUser, fontLoaded, avatarWidth, avatarHeight } = this.state;
+    if (!fontLoaded) return null;
     return (
-      <ScrollView style={{ padding: 10 }}>
+      <View style={{ padding: 0 }}>
         {UUser && (
           <View>
-            <View style={{ alignItems: "center" }}>
+            <View
+              style={{
+                alignItems: "center",
+                backgroundColor: "#42A5F5",
+                height: "50%",
+                padding: 10,
+                paddingTop: 24,
+                paddingBottom:0,
+                justifyContent: "center"
+              }}
+            >
               <Avatar
                 rounded
-                medium
+                large
                 source={{
                   uri: `${Api.FILE_ENDPOINT}userProfileImages/${
                     UUser.profileImage.name
@@ -42,35 +68,37 @@ export default class UserProfile extends React.Component {
                 activeOpacity={0.7}
                 containerStyle={{ marginBottom: 8 }}
               />
-              <Text style={{ fontSize: 16 }}>{`${UUser.firstname} ${
-                UUser.lastname
-              }`}</Text>
-              <Text>{`${UUser.points} Pts`}</Text>
+              <Text
+                style={{ fontSize: 18, fontFamily: "semiBold", color: "white" }}
+              >{`${UUser.firstname} ${UUser.lastname}`}</Text>
+              <Text style={{ fontFamily: "regular", color: "white" }}>{`${
+                UUser.points
+              } Pts`}</Text>
             </View>
 
-            <View style={{ marginTop: 16 }}>
-              <Card containerStyle={{marginLeft:0,marginRight:0}}>
+            <View style={{ marginTop: 0,paddingTop:0 }}>
+              <Card containerStyle={{ marginLeft: 0, marginRight: 0,marginTop:0 }}>
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between"
                   }}
                 >
-                  <Text>Mobile</Text>
-                  <Text>{`+91 ${UUser.mobile}`}</Text>
+                  <Text style={{fontFamily:"semiBold"}}>Mobile</Text>
+                  <Text style={{fontFamily:"regular"}}>{`+91 ${UUser.mobile}`}</Text>
                 </View>
                 <View>
-                  <Text>Location</Text>
-                  <Text>{`${UUser.location.addressLine1}`}</Text>
-                  <Text>{`${UUser.location.addressLine2}`}</Text>
-                  <Text>{`${UUser.location.country}`}</Text>
+                  <Text style={{fontFamily:"semiBold"}}>Location</Text>
+                  <Text style={{fontFamily:"regular"}}>{`${UUser.location.addressLine1}`}</Text>
+                  <Text style={{fontFamily:"regular"}}>{`${UUser.location.addressLine2}`}</Text>
+                  <Text style={{fontFamily:"regular"}}>{`${UUser.location.country}`}</Text>
                   <Text />
                 </View>
               </Card>
             </View>
           </View>
         )}
-      </ScrollView>
+      </View>
     );
   }
 
@@ -92,7 +120,7 @@ export default class UserProfile extends React.Component {
           id: "123"
         };
         this.setState(update(this.state, { UUser: { $set: res.data } }));
-        console.log(this.state);
+        // console.log(this.state);
       }
     } catch (err) {
       console.log(err);

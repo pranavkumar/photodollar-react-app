@@ -60,10 +60,10 @@ export default class UserProfile extends React.Component {
           <Text
             style={{ fontSize: 38, color: "#FAFAFA", fontFamily: "semiBold" }}
           >
-            Coveraze
+            KyaScene
           </Text>
           <Text style={{ fontSize: 16, color: "#FAFAFA", fontFamily: "light" }}>
-            Request pics from all over Bengaluru.
+            Sign in to request pics from all over Bengaluru.
           </Text>
         </View>
         <View
