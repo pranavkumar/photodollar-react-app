@@ -128,20 +128,26 @@ export default class Home extends React.Component {
   };
   handleToggleExpect = async (request, index) => {
     console.log(`handling expect...${request.id} at index ${index}`);
-    let res = await Api.toggleExpectator(request.id, {
-      id: this.state.UUser.id
-    });
-    if (res.status == 200) {
-      request.isExpecting = res.data.isExpecting;
-      this.setState(
-        update(this.state, {
-          coverageRequests: {
-            index: { $set: request }
-          },
-          refresh: { $set: !this.state.refresh }
-        })
-      );
-      console.log(this.state.coverageRequests[index].isExpecting);
+
+    try {
+      let { data } = await Api.toggleExpectator(request.id, {
+        id: this.state.UUser.id,
+        points: "50"
+      });
+
+      if (data) {
+        request.isExpecting = data.isExpecting;
+        this.setState(
+          update(this.state, {
+            coverageRequests: {
+              index: { $set: request }
+            },
+            refresh: { $set: !this.state.refresh }
+          })
+        );
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 }

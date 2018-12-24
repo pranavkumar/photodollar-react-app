@@ -31,7 +31,7 @@ export default class RequestActions extends React.Component {
           buttonStyle={{ fontFamily: "regular" }}
         />
         <PrimaryButton
-          title={isExpecting ? "Unexpect" : "Expect"}
+          title={isExpecting ? "Expecting" : "Expect"}
           onPress={this.props.onExpect}
           style={{ fontFamily: "regular" }}
           containerStyle={{ paddingLeft: 0 }}
