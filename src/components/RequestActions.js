@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 // import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,8 +7,14 @@ import { Ionicons } from "@expo/vector-icons";
 export default class RequestActions extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { isExpecting: props.isExpecting };
+  }
+  componentWillReceiveProps(props) {
+    // console.log(props);
+    this.setState({ isExpecting: props.isExpecting });
   }
   render() {
+    let { isExpecting } = this.state;
     return (
       <View
         style={{
@@ -30,7 +31,7 @@ export default class RequestActions extends React.Component {
           buttonStyle={{ fontFamily: "regular" }}
         />
         <PrimaryButton
-          title="Expect"
+          title={isExpecting ? "Unexpect" : "Expect"}
           onPress={this.props.onExpect}
           style={{ fontFamily: "regular" }}
           containerStyle={{ paddingLeft: 0 }}

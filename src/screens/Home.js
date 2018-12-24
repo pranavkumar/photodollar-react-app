@@ -27,7 +27,11 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      coverageRequests: []
+      coverageRequests: [],
+      UUser: {
+        id: "5c11ff3f19d3da6e905ec39c"
+      },
+      refresh: false
     };
     this.loadFonts = Util.loadFonts.bind(this);
   }
@@ -44,15 +48,16 @@ export default class Home extends React.Component {
         </View>
         <ScrollView>
           <FlatList
+            extraData={this.state.refresh}
             keyExtractor={(item, index) => index.toString()}
             data={this.state.coverageRequests}
-            renderItem={({ item }) => this.renderRequest(item)}
+            renderItem={({ item, index }) => this.renderRequest(item, index)}
           />
         </ScrollView>
       </View>
     );
   }
-  renderRequest(item) {
+  renderRequest(item, index) {
     return (
       <Card containerStyle={{ margin: 0, marginBottom: 10, paddingBottom: 0 }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -72,8 +77,9 @@ export default class Home extends React.Component {
         </View>
 
         <RequestActions
+          isExpecting={item.isExpecting}
           onReply={this.handleCreateReply.bind(this, item)}
-          onExpect={this.handleToggleExpect.bind(this, item)}
+          onExpect={this.handleToggleExpect.bind(this, item, index)}
         />
       </Card>
     );
@@ -104,7 +110,7 @@ export default class Home extends React.Component {
     await this.loadFonts();
   };
   componentDidMount() {
-    Api.getRequests()
+    Api.getFeed(this.state.UUser.id)
       .then(({ status, data }) => {
         if (status == 200) {
           this.setState(
@@ -120,8 +126,23 @@ export default class Home extends React.Component {
     console.log(`handling reply...${request.id}`);
     this.props.navigation.navigate("CameraReply", { request: request });
   };
-  handleToggleExpect = async request => {
-    console.log(`handling expect...${request.id}`);
+  handleToggleExpect = async (request, index) => {
+    console.log(`handling expect...${request.id} at index ${index}`);
+    let res = await Api.toggleExpectator(request.id, {
+      id: this.state.UUser.id
+    });
+    if (res.status == 200) {
+      request.isExpecting = res.data.isExpecting;
+      this.setState(
+        update(this.state, {
+          coverageRequests: {
+            index: { $set: request }
+          },
+          refresh: { $set: !this.state.refresh }
+        })
+      );
+      console.log(this.state.coverageRequests[index].isExpecting);
+    }
   };
 }
 

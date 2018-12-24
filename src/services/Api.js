@@ -25,6 +25,10 @@ export function getRequests() {
   });
 }
 
+export function getFeed(uUserId) {
+  return axios.get(`${API_ENDPOINT}/UUsers/${uUserId}/feed`);
+}
+
 export function getUserProfile(id) {
   return axios.get(`${API_ENDPOINT}UUsers/${id}`);
 }
@@ -40,5 +44,12 @@ export function postResponse(response) {
   return axios.post(
     `${API_ENDPOINT}/URequests/${response.requestId}/UResponses/`,
     response
+  );
+}
+
+export function toggleExpectator(requestId, expectator) {
+  return axios.post(
+    `${API_ENDPOINT}/URequests/${requestId}/expectators/`,
+    expectator
   );
 }
