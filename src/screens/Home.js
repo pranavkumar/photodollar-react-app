@@ -31,6 +31,7 @@ export default class Home extends React.Component {
       UUser: {
         id: "5c11ff3f19d3da6e905ec39c"
       },
+      uUserId: "5c11ff3f19d3da6e905ec39c",
       refresh: false
     };
     this.loadFonts = Util.loadFonts.bind(this);
@@ -46,7 +47,7 @@ export default class Home extends React.Component {
             KyaScene
           </Text>
         </View>
-        <ScrollView>
+        <ScrollView style={{ marginBottom: 100 }}>
           <FlatList
             extraData={this.state.refresh}
             keyExtractor={(item, index) => index.toString()}
@@ -76,11 +77,16 @@ export default class Home extends React.Component {
           </View>
         </View>
 
+        {item.UResponses &&
+          item.UResponses.length > 0 &&
+          this.renderResponses(item.UResponses)}
+
         <RequestActions
           uRequestId={item.id}
           uUserId={item.UUserId}
           isExpecting={item.isExpecting}
-          onReply={this.handleCreateReply.bind(this, item)}
+          onForward={this.handleForward.bind(this, item)}
+          onReply={this.handleReply.bind(this, item)}
         />
       </Card>
     );
@@ -88,7 +94,8 @@ export default class Home extends React.Component {
   renderResponses(items) {
     return (
       <FlatList
-        style={{ backgroundColor: "red" }}
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
         keyExtractor={(item, index) => index.toString()}
         data={items}
         renderItem={({ item }) => this.renderResponse(item)}
@@ -97,35 +104,44 @@ export default class Home extends React.Component {
   }
   renderResponse(item) {
     return (
-      <View style={{ marginBottom: 32 }}>
+      <View style={{ marginBottom: 32, marginRight: 32 }}>
         <Image
-          style={{ width: "100%", height: 100 }}
+          style={{ width: 200, height: 200 }}
           source={{
             uri: Api.FILE_ENDPOINT + "responseImages/" + item.image.name
           }}
         />
+        <Text style={{ fontFamily: "regular", marginTop: 8 }}>
+          {item.comment || "No comment available"}
+        </Text>
+        <Text style={{ fontFamily: "regular" }}>{item.createdAt}</Text>
       </View>
     );
   }
   componentWillMount = async () => {
     await this.loadFonts();
   };
-  componentDidMount() {
-    Api.getFeed(this.state.UUser.id)
-      .then(({ status, data }) => {
-        if (status == 200) {
-          this.setState(
-            update(this.state, { coverageRequests: { $set: data } })
-          );
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-  handleCreateReply = async request => {
-    console.log(`handling reply...${request.id}`);
+  componentDidMount = async () => {
+    try {
+      let { status, data } = await Api.getFeed(this.state.UUser.id);
+      if (status == 200) {
+        this.setState(update(this.state, { coverageRequests: { $set: data } }));
+      }
+      if (this.state.uUserId) {
+        console.log("loading user...");
+        let { status, data } = await Api.getUserProfile(this.state.uUserId);
+        
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  handleReply = async request => {
     this.props.navigation.navigate("CameraReply", { request: request });
+  };
+  handleForward = async request => {
+    console.log("Forward");
+    this.props.navigation.navigate("ForwardRequest", { request: request });
   };
 }
 

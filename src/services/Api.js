@@ -26,11 +26,11 @@ export function getRequests() {
 }
 
 export function getFeed(uUserId) {
-  return axios.get(`${API_ENDPOINT}/UUsers/${uUserId}/feed`);
+  return errorHandler(axios.get(`${API_ENDPOINT}/UUsers/${uUserId}/feed`));
 }
 
 export function getUserProfile(id) {
-  return axios.get(`${API_ENDPOINT}UUsers/${id}`);
+  return errorHandler(axios.get(`${API_ENDPOINT}UUsers/${id}`));
 }
 
 export function postFile(container, formData) {

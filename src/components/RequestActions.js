@@ -6,10 +6,11 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Api from "../services/Api";
 
 export default class RequestActions extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = { isExpecting: props.isExpecting };
-    console.log(props);
+    // console.log(props);
   }
   componentWillReceiveProps(props) {
     // console.log(props);
@@ -27,13 +28,21 @@ export default class RequestActions extends React.Component {
       >
         <PrimaryButton
           title="Forward"
+          onPress={this.props.onForward}
           style={{ fontFamily: "regular" }}
           containerStyle={{ paddingLeft: 0 }}
           type="outline"
           buttonStyle={{ fontFamily: "regular" }}
         />
         <PrimaryButton
-          title={isExpecting ? "Expecting" : "Expect"}
+          title="Share"
+          style={{ fontFamily: "regular" }}
+          containerStyle={{ paddingLeft: 0 }}
+          type="outline"
+          buttonStyle={{ fontFamily: "regular" }}
+        />
+        <PrimaryButton
+          title={isExpecting ? "Unexpect" : "Expect"}
           onPress={this.handleToggleExpect.bind(this)}
           style={{ fontFamily: "regular" }}
           containerStyle={{ paddingLeft: 0 }}
