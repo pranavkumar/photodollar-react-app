@@ -3,11 +3,13 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 // import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
 import { Ionicons } from "@expo/vector-icons";
+import * as Api from "../services/Api";
 
 export default class RequestActions extends React.Component {
   constructor(props) {
     super(props);
     this.state = { isExpecting: props.isExpecting };
+    console.log(props);
   }
   componentWillReceiveProps(props) {
     // console.log(props);
@@ -32,7 +34,7 @@ export default class RequestActions extends React.Component {
         />
         <PrimaryButton
           title={isExpecting ? "Expecting" : "Expect"}
-          onPress={this.props.onExpect}
+          onPress={this.handleToggleExpect.bind(this)}
           style={{ fontFamily: "regular" }}
           containerStyle={{ paddingLeft: 0 }}
           type="outline"
@@ -48,4 +50,19 @@ export default class RequestActions extends React.Component {
       </View>
     );
   }
+  handleToggleExpect = async () => {
+    // console.log(`handling expect...${request.id} at index ${index}`);
+    try {
+      let { data } = await Api.toggleExpectator(this.props.uRequestId, {
+        id: this.props.uUserId,
+        points: 50
+      });
+
+      if (data) {
+        this.setState({ isExpecting: data.isExpecting });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }

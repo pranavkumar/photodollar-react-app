@@ -77,9 +77,10 @@ export default class Home extends React.Component {
         </View>
 
         <RequestActions
+          uRequestId={item.id}
+          uUserId={item.UUserId}
           isExpecting={item.isExpecting}
           onReply={this.handleCreateReply.bind(this, item)}
-          onExpect={this.handleToggleExpect.bind(this, item, index)}
         />
       </Card>
     );
@@ -125,30 +126,6 @@ export default class Home extends React.Component {
   handleCreateReply = async request => {
     console.log(`handling reply...${request.id}`);
     this.props.navigation.navigate("CameraReply", { request: request });
-  };
-  handleToggleExpect = async (request, index) => {
-    console.log(`handling expect...${request.id} at index ${index}`);
-
-    try {
-      let { data } = await Api.toggleExpectator(request.id, {
-        id: this.state.UUser.id,
-        points: "50"
-      });
-
-      if (data) {
-        request.isExpecting = data.isExpecting;
-        this.setState(
-          update(this.state, {
-            coverageRequests: {
-              index: { $set: request }
-            },
-            refresh: { $set: !this.state.refresh }
-          })
-        );
-      }
-    } catch (err) {
-      console.log(err);
-    }
   };
 }
 
