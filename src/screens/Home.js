@@ -11,6 +11,8 @@ import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
 import * as Api from "../services/Api";
 import * as Util from "../utils";
+import * as Utils from "../services/Utils";
+
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";
 import { ImagePicker, Permissions, Contacts } from "expo";
@@ -130,7 +132,9 @@ export default class Home extends React.Component {
       if (this.state.uUserId) {
         console.log("loading user...");
         let { status, data } = await Api.getUserProfile(this.state.uUserId);
-        
+        console.log(data);
+        let uUser = data;
+        await Utils.syncContacts(uUser.id, uUser.lastContactSync);
       }
     } catch (err) {
       console.log(err);

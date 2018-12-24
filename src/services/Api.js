@@ -3,6 +3,15 @@ import axios from "axios";
 export const API_ENDPOINT = "http://192.168.0.100:3000/api/";
 export const FILE_ENDPOINT = "http://192.168.0.100:5500/files/";
 
+async function errorHandler(promise) {
+  try {
+    let res = await promise;
+    return { data: res.data, status: res.status };
+  } catch (err) {
+    throw err.response.data.error;
+  }
+}
+
 export function autocomplete(str) {
   return axios.get(API_ENDPOINT + "/maps/autocomplete", {
     params: { input: str }
@@ -47,20 +56,22 @@ export function postResponse(response) {
   );
 }
 
-async function errorHandler(promise) {
-  try {
-    let res = await promise;
-    return { data: res.data, status: res.status };
-  } catch (err) {
-    throw err.response.data.error;
-  }
-}
+
 
 export function toggleExpectator(requestId, expectator) {
   return errorHandler(
     axios.post(
       `${API_ENDPOINT}/URequests/${requestId}/expectators/`,
       expectator
+    )
+  );
+}
+
+export function postContacts(uUserId, contacts) {
+  return errorHandler(
+    axios.post(
+      `${API_ENDPOINT}/UUsers/${uUserId}/contacts/multi`,
+      contacts
     )
   );
 }
