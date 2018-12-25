@@ -61,10 +61,9 @@ export async function syncContacts(uUserId, lastContactSync) {
 
     if (delta >= 24 * 3600) {
       let contacts = await getContacts();
-
       let { status, data } = await Api.postContacts(uUserId, contacts);
       console.log(status);
-      console.log(data);
+      // console.log(data);
     } else {
       console.log("too soon to sync contacts");
     }
