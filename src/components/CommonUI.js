@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import Button from "react-native-button";
 import Modal from "react-native-modal";
 import * as _ from "lodash";
@@ -25,6 +25,44 @@ class MoneyView extends React.Component {
         <Text style={{ color: "#66BB6A", fontSize: 16 }}>
           {"$" + this.props.value}
         </Text>
+      </View>
+    );
+  }
+}
+
+class CheckBox extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isChecked: false
+    };
+  }
+  componentWillReceiveProps(props) {
+    console.log(props);
+    this.setState({ isChecked: props.isChecked });
+  }
+  render() {
+    let { isChecked } = this.state;
+    return (
+      <View
+        style={{
+          width: 16,
+          height: 16,
+          borderWidth: 1,
+          borderColor: "#448AFF",
+          borderRadius: 2,
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
+        <View
+          style={{
+            width: 12,
+            height: 12,
+            backgroundColor: isChecked ? "#448AFF" : "white",
+            borderRadius: 2
+          }}
+        />
       </View>
     );
   }
@@ -99,5 +137,6 @@ module.exports = {
   Separator,
   PrimaryButton,
   MoneyView,
-  BinaryChoiceModal
+  BinaryChoiceModal,
+  CheckBox
 };

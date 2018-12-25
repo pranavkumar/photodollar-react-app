@@ -63,7 +63,6 @@ export async function syncContacts(uUserId, lastContactSync) {
       let contacts = await getContacts();
       let { status, data } = await Api.postContacts(uUserId, contacts);
       console.log(status);
-      // console.log(data);
     } else {
       console.log("too soon to sync contacts");
     }

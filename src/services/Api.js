@@ -56,12 +56,10 @@ export function postResponse(response) {
   );
 }
 
-
-
 export function toggleExpectator(requestId, expectator) {
   return errorHandler(
     axios.post(
-      `${API_ENDPOINT}/URequests/${requestId}/expectators/`,
+      `${API_ENDPOINT}/URequests/${requestId}/expectations/`,
       expectator
     )
   );
@@ -69,9 +67,12 @@ export function toggleExpectator(requestId, expectator) {
 
 export function postContacts(uUserId, contacts) {
   return errorHandler(
-    axios.post(
-      `${API_ENDPOINT}/UUsers/${uUserId}/contacts/multi`,
-      contacts
-    )
+    axios.post(`${API_ENDPOINT}/UUsers/${uUserId}/contacts/multi`, contacts)
+  );
+}
+
+export function getForwardables(uUserId) {
+  return errorHandler(
+    axios.get(`${API_ENDPOINT}/UUsers/${uUserId}/forwardables`)
   );
 }

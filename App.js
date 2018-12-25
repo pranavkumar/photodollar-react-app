@@ -32,7 +32,7 @@ const RootStack = createStackNavigator(
     ForwardRequest:ForwardRequest
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "ForwardRequest"
   }
 );
 
