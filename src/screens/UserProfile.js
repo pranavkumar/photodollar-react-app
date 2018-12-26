@@ -48,7 +48,7 @@ export default class UserProfile extends React.Component {
             <View
               style={{
                 alignItems: "center",
-                backgroundColor: "#42A5F5",
+                backgroundColor: "#448AFF",
                 height: "60%",
                 padding: 10,
                 paddingTop: 24,
