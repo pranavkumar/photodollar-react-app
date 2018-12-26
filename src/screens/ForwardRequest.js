@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity
 } from "react-native";
-import { Card, Avatar } from "react-native-elements";
+import { Card, Avatar, Button } from "react-native-elements";
 import { PrimaryButton, CheckBox } from "../components/CommonUI";
 import * as Api from "../services/Api";
 import * as Util from "../utils";
@@ -37,31 +37,62 @@ export default class ForwardRequest extends React.Component {
     };
   }
   componentDidMount = async () => {
-    // let contacts = await Utils.getContacts();
-    // this.setState(update(this.state, { contacts: { $set: contacts } }));
     try {
       let { status, data } = await Api.getForwardables(this.state.UUserId);
-      console.log(status);
       let contacts = data;
       contacts = _.map(contacts, contact => {
         contact.isSelected = false;
         return contact;
       });
       this.setState(
-        update(this.state, { contacts: { $set: data.slice(0, 5) } })
+        update(this.state, { contacts: { $set: contacts.slice(0, 5) } })
       );
     } catch (err) {
       console.log(err);
     }
   };
   render() {
+    let {countSelected} = this.state;
     return (
       <View>
-        <View style={{ height: 70, backgroundColor: "#448AFF", padding: 16 }}>
-          <Text style={{ fontSize: 18, color: "white" }}>Forward Request</Text>
-          <Text style={{ fontSize: 16 }}>{`${
-            this.state.countSelected
-          } contacts selected.`}</Text>
+        <View
+          style={{
+            height: 70,
+            backgroundColor: "#448AFF",
+            padding: 16,
+            flexDirection: "row"
+          }}
+        >
+          <View style={{ width: "70%" }}>
+            <Text style={{ fontSize: 18, color: "white" }}>
+              Forward Request
+            </Text>
+            <Text style={{ fontSize: 16 }}>{`${
+              this.state.countSelected
+            } contacts selected.`}</Text>
+          </View>
+          <View
+            style={{
+              width: "30%",
+              justifyContent: "center",
+              flexDirection: "column"
+            }}
+          >
+            <Button
+              disabled={countSelected == 0}
+              title="Done"
+              onPress={() => {}}
+              buttonStyle={{
+                height: 30,
+                width: "100%",
+                backgroundColor:"#448AFF"
+              }}
+              textStyle={{
+                color:"white",
+                fontSize:16
+              }}
+            />
+          </View>
         </View>
         <FlatList
           style={{ paddingTop: 16 }}
