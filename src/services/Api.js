@@ -71,8 +71,14 @@ export function postContacts(uUserId, contacts) {
   );
 }
 
-export function getForwardables(uUserId) {
+export function postForwards(URequestId, forward) {
   return errorHandler(
-    axios.get(`${API_ENDPOINT}/UUsers/${uUserId}/forwardables`)
+    axios.post(`${API_ENDPOINT}/URequests/${URequestId}/forwards`, forward)
+  );
+}
+
+export function getForwardables(uUserId,uRequestId) {
+  return errorHandler(
+    axios.get(`${API_ENDPOINT}/UUsers/${uUserId}/forwardables`,{params:{uRequestId:uRequestId}})
   );
 }

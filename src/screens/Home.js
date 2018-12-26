@@ -144,8 +144,7 @@ export default class Home extends React.Component {
     this.props.navigation.navigate("CameraReply", { request: request });
   };
   handleForward = async request => {
-    console.log("Forward");
-    this.props.navigation.navigate("ForwardRequest", { request: request });
+    this.props.navigation.navigate("ForwardRequest", { URequestId: request.id });
   };
 }
 
