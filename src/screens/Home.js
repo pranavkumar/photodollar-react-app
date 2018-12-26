@@ -9,7 +9,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
-import { PrimaryButton } from "../components/CommonUI";
+import { PrimaryButton, Separator } from "../components/CommonUI";
 import * as Api from "../services/Api";
 import * as Util from "../utils";
 import * as Utils from "../services/Utils";
@@ -24,6 +24,7 @@ import {
 } from "@expo/vector-icons";
 import { ImagePicker, Permissions, Contacts } from "expo";
 import RequestActions from "../components/RequestActions";
+import DefaultFooter from "../components/DefaultFooter";
 
 export default class Home extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -51,8 +52,8 @@ export default class Home extends React.Component {
     if (!fontLoaded) return null;
     return (
       <View style={{ padding: 0, flexDirection: "column", flex: 1 }}>
-        <View style={{ height: 60, backgroundColor: "#448AFF", padding: 16 }}>
-          <Text style={{ fontFamily: "light", fontSize: 22, color: "white" }}>
+        <View style={{ height: 60, backgroundColor: "#EEEEEE", padding: 16 }}>
+          <Text style={{ fontFamily: "light", fontSize: 22, color: "#616161" }}>
             KyaScene
           </Text>
         </View>
@@ -63,85 +64,43 @@ export default class Home extends React.Component {
           data={this.state.coverageRequests}
           renderItem={({ item, index }) => this.renderRequest(item, index)}
         />
-        <View
-          style={{
-            alignSelf: "flex-end",
-            height: 50,
-            width: "100%",
-            flexDirection: "row"
-          }}
-        >
-          <View
-            style={{
-              width: "33%",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
-            <TouchableOpacity
-              onPress={this.gotoProfile.bind(this)}
-              style={{
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <SimpleLineIcons name="user" size={28} color="#448AFF" />
-            </TouchableOpacity>
-          </View>
-
-          <View
-            style={{
-              width: "33%",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
-            <TouchableOpacity
-              onPress={this.gotoRequest.bind(this)}
-              style={{
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <SimpleLineIcons name="plus" size={32} color="#448AFF" />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              width: "33%",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
-            <TouchableOpacity
-              onPress={this.gotoSearch.bind(this)}
-              style={{
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <AntDesign name="search1" size={32} color="#448AFF" />
-            </TouchableOpacity>
-          </View>
-        </View>
+        <DefaultFooter navigation={this.props.navigation} />
       </View>
     );
   }
   renderRequest(item, index) {
     return (
-      <Card containerStyle={{ margin: 0, marginBottom: 10, paddingBottom: 0 }}>
+      <View style={{ margin: 0, marginTop: 10, paddingBottom: 0 }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <View
-            style={{ flexDirection: "column", marginLeft: 8, marginBottom: 8 }}
+            style={{
+              flexDirection: "row",
+              marginLeft: 16,
+              marginBottom: 8,
+              alignItems: "center",
+              height: 35
+            }}
           >
+            <View
+              style={{
+                width: "15%",
+                backgroundColor: "#F5F5F5",
+                borderRadius: 12,
+                alignItems: "center",
+                justifyContent: "center",
+                height: 35
+              }}
+            >
+              <Text style={{ fontFamily: "regular", fontSize: 16 }}>12k</Text>
+            </View>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: "normal",
-                fontFamily: "regular"
+                fontFamily: "regular",
+                width: "85%",
+                paddingLeft: 8,
+                paddingRight: 8
               }}
             >
               {item.title}
@@ -160,7 +119,8 @@ export default class Home extends React.Component {
           onForward={this.handleForward.bind(this, item)}
           onReply={this.handleReply.bind(this, item)}
         />
-      </Card>
+        <Separator />
+      </View>
     );
   }
   renderResponses(items) {
@@ -176,17 +136,21 @@ export default class Home extends React.Component {
   }
   renderResponse(item) {
     return (
-      <View style={{ marginBottom: 32, marginRight: 32 }}>
+      <View style={{ marginBottom: 32, marginRight: 16, marginLeft: 16 }}>
         <Image
           style={{ width: 200, height: 200 }}
           source={{
             uri: Api.FILE_ENDPOINT + "responseImages/" + item.image.name
           }}
         />
-        <Text style={{ fontFamily: "regular", marginTop: 8 }}>
-          {item.comment || "No comment available"}
-        </Text>
-        <Text style={{ fontFamily: "regular" }}>{item.createdAt}</Text>
+        <View style={{ marginTop: 8 }}>
+          <Text style={{ fontFamily: "regular", marginTop: 8, fontSize: 16 }}>
+            {item.comment || "No comment available"}
+          </Text>
+          <Text style={{ fontFamily: "regular", color: "#BDBDBD" }}>
+            {item.createdAt}
+          </Text>
+        </View>
       </View>
     );
   }
@@ -218,13 +182,6 @@ export default class Home extends React.Component {
       URequestId: request.id
     });
   };
-  gotoProfile() {
-    this.props.navigation.navigate("UserProfile");
-  }
-  gotoRequest() {
-    this.props.navigation.navigate("CreateRequest");
-  }
-  gotoSearch() {}
 }
 
 const styles = StyleSheet.create({
