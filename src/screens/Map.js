@@ -16,11 +16,12 @@ import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton, Separator } from "../components/CommonUI";
 import update from "immutability-helper";
 import * as _ from "lodash";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, EvilIcons,MaterialIcons } from "@expo/vector-icons";
 import MapView from "react-native-maps";
 import { Marker } from "react-native-maps";
 
 import * as Api from "../services/Api.js";
+import * as Utils from "../services/Utils";
 
 export default class Home extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -49,27 +50,40 @@ export default class Home extends React.Component {
       }
     };
     this._handleQuery = _.debounce(this.handleQuery, 300);
+    this.loadFonts = Utils.loadFonts.bind(this);
   }
+  componentWillMount = async () => {
+    await this.loadFonts();
+  };
   render() {
+    let { fontLoaded } = this.state;
+    if (!fontLoaded) return null;
+
     return (
-      <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
+      <View style={styles.container} keyboardShouldPersistTaps="handled">
         <View
           style={{
-            height: 55,
-            marginTop: 24,
+            height: 60,
             padding: 16,
-            paddingBottom: 20
+            paddingBottom: 20,
+            backgroundColor: "#EEEEEE"
           }}
         >
           <View style={{ flexDirection: "row" }}>
-            <View style={{ width: "88%" }}>
-              <Text style={{ fontSize: 18, color: "#29B6F6" }}>
+            <View style={{ width: "66%" }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "#616161",
+                  fontFamily: "regular"
+                }}
+              >
                 Select Location
               </Text>
             </View>
             <View
               style={{
-                width: "12%",
+                width: "33%",
                 flexDirection: "row"
               }}
             >
@@ -86,7 +100,12 @@ export default class Home extends React.Component {
                 }}
               >
                 <Text
-                  style={{ color: "#29B6F6", fontSize: 14, fontWeight: "bold" }}
+                  style={{
+                    color: "#1E88E5",
+                    fontSize: 14,
+                    fontWeight: "bold",
+                    fontFamily: "regular"
+                  }}
                 >
                   DONE
                 </Text>
@@ -108,7 +127,8 @@ export default class Home extends React.Component {
                 fontSize: 18,
                 paddingLeft: 16,
                 paddingRight: 16,
-                width: "88%"
+                width: "88%",
+                fontFamily: "regular"
               }}
               placeholder={this.state.placeholderQuery}
               onChangeText={this.onChangeText.bind(this)}
@@ -130,7 +150,7 @@ export default class Home extends React.Component {
                   flexDirection: "row"
                 }}
               >
-                <Ionicons name="md-close" size={20} color="#29B6F6" />
+                <Ionicons name="md-close" size={20} color="#1E88E5" />
               </TouchableOpacity>
             </View>
           </View>
@@ -155,19 +175,19 @@ export default class Home extends React.Component {
           </View>
         </View>
         <MapView
-          style={{ width: "100%", height: 360 }}
+          style={{ width: "100%", height: "100%", alignSelf: "flex-end" }}
           region={this.state.region}
         >
-          <Marker
-            draggable
-            coordinate={this.state.region}
-            onDragEnd={() => {}}
-          />
+          <Marker draggable coordinate={this.state.region} onDragEnd={() => {}}>
+            <View style={{ width: 50, height: 50, backgroundColor: "transparent",alignItems:"center",justifyContent:"center" }}>
+              <MaterialIcons name="location-on" size={50} color="#E64A19" />
+            </View>
+          </Marker>
         </MapView>
-      </ScrollView>
+      </View>
     );
   }
-  
+
   onLocationSelected() {
     let { navigation } = this.props;
     let from = navigation.getParam("from", null);
@@ -225,7 +245,7 @@ export default class Home extends React.Component {
           style={{
             flexDirection: "row",
             alignItems: "center",
-            minHeight: 45,
+            minHeight: 50,
             zIndex: 100
           }}
         >
@@ -239,7 +259,8 @@ export default class Home extends React.Component {
                 fontSize: 16,
                 paddingLeft: 8,
                 paddingRight: 8,
-                opacity: 0.8
+                opacity: 0.8,
+                fontFamily: "regular"
               }}
             >
               {this.formatString(prediction.description, 50)}

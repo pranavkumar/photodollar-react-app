@@ -5,7 +5,6 @@ import Home from "./src/screens/Home";
 import Map from "./src/screens/Map";
 import CoverageCategories from "./src/screens/CoverageCategories";
 import CreateRequest from "./src/screens/CreateRequest";
-
 import CameraReply from "./src/screens/CameraReply";
 import CreateResponse from "./src/screens/CreateResponse";
 import UserProfile from "./src/screens/UserProfile";
@@ -33,7 +32,7 @@ const RootStack = createStackNavigator(
     ForwardRequest:ForwardRequest
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "Map"
   }
 );
 
