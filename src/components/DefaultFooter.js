@@ -3,14 +3,9 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList,
-  ScrollView,
-  Image,
   TouchableOpacity
 } from "react-native";
-// import { Card, Avatar } from "react-native-elements";
-// import { PrimaryButton } from "../components/CommonUI";
-import * as Util from "../utils";
+
 import * as Utils from "../services/Utils";
 
 import update from "immutability-helper";
