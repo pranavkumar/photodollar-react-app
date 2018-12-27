@@ -23,7 +23,8 @@ export default class RequestActions extends React.Component {
         style={{
           flexDirection: "row",
           justifyContent: "center",
-          alignItems: "center"
+          alignItems: "center",
+          padding:8
         }}
       >
         <View
