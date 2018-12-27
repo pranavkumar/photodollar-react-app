@@ -42,7 +42,7 @@ export default class UserProfile extends React.Component {
     return (
       <View
         style={{
-          backgroundColor: "#42A5F5",
+          backgroundColor: "white",
           flex: 1,
           minHeight: "100%",
           justifyContent: "center"
@@ -58,11 +58,11 @@ export default class UserProfile extends React.Component {
           }}
         >
           <Text
-            style={{ fontSize: 38, color: "#FAFAFA", fontFamily: "semiBold" }}
+            style={{ fontSize: 38, color: "#E64A19", fontFamily: "semiBold" }}
           >
             KyaScene
           </Text>
-          <Text style={{ fontSize: 16, color: "#FAFAFA", fontFamily: "light" }}>
+          <Text style={{ fontSize: 16, color: "#616161", fontFamily: "light" }}>
             Sign in to request pics from all over Bengaluru.
           </Text>
         </View>
@@ -84,8 +84,10 @@ export default class UserProfile extends React.Component {
                 width: "70%",
                 height: 40,
                 fontSize: 18,
-                fontFamily: "light"
+                fontFamily: "light",
+                color: "#1E88E5"
               }}
+              placeholderTextColor="#1E88E5"
             />
             <View
               style={{
@@ -100,11 +102,18 @@ export default class UserProfile extends React.Component {
                   width: "100%",
                   alignItems: "center",
                   height: 40,
-                  justifyContent: "center",
-
+                  justifyContent: "center"
                 }}
               >
-                <Text style={{fontFamily:"regular",color:"#64B5F6",fontWeight:"bold"}}>NEXT</Text>
+                <Text
+                  style={{
+                    fontFamily: "regular",
+                    color: "#1E88E5",
+                    fontWeight: "bold"
+                  }}
+                >
+                  NEXT
+                </Text>
               </TouchableHighlight>
             </View>
           </View>
