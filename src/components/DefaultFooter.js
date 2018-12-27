@@ -87,7 +87,7 @@ export default class DefaultFooter extends React.Component {
               justifyContent: "center"
             }}
           >
-            <AntDesign name="search1" size={32} color="#616161" />
+            <AntDesign name="folder1" size={32} color="#616161" />
           </TouchableOpacity>
         </View>
       </View>
