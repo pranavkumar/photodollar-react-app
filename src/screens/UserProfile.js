@@ -6,7 +6,9 @@ import {
   FlatList,
   ScrollView,
   Image,
-  StatusBar
+  StatusBar,
+  Button,
+  TouchableOpacity
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
@@ -48,7 +50,7 @@ export default class UserProfile extends React.Component {
             <View
               style={{
                 alignItems: "center",
-                backgroundColor: "#448AFF",
+                backgroundColor: "#EEEEEE",
                 height: "60%",
                 padding: 10,
                 paddingTop: 24,
@@ -56,22 +58,36 @@ export default class UserProfile extends React.Component {
                 justifyContent: "center"
               }}
             >
-              <Avatar
-                rounded
-                large
-                source={{
-                  uri: `${Api.FILE_ENDPOINT}userProfileImages/${
-                    UUser.profileImage.name
-                  }`
+              <View
+                style={{
+                  backgroundColor: "white",
+                  padding: "2%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: 4,
+                  marginBottom: 8
                 }}
-                onPress={() => console.log("Works!")}
-                activeOpacity={0.7}
-                containerStyle={{ marginBottom: 8 }}
-              />
+              >
+                <Image
+                  style={{ width: 70, height: 70 }}
+                  source={{
+                    uri: `${Api.FILE_ENDPOINT}userProfileImages/${
+                      UUser.profileImage.name
+                    }`
+                  }}
+                  onPress={() => console.log("Works!")}
+                  activeOpacity={0.7}
+                />
+              </View>
+
               <Text
-                style={{ fontSize: 18, fontFamily: "semiBold", color: "white" }}
+                style={{
+                  fontSize: 18,
+                  fontFamily: "semiBold",
+                  color: "#616161"
+                }}
               >{`${UUser.firstname} ${UUser.lastname}`}</Text>
-              <Text style={{ fontFamily: "regular", color: "white" }}>{`${
+              <Text style={{ fontFamily: "regular", color: "#616161" }}>{`${
                 UUser.points
               } Pts`}</Text>
             </View>
@@ -80,6 +96,37 @@ export default class UserProfile extends React.Component {
               <Card
                 containerStyle={{ marginLeft: 0, marginRight: 0, marginTop: 0 }}
               >
+                <View
+                  style={{
+                    alignItems: "flex-end",
+                    paddingBottom: 4,
+                    paddingTop: 4
+                  }}
+                >
+                  <View>
+                    <TouchableOpacity
+                      style={{
+                        width: 60,
+                        height: 25,
+                        borderWidth: 1,
+                        borderRadius: 2,
+                        borderColor: "#E64A19",
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
+                    >
+                      <Text
+                        style={{
+                          borderWidth: 0,
+                          color: "#E64A19",
+                          fontFamily: "regular"
+                        }}
+                      >
+                        Edit
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
                 <View
                   style={{
                     flexDirection: "row",
