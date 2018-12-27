@@ -30,26 +30,26 @@ export default class Home extends React.Component {
   };
   constructor(props) {
     super(props);
+    let mockLocation = {
+      addressLine1: "1st a main road, 15th cross",
+      addressLine2: "HSR Layout, Sector 6",
+      city: "Bengaluru",
+      country: "Karnataka",
+      lat: 12.9081,
+      lng: 77.6476,
+      latDelta: 0.0222,
+      lngDelta: 0.0121,
+      isSelected: false,
+      isCurrent: true
+    };
     this.state = {
-      UUserId: "5c11ff3f19d3da6e905ec39c",
+      uUserId: props.navigation.getParam("uUserId", "5c11ff3f19d3da6e905ec39c"),
       title: "",
       placeholderTitle: "Request title e.g. A drowsy cat",
       refresh: false,
       fontLoaded: false,
-      locations: [
-        {
-          addressLine1: "1st a main road, 15th cross",
-          addressLine2: "HSR Layout, Sector 6",
-          city: "Bengaluru",
-          country: "Karnataka",
-          lat: 12.9081,
-          lng: 77.6476,
-          latDelta: 0.0222,
-          lngDelta: 0.0121,
-          isSelected: false,
-          isCurrent: true
-        }
-      ]
+      sourceLocation: props.navigation.getParam("sourceLocation", mockLocation),
+      destLocation: props.navigation.getParam("sourceLocation", mockLocation)
     };
     this.loadFonts = Utils.loadFonts.bind(this);
   }
@@ -61,19 +61,12 @@ export default class Home extends React.Component {
     let navigation = props.navigation;
     let location = navigation.getParam("location", null);
     if (location) {
-      this.state.locations.map((location, i) => {
-        location.isSelected = false;
-        this.setState(
-          update(this.state, { locations: { i: { $set: location } } })
-        );
-      });
-      location.isSelected = true;
-      location.isCurrent = false;
-      this.setState(update(this.state, { locations: { $push: [location] } }));
+      this.setState(update(this.state, { destLocation: { $set: location } }));
     }
   }
   render() {
     if (!this.state.fontLoaded) return null;
+    let { sourceLocation, destLocation } = this.state;
     return (
       <View keyboardShouldPersistTaps="handled">
         <View
@@ -85,7 +78,7 @@ export default class Home extends React.Component {
           }}
         >
           <View style={{ flexDirection: "row" }}>
-            <View style={{ width: "88%" }}>
+            <View style={{ width: "66%" }}>
               <Text
                 style={{
                   fontSize: 18,
@@ -95,28 +88,6 @@ export default class Home extends React.Component {
               >
                 Create request
               </Text>
-            </View>
-            <View
-              style={{
-                width: "12%",
-                flexDirection: "row"
-              }}
-            >
-              <TouchableOpacity
-                disabled={false}
-                onPress={this.postRequest.bind(this)}
-                style={{
-                  width: "100%",
-                  justifyContent: "flex-end",
-                  flexDirection: "row"
-                }}
-              >
-                <Text
-                  style={{ color: "#29B6F6", fontSize: 14, fontWeight: "bold" }}
-                >
-                  DONE
-                </Text>
-              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -138,47 +109,14 @@ export default class Home extends React.Component {
 
           <View style={{ marginTop: 8 }}>
             <View style={{ flexDirection: "row" }}>
-
               <View style={{ width: "100%" }}>
-                <Text style={{ fontFamily: "regular",fontSize:16 }}>To location</Text>
+                <Text style={{ fontFamily: "regular", fontSize: 16 }}>
+                  To location
+                </Text>
               </View>
             </View>
-
             <View style={{ marginTop: 8 }}>
-              <FlatList
-                extraData={this.state.refresh}
-                keyboardShouldPersistTaps="handled"
-                keyExtractor={(item, index) => index.toString()}
-                data={this.state.locations}
-                renderItem={({ item, index }) =>
-                  this.renderLocation(item, index)
-                }
-              />
-              <View>
-                <TouchableHighlight
-                  onPress={this.gotoMap.bind(this)}
-                  underlayColor="#F5F5F5"
-                  style={{ height: 45, justifyContent: "center" }}
-                >
-                  <View
-                    style={{ justifyContent: "center", flexDirection: "row" }}
-                  >
-                    <Ionicons name="ios-pin" size={20} color="#BDBDBD" />
-                    <Text
-                      style={{
-                        fontWeight: "bold",
-                        color: "#42A5F5",
-                        marginLeft: 8,
-                        marginRight: 8,
-                        fontSize: 16
-                      }}
-                    >
-                      SELECT FROM MAP
-                    </Text>
-                  </View>
-                </TouchableHighlight>
-              </View>
-              <Separator />
+              {this.renderLocation(destLocation)}
             </View>
           </View>
         </View>
@@ -188,80 +126,86 @@ export default class Home extends React.Component {
   renderLocation(item, index) {
     return (
       <View style={styles.locationLabel}>
-        <TouchableOpacity
-          onPress={this.toggleSelectLocation.bind(this, item, index)}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                width: "92%"
-              }}
-            >
-              <View style={{ width: "65%" }}>
-                <Text style={{ fontFamily: "regular" }}>
-                  {item.addressLine1}
-                </Text>
-                <Text style={{ fontFamily: "regular" }}>
-                  {item.addressLine2}
-                </Text>
-                <Text style={{ fontFamily: "regular" }}>{item.city}</Text>
-              </View>
-              <View style={{ paddingRight: 8, width: "35%" }}>
-                {item.isCurrent && (
-                  <Text style={{ fontFamily: "regular" }}>Current</Text>
-                )}
-              </View>
-            </View>
-            <View style={{ width: "8%", paddingTop: "1%" }}>
-              <View
-                style={
-                  item.isSelected
-                    ? styles.locationRadioSelected
-                    : styles.locationRadio
-                }
-              />
+        <View style={{ flexDirection: "row" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "70%"
+            }}
+          >
+            <View style={{ width: "100%" }}>
+              <Text style={{ fontFamily: "regular", color: "#757575" }}>
+                {item.addressLine1}
+              </Text>
+              <Text style={{ fontFamily: "regular", color: "#757575" }}>
+                {item.addressLine2}
+              </Text>
+              <Text style={{ fontFamily: "regular", color: "#757575" }}>
+                {item.city}
+              </Text>
             </View>
           </View>
-          <Separator />
-        </TouchableOpacity>
+          <View style={{ width: "30%", paddingTop: "1%" }}>
+            <TouchableOpacity
+              onPress={this.gotoMap.bind(this)}
+              style={{
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <Text style={{ fontFamily: "regular", color: "#1E88E5" }}>
+                Change
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Separator />
+        <View style={{ alignItems: "center", marginTop: 16 }}>
+          <TouchableOpacity
+            onPress={this.postRequest.bind(this)}
+            style={{
+              minWidth: 70,
+              height: 35,
+              borderWidth: 1,
+              borderRadius: 4,
+              borderColor: "#E64A19",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 8
+            }}
+          >
+            <Text
+              style={{
+                borderWidth: 0,
+                color: "#E64A19",
+                fontFamily: "regular"
+              }}
+            >
+              POST REQUEST
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 
-  toggleSelectLocation(item, index) {
-    this.state.locations.map((location, i) => {
-      location.isSelected = false;
-      this.setState(
-        update(this.state, { locations: { i: { $set: location } } })
-      );
-    });
-    item.isSelected = !item.isSelected;
-    this.setState(update(this.state, { locations: { index: { $set: item } } }));
-  }
   gotoMap() {
-    this.props.navigation.navigate("Map", { from: "CreateRequest" });
+    if (this.props.navigation) {
+      this.props.navigation.navigate("Map", { from: "CreateRequest" });
+    }
   }
   postRequest() {
-    console.log("postRequest");
+    let { uUserId, title, sourceLocation, destLocation } = this.state;
     let request = {};
-    request.UUserId = this.state.UUserId;
-    request.title = this.state.title;
-    request.categoryIds = [];
-    this.state.categories.forEach(category => {
-      if (category.isSelected) {
-        request.categoryIds.push(category.id);
-      }
-    });
-    this.state.locations.forEach(location => {
-      if (location.isSelected) {
-        request._to = location;
-      }
-      if (location.isCurrent) {
-        request._from = location;
-      }
-    });
+    request = {
+      UUserId: uUserId,
+      title,
+      _to: destLocation,
+      _from: sourceLocation
+    };
+
     console.log(request);
     Api.postRequest(request)
       .then(response => {

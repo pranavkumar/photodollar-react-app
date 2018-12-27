@@ -22,19 +22,29 @@ export default class Home extends React.Component {
     this.state = {
       requests: [],
       UUser: null,
-      uUserId: "5c11ff3f19d3da6e905ec39c"
+      uUserId: "5c11ff3f19d3da6e905ec39c",
+      location: {
+        addressLine1: "1st a main road, 15th cross",
+        addressLine2: "HSR Layout, Sector 6",
+        city: "Bengaluru",
+        country: "Karnataka",
+        lat: 12.9081,
+        lng: 77.6476,
+        latDelta: 0.0222,
+        lngDelta: 0.0121
+      }
     };
     this.loadFonts = Utils.loadFonts.bind(this);
   }
 
   render() {
-    let { fontLoaded, requests, uUserId } = this.state;
+    let { fontLoaded, requests, uUserId, location } = this.state;
     if (!fontLoaded) return null;
     return (
       <View style={{ padding: 0, flexDirection: "column", flex: 1 }}>
         <DefaultHeader />
         <Feed uUserId={uUserId} />
-        <DefaultFooter navigation={this.props.navigation} />
+        <DefaultFooter navigation={this.props.navigation} uUserId={uUserId} location={location} />
       </View>
     );
   }
