@@ -30,9 +30,7 @@ export default class UserProfile extends React.Component {
     super(props);
     this.state = {
       UUserId: props.navigation.getParam("UUserId", "5c11ff3f19d3da6e905ec39c"),
-      UUser: null,
-      avatarHeight: 55,
-      avatarWidth: 55
+      UUser: null
     };
     this.loadFonts = Util.loadFonts.bind(this);
     console.log(this.loadFonts);
@@ -41,7 +39,7 @@ export default class UserProfile extends React.Component {
     await this.loadFonts();
   };
   render() {
-    const { UUser, fontLoaded, avatarWidth, avatarHeight } = this.state;
+    const { UUser, fontLoaded} = this.state;
     if (!fontLoaded) return null;
     return (
       <View style={{ padding: 0 }}>
@@ -78,6 +76,7 @@ export default class UserProfile extends React.Component {
                   onPress={() => console.log("Works!")}
                   activeOpacity={0.7}
                 />
+
               </View>
 
               <Text
@@ -109,7 +108,7 @@ export default class UserProfile extends React.Component {
                         width: 60,
                         height: 25,
                         borderWidth: 1,
-                        borderRadius: 2,
+                        borderRadius: 4,
                         borderColor: "#E64A19",
                         alignItems: "center",
                         justifyContent: "center"

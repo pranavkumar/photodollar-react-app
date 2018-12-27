@@ -94,7 +94,8 @@ export default class Feed extends React.Component {
             </Text>
           </View>
         </View>
-
+        {(!item.UResponses || item.UResponses.length == 0) &&
+          this.renderObjectives(item)}
         {item.UResponses &&
           item.UResponses.length > 0 &&
           this.renderResponses(item.UResponses)}
@@ -107,6 +108,42 @@ export default class Feed extends React.Component {
           onReply={this.handleReply.bind(this, item)}
         />
         <Separator />
+      </View>
+    );
+  }
+  renderObjectives(request) {
+    let { _from, _to } = request;
+    return (
+      <View style={{ padding: 16 }}>
+        <View
+          style={{ backgroundColor: "#EEEEEE", borderRadius: 4, padding: 8 }}
+        >
+          <Text style={{ fontFamily: "regular" }}>
+            {`Do you know someone around ${_to.addressLine1}?`}
+          </Text>
+          <Text
+            style={{ color: "#1E88E5", fontFamily: "semiBold", fontSize: 14 }}
+          >
+            Forward Post +50 pts.
+          </Text>
+        </View>
+        <View
+          style={{
+            backgroundColor: "#EEEEEE",
+            borderRadius: 4,
+            padding: 8,
+            marginTop: 8
+          }}
+        >
+          <Text style={{ fontFamily: "regular" }}>
+            {`Be the first one to reply.`}
+          </Text>
+          <Text
+            style={{ color: "#1E88E5", fontFamily: "semiBold", fontSize: 14 }}
+          >
+            Reply Post +50 pts.
+          </Text>
+        </View>
       </View>
     );
   }
