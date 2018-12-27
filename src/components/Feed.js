@@ -18,16 +18,32 @@ import { PrimaryButton, Separator } from "../components/CommonUI";
 export default class Feed extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { requests: [], refresh: false };
+    this.state = {
+      requests: [],
+      refresh: false,
+      uUserId: props.uUserId || null
+    };
   }
   componentWillReceiveProps(props) {
     this.setState(
       update(this.state, {
-        requests: { $set: props.requests },
+        uUserId: { $set: props.uUserId },
         refresh: { $set: !this.state.refresh }
       })
     );
   }
+  componentDidMount = async () => {
+    let { uUserId } = this.state;
+    if (!uUserId) return;
+    try {
+      let { status, data } = await Api.getFeed(uUserId);
+      if (status == 200) {
+        this.setState(update(this.state, { requests: { $set: data } }));
+      }
+    } catch (e) {
+    } finally {
+    }
+  };
   render() {
     return (
       <FlatList
