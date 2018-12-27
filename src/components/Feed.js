@@ -182,6 +182,7 @@ export default class Feed extends React.Component {
     this.props.navigation.navigate("CameraReply", { request: request });
   };
   handleForward = async request => {
+    console.log("Forwarding...");
     this.props.navigation.navigate("ForwardRequest", {
       URequestId: request.id
     });

@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 // import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign, EvilIcons } from "@expo/vector-icons";
 import * as Api from "../services/Api";
 
 export default class RequestActions extends React.Component {
@@ -14,6 +14,7 @@ export default class RequestActions extends React.Component {
   componentWillReceiveProps(props) {
     // console.log(props);
     this.setState({ isExpecting: props.isExpecting });
+    console.log(this.state);
   }
   render() {
     let { isExpecting } = this.state;
@@ -34,17 +35,18 @@ export default class RequestActions extends React.Component {
           }}
         >
           <TouchableOpacity
+            onPress={this.props.onForward}
             style={{
               width: "100%",
               alignItems: "center",
               justifyContent: "center"
             }}
           >
-            <Text
-              style={{ fontFamily: "regular", fontSize: 16, color: "#424242" }}
-            >
-              Forward
-            </Text>
+            <Ionicons
+              name="ios-arrow-round-forward"
+              size={32}
+              color="#42A5F5"
+            />
           </TouchableOpacity>
         </View>
         <View
@@ -62,11 +64,7 @@ export default class RequestActions extends React.Component {
               justifyContent: "center"
             }}
           >
-            <Text
-              style={{ fontFamily: "regular", fontSize: 16, color: "#424242" }}
-            >
-              Share
-            </Text>
+            <EvilIcons name="share-google" size={32} color="#42A5F5" />
           </TouchableOpacity>
         </View>
         <View
@@ -84,11 +82,7 @@ export default class RequestActions extends React.Component {
               justifyContent: "center"
             }}
           >
-            <Text
-              style={{ fontFamily: "regular", fontSize: 16, color: "#424242" }}
-            >
-              Expect
-            </Text>
+            <EvilIcons name="arrow-up" size={34} color="#42A5F5" />
           </TouchableOpacity>
         </View>
         <View
@@ -101,6 +95,7 @@ export default class RequestActions extends React.Component {
           }}
         >
           <TouchableOpacity
+            onPress={this.props.onReply}
             style={{
               width: "100%",
               height: 35,
@@ -123,21 +118,6 @@ export default class RequestActions extends React.Component {
     );
   }
 
-  // <PrimaryButton
-  //   title="Forward"
-  //   onPress={this.props.onForward}
-  //   style={{ fontFamily: "regular" }}
-  //   containerStyle={{ paddingLeft: 0 }}
-  //   type="outline"
-  //   buttonStyle={{ fontFamily: "regular" }}
-  // />
-  // <PrimaryButton
-  //   title="Share"
-  //   style={{ fontFamily: "regular" }}
-  //   containerStyle={{ paddingLeft: 0 }}
-  //   type="outline"
-  //   buttonStyle={{ fontFamily: "regular" }}
-  // />
   // <PrimaryButton
   //   title={isExpecting ? "Unexpect" : "Expect"}
   //   onPress={this.handleToggleExpect.bind(this)}
