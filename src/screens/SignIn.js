@@ -5,7 +5,8 @@ import {
   View,
   Image,
   TextInput,
-  TouchableHighlight
+  TouchableHighlight,
+  Animated
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
@@ -13,6 +14,7 @@ import * as Api from "../services/Api";
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";
 import { Font } from "expo";
+import * as Animatable from "react-native-animatable";
 
 export default class UserProfile extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -39,6 +41,7 @@ export default class UserProfile extends React.Component {
   };
   render() {
     if (!this.state.fontLoaded) return null;
+    
     return (
       <View
         style={{
@@ -73,22 +76,25 @@ export default class UserProfile extends React.Component {
             backgroundColor: "#FAFAFA",
             margin: 16,
             borderRadius: 4,
-            padding: 16
+            padding: 16,
+            height: 70
           }}
         >
           <View style={{ flexDirection: "row" }}>
+            <View style={{ width: "70%" }}>
             <TextInput
               keyboardType="numeric"
               placeholder="Mobile no"
               style={{
-                width: "70%",
+                width: "100%",
                 height: 40,
-                fontSize: 18,
+                fontSize: 16,
                 fontFamily: "light",
                 color: "#1E88E5"
               }}
               placeholderTextColor="#1E88E5"
             />
+            </View>
             <View
               style={{
                 width: "30%",
@@ -123,5 +129,50 @@ export default class UserProfile extends React.Component {
   }
   onNext() {
     console.log("on next");
+  }
+}
+
+class InputMobile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      opacityValue: new Animated.Value(1),
+      translateYValue: new Animated.Value(0)
+    };
+  }
+  componentDidMount() {
+    Animated.parallel([
+      Animated.timing(this.state.opacityValue, {
+        toValue: 0,
+        duration: 700
+      }),
+      Animated.timing(this.state.translateYValue, {
+        toValue: -30,
+        duration: 700
+      })
+    ]).start();
+  }
+  render() {
+    return (
+      <Animated.View
+        style={{
+          translateY: this.state.translateYValue,
+          opacity: this.state.opacityValue
+        }}
+      >
+        <TextInput
+          keyboardType="numeric"
+          placeholder="Mobile no"
+          style={{
+            width: "100%",
+            height: 40,
+            fontSize: 16,
+            fontFamily: "light",
+            color: "#1E88E5"
+          }}
+          placeholderTextColor="#1E88E5"
+        />
+      </Animated.View>
+    );
   }
 }
