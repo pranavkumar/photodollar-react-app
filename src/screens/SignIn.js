@@ -19,7 +19,6 @@ import * as Animatable from "react-native-animatable";
 import * as Utils from "../services/Utils";
 import { Facebook, Google } from "expo";
 
-
 export default class SignIn extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -56,7 +55,7 @@ export default class SignIn extends React.Component {
           style={{
             justifyContent: "center",
             flexDirection: "column",
-            marginBottom: 8,
+            marginBottom: 32,
             marginLeft: 16,
             marginRight: 16
           }}
@@ -123,6 +122,62 @@ export default class SignIn extends React.Component {
             <TouchableOpacity onPress={this.loginTwitter.bind(this)}>
               <AntDesign name="twitter" size={32} color="#1E88E5" />
             </TouchableOpacity>
+          </View>
+        </View>
+        <View style={{ marginTop: 16 }}>
+          <View
+            style={{
+              alignItems: "center",
+              padding: 16,
+              justifyContent: "center"
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "regular",
+                color: "#757575",
+                textAlign: "center"
+              }}
+            >
+              By signining in, you indicate that you have read PhotoDollar's
+              privacy policy and terms & conditions and agree with the same.
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-around",
+              marginTop: 16
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "regular",
+                marginRight: 8,
+                color: "#64B5F6"
+              }}
+            >
+              Privacy
+            </Text>
+            <Text style={{ fontFamily: "regular", color: "#64B5F6" }}>
+              Terms & Conditions
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 16
+            }}
+          >
+            <Text style={{ fontFamily: "regular", marginRight: 8 }}>
+              {"\u00A9"}
+            </Text>
+            <Text style={{ fontFamily: "regular", color: "#757575" }}>
+              2018 Economium pvt ltd
+            </Text>
           </View>
         </View>
       </View>
