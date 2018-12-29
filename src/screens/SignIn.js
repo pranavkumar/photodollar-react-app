@@ -13,10 +13,11 @@ import { PrimaryButton } from "../components/CommonUI";
 import * as Api from "../services/Api";
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";
-import { Font } from "expo";
-import * as Animatable from "react-native-animatable";
 
-export default class UserProfile extends React.Component {
+import * as Animatable from "react-native-animatable";
+import * as Utils from "../services/Utils";
+
+export default class SignIn extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       header: ({ state }) => {
@@ -29,19 +30,18 @@ export default class UserProfile extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.state = { fontLoaded: false };
+    this.state = { fontLoaded: false, mobile: null };
+    this.loadFonts = Utils.loadFonts.bind(this);
   }
+  componentWillMount = async () => {
+    await this.loadFonts();
+  };
   componentDidMount = async () => {
-    await Font.loadAsync({
-      semiBold: require("../../assets/fonts/OpenSans-SemiBold.ttf"),
-      light: require("../../assets/fonts/OpenSans-Light.ttf"),
-      regular: require("../../assets/fonts/OpenSans-Regular.ttf")
-    });
-    this.setState({ fontLoaded: true });
+
   };
   render() {
     if (!this.state.fontLoaded) return null;
-    
+    let { mobile } = this.state;
     return (
       <View
         style={{
@@ -66,8 +66,11 @@ export default class UserProfile extends React.Component {
             KyaScene
           </Text>
           <Text style={{ fontSize: 16, color: "#616161", fontFamily: "light" }}>
-            Sign in to request pics from all over Bengaluru.
+            Request pics from all over Bengaluru.
           </Text>
+          <View style={{ marginTop: 16 }}>
+            <Text style={{ fontSize: 20, fontFamily: "light" }}>SignIn</Text>
+          </View>
         </View>
         <View
           style={{
@@ -82,18 +85,22 @@ export default class UserProfile extends React.Component {
         >
           <View style={{ flexDirection: "row" }}>
             <View style={{ width: "70%" }}>
-            <TextInput
-              keyboardType="numeric"
-              placeholder="Mobile no"
-              style={{
-                width: "100%",
-                height: 40,
-                fontSize: 16,
-                fontFamily: "light",
-                color: "#1E88E5"
-              }}
-              placeholderTextColor="#1E88E5"
-            />
+              <TextInput
+                value={!mobile ? "" : String(mobile)}
+                onChangeText={text => {
+                  this.setState({ mobile: text });
+                }}
+                keyboardType="numeric"
+                placeholder="Mobile no"
+                style={{
+                  width: "100%",
+                  height: 40,
+                  fontSize: 16,
+                  fontFamily: "light",
+                  color: "#1E88E5"
+                }}
+                placeholderTextColor="#1E88E5"
+              />
             </View>
             <View
               style={{
@@ -128,51 +135,6 @@ export default class UserProfile extends React.Component {
     );
   }
   onNext() {
-    console.log("on next");
-  }
-}
-
-class InputMobile extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      opacityValue: new Animated.Value(1),
-      translateYValue: new Animated.Value(0)
-    };
-  }
-  componentDidMount() {
-    Animated.parallel([
-      Animated.timing(this.state.opacityValue, {
-        toValue: 0,
-        duration: 700
-      }),
-      Animated.timing(this.state.translateYValue, {
-        toValue: -30,
-        duration: 700
-      })
-    ]).start();
-  }
-  render() {
-    return (
-      <Animated.View
-        style={{
-          translateY: this.state.translateYValue,
-          opacity: this.state.opacityValue
-        }}
-      >
-        <TextInput
-          keyboardType="numeric"
-          placeholder="Mobile no"
-          style={{
-            width: "100%",
-            height: 40,
-            fontSize: 16,
-            fontFamily: "light",
-            color: "#1E88E5"
-          }}
-          placeholderTextColor="#1E88E5"
-        />
-      </Animated.View>
-    );
+    console.log(this.state.mobile);
   }
 }

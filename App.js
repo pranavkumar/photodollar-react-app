@@ -10,6 +10,7 @@ import CreateResponse from "./src/screens/CreateResponse";
 import UserProfile from "./src/screens/UserProfile";
 import SignIn from "./src/screens/SignIn";
 import ForwardRequest from "./src/screens/ForwardRequest";
+import VerifyOTP from "./src/screens/VerifyOTP";
 
 
 export default class App extends React.Component {
@@ -29,10 +30,11 @@ const RootStack = createStackNavigator(
     CreateResponse:CreateResponse,
     UserProfile:UserProfile,
     SignIn:SignIn,
-    ForwardRequest:ForwardRequest
+    ForwardRequest:ForwardRequest,
+    VerifyOTP:VerifyOTP
   },
   {
-    initialRouteName: "SignIn"
+    initialRouteName: "VerifyOTP"
   }
 );
 

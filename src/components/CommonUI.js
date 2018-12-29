@@ -133,10 +133,57 @@ class PrimaryButton extends React.Component {
   }
 }
 
+class InputMobile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      opacityValue: new Animated.Value(1),
+      translateYValue: new Animated.Value(0)
+    };
+  }
+  componentDidMount() {
+    Animated.parallel([
+      Animated.timing(this.state.opacityValue, {
+        toValue: 0,
+        duration: 700
+      }),
+      Animated.timing(this.state.translateYValue, {
+        toValue: -30,
+        duration: 700
+      })
+    ]).start();
+  }
+  render() {
+    return (
+      <Animated.View
+        style={{
+          translateY: this.state.translateYValue,
+          opacity: this.state.opacityValue
+        }}
+      >
+        <TextInput
+          keyboardType="numeric"
+          placeholder="Mobile no"
+          style={{
+            width: "100%",
+            height: 40,
+            fontSize: 16,
+            fontFamily: "light",
+            color: "#1E88E5"
+          }}
+          placeholderTextColor="#1E88E5"
+        />
+      </Animated.View>
+    );
+  }
+}
+
+
 module.exports = {
   Separator,
   PrimaryButton,
   MoneyView,
   BinaryChoiceModal,
-  CheckBox
+  CheckBox,
+  InputMobile
 };
