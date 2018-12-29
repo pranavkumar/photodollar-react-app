@@ -6,17 +6,19 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
-  Animated
+  Animated,
+  AsyncStorage
 } from "react-native";
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
 import * as Api from "../services/Api";
 import update from "immutability-helper";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 
 import * as Animatable from "react-native-animatable";
 import * as Utils from "../services/Utils";
 import { Facebook, Google } from "expo";
+
 
 export default class SignIn extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -62,7 +64,7 @@ export default class SignIn extends React.Component {
           <Text
             style={{ fontSize: 38, color: "#E64A19", fontFamily: "semiBold" }}
           >
-            KyaScene
+            PhotoDollar
           </Text>
           <Text style={{ fontSize: 16, color: "#616161", fontFamily: "light" }}>
             Request pics from all over Bengaluru.
@@ -73,36 +75,54 @@ export default class SignIn extends React.Component {
         </View>
         <View
           style={{
-            justifyContent: "center",
+            justifyContent: "space-around",
             flexDirection: "row",
             backgroundColor: "#FAFAFA",
-            margin: 16,
             borderRadius: 4,
             padding: 16
           }}
         >
-          <View>
-            <View style={{ marginBottom: 16 }}>
-              <TouchableOpacity onPress={this.loginFacebook.bind(this)}>
-                <Text style={{ fontFamily: "regular" }}>
-                  SignIn with Facebook
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{ marginBottom: 16 }}>
-              <TouchableOpacity onPress={this.loginGoogle.bind(this)}>
-                <Text style={{ fontFamily: "regular" }}>
-                  SignIn with Google
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{ marginBottom: 16 }}>
-              <TouchableOpacity onPress={this.loginTwitter.bind(this)}>
-                <Text style={{ fontFamily: "regular" }}>
-                  SignIn with Twitter
-                </Text>
-              </TouchableOpacity>
-            </View>
+          <View
+            style={{
+              width: 60,
+              height: 60,
+              alignItems: "center",
+              justifyContent: "center",
+
+              marginRight: 16
+            }}
+          >
+            <TouchableOpacity onPress={this.loginFacebook.bind(this)}>
+              <AntDesign name="facebook-square" size={32} color="#1E88E5" />
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              width: 60,
+              height: 60,
+              alignItems: "center",
+              justifyContent: "center",
+
+              marginRight: 16
+            }}
+          >
+            <TouchableOpacity onPress={this.loginGoogle.bind(this)}>
+              <AntDesign name="google" size={32} color="#1E88E5" />
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              width: 60,
+              height: 60,
+              alignItems: "center",
+              justifyContent: "center",
+
+              marginRight: 16
+            }}
+          >
+            <TouchableOpacity onPress={this.loginTwitter.bind(this)}>
+              <AntDesign name="twitter" size={32} color="#1E88E5" />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
