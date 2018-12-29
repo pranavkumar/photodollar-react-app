@@ -9,6 +9,7 @@ import {
   Animated,
   AsyncStorage
 } from "react-native";
+
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
 import * as Api from "../services/Api";
@@ -34,10 +35,19 @@ export default class SignIn extends React.Component {
     super(props);
     this.state = { fontLoaded: false, mobile: null };
     this.loadFonts = Utils.loadFonts.bind(this);
+    this.navigation = props.navigation;
   }
   componentWillMount = async () => {
     await this.loadFonts();
   };
+  componentWillReceiveProps(props) {
+    let { navigation } = props;
+    if (navigation) {
+      console.log("we have navigation");
+    } else {
+      console.log("no navigation");
+    }
+  }
   componentDidMount = async () => {};
   render() {
     if (!this.state.fontLoaded) return null;
@@ -63,7 +73,7 @@ export default class SignIn extends React.Component {
           <Text
             style={{ fontSize: 38, color: "#E64A19", fontFamily: "semiBold" }}
           >
-            PhotoDollar
+            KyaScene
           </Text>
           <Text style={{ fontSize: 16, color: "#616161", fontFamily: "light" }}>
             Request pics from all over Bengaluru.
@@ -176,7 +186,7 @@ export default class SignIn extends React.Component {
               {"\u00A9"}
             </Text>
             <Text style={{ fontFamily: "regular", color: "#757575" }}>
-              2018 Economium pvt ltd
+              2018 Liben pvt ltd
             </Text>
           </View>
         </View>
@@ -198,16 +208,18 @@ export default class SignIn extends React.Component {
         }
       );
       if (type === "success") {
-        console.log("login success fetching data..");
-        // Get the user's name using Facebook's Graph API
         const response = await fetch(
           `https://graph.facebook.com/me?access_token=${token}&fields=email,name`
         );
         let responseJson = await response.json();
-        console.log(responseJson);
+
         let { status, data } = await Api.signinUser("facebook", responseJson);
         console.log(status);
-        console.log(data);
+
+        if (status == 200) {
+          await this.setUser(data.uUser, data.token);
+          this.navigation.navigate("Home", { uUser: data.uUser });
+        }
       } else {
         // type === 'cancel'
         console.log("user cancelled login");
@@ -217,7 +229,6 @@ export default class SignIn extends React.Component {
     }
   };
   loginGoogle = async () => {
-    console.log("logging in with google");
     const androidClientId =
       "265922774781-qtfflis5pdk5lji03jqr64r563pp6fad.apps.googleusercontent.com";
     const iosClientId =
@@ -228,11 +239,15 @@ export default class SignIn extends React.Component {
         iosClientId: iosClientId,
         scopes: ["profile", "email"]
       });
-      console.log(result);
+
       if (result.type === "success") {
         let { status, data } = await Api.signinUser("google", result.user);
         console.log(status);
-        console.log(data);
+
+        if (status == 200) {
+          await this.setUser(data.uUser, data.token);
+          this.navigation.navigate("Home", { uUser: data.uUser });
+        }
       } else {
       }
     } catch (e) {
@@ -242,5 +257,14 @@ export default class SignIn extends React.Component {
 
   loginTwitter = async () => {
     console.log("logging in with twitter");
+  };
+  setUser = async (uUser, token) => {
+    try {
+      await AsyncStorage.setItem("uUser", JSON.stringify(uUser));
+      await AsyncStorage.setItem("token", token);
+      console.log("stored user in db");
+    } catch (err) {
+      throw err;
+    }
   };
 }
