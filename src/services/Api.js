@@ -38,6 +38,10 @@ export function getFeed(uUserId) {
   return errorHandler(axios.get(`${API_ENDPOINT}/UUsers/${uUserId}/feed`));
 }
 
+export function signinUser(type,user) {
+  return errorHandler(axios.get(`${API_ENDPOINT}/UUsers/signin`,{params:{type:type,user:JSON.stringify(user)}}));
+}
+
 export function getUserProfile(id) {
   return errorHandler(axios.get(`${API_ENDPOINT}UUsers/${id}`));
 }

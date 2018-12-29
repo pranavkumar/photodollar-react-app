@@ -34,7 +34,7 @@ const RootStack = createStackNavigator(
     VerifyOTP:VerifyOTP
   },
   {
-    initialRouteName: "VerifyOTP"
+    initialRouteName: "SignIn"
   }
 );
 

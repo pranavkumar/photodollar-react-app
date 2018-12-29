@@ -16,6 +16,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import * as Animatable from "react-native-animatable";
 import * as Utils from "../services/Utils";
+import { Facebook } from "expo";
 
 export default class SignIn extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -36,9 +37,7 @@ export default class SignIn extends React.Component {
   componentWillMount = async () => {
     await this.loadFonts();
   };
-  componentDidMount = async () => {
-
-  };
+  componentDidMount = async () => {};
   render() {
     if (!this.state.fontLoaded) return null;
     let { mobile } = this.state;
@@ -79,53 +78,28 @@ export default class SignIn extends React.Component {
             backgroundColor: "#FAFAFA",
             margin: 16,
             borderRadius: 4,
-            padding: 16,
-            height: 70
+            padding: 16
           }}
         >
-          <View style={{ flexDirection: "row" }}>
-            <View style={{ width: "70%" }}>
-              <TextInput
-                value={!mobile ? "" : String(mobile)}
-                onChangeText={text => {
-                  this.setState({ mobile: text });
-                }}
-                keyboardType="numeric"
-                placeholder="Mobile no"
-                style={{
-                  width: "100%",
-                  height: 40,
-                  fontSize: 16,
-                  fontFamily: "light",
-                  color: "#1E88E5"
-                }}
-                placeholderTextColor="#1E88E5"
-              />
+          <View>
+            <View style={{marginBottom:8}}>
+              <TouchableHighlight onPress={this.loginFacebook.bind(this)}>
+                <Text style={{ fontFamily: "regular" }}>
+                  SignIn with Facebook
+                </Text>
+              </TouchableHighlight>
             </View>
-            <View
-              style={{
-                width: "30%",
-                flexDirection: "column"
-              }}
-            >
-              <TouchableHighlight
-                onPress={this.onNext.bind(this)}
-                underlayColor="#E0E0E0"
-                style={{
-                  width: "100%",
-                  alignItems: "center",
-                  height: 40,
-                  justifyContent: "center"
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: "regular",
-                    color: "#1E88E5",
-                    fontWeight: "bold"
-                  }}
-                >
-                  NEXT
+            <View style={{marginBottom:8}}>
+              <TouchableHighlight onPress={this.loginFacebook.bind(this)}>
+                <Text style={{ fontFamily: "regular" }}>
+                  SignIn with Google
+                </Text>
+              </TouchableHighlight>
+            </View>
+            <View style={{marginBottom:8}}>
+              <TouchableHighlight onPress={this.loginFacebook.bind(this)}>
+                <Text style={{ fontFamily: "regular" }}>
+                  SignIn with Twitter
                 </Text>
               </TouchableHighlight>
             </View>
@@ -134,7 +108,36 @@ export default class SignIn extends React.Component {
       </View>
     );
   }
-  onNext() {
-    console.log(this.state.mobile);
-  }
+  loginFacebook = async () => {
+    try {
+      const {
+        type,
+        token,
+        expires,
+        permissions,
+        declinedPermissions
+      } = await Expo.Facebook.logInWithReadPermissionsAsync(
+        "1935714499798688",
+        {
+          permissions: ["public_profile", "email"]
+        }
+      );
+      if (type === "success") {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}&fields=email,name`
+        );
+        let responseJson = await response.json();
+        console.log(responseJson);
+        let {status, data} = await Api.signinUser("facebook",responseJson);
+        console.log(status);
+        console.log(data);
+      } else {
+        // type === 'cancel'
+        console.log("user cancelled login");
+      }
+    } catch ({ message }) {
+      console.log(`Facebook Login Error: ${message}`);
+    }
+  };
 }
