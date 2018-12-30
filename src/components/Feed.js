@@ -23,7 +23,6 @@ export default class Feed extends React.Component {
       refresh: false,
       uUserId: props.uUserId || null
     };
-    
   }
   componentWillReceiveProps = async props => {
     await this.setState(
@@ -111,6 +110,7 @@ export default class Feed extends React.Component {
           uRequestId={item.id}
           uUserId={item.UUserId}
           isExpecting={item.isExpecting}
+          onExpectToggle={this.handleToggleExpect.bind(this, item, index)}
           onForward={this.handleForward.bind(this, item)}
           onReply={this.handleReply.bind(this, item)}
         />
@@ -193,5 +193,27 @@ export default class Feed extends React.Component {
     this.props.navigation.navigate("ForwardRequest", {
       URequestId: request.id
     });
+  };
+  handleToggleExpect = async (request, index) => {
+    console.log(`gonna toggle expect for ${request.id}`);
+    try {
+      let { data, status } = await Api.toggleExpectator(request.id, {
+        id: this.state.uUserId,
+        points: 50
+      });
+
+      if (status == 200) {
+        console.log(data);
+        request.isExpecting = data.isExpecting;
+        this.setState(
+          update(this.state, {
+            requests: { index: { $set: request } },
+            refresh: { $set: !this.state.refresh }
+          })
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 }

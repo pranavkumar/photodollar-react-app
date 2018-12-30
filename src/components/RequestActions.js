@@ -11,10 +11,11 @@ export default class RequestActions extends React.Component {
     this.state = { isExpecting: props.isExpecting };
     // console.log(props);
   }
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps = async(props) =>{
     // console.log(props);
-    this.setState({ isExpecting: props.isExpecting });
-    
+    await this.setState({ isExpecting: props.isExpecting });
+    console.log(this.state);
+
   }
   render() {
     let { isExpecting } = this.state;
@@ -77,13 +78,15 @@ export default class RequestActions extends React.Component {
           }}
         >
           <TouchableOpacity
+            onPress={this.props.onExpectToggle}
             style={{
               width: "100%",
               alignItems: "center",
               justifyContent: "center"
             }}
           >
-            <EvilIcons name="arrow-up" size={34} color="#42A5F5" />
+            {(!isExpecting)? (<EvilIcons name="arrow-up" size={34} color="#42A5F5" />) : (<EvilIcons name="arrow-down" size={34} color="#757575" />)}
+
           </TouchableOpacity>
         </View>
         <View
@@ -119,35 +122,7 @@ export default class RequestActions extends React.Component {
     );
   }
 
-  // <PrimaryButton
-  //   title={isExpecting ? "Unexpect" : "Expect"}
-  //   onPress={this.handleToggleExpect.bind(this)}
-  //   style={{ fontFamily: "regular" }}
-  //   containerStyle={{ paddingLeft: 0 }}
-  //   type="outline"
-  //   buttonStyle={{ fontFamily: "regular" }}
-  // />
-  // <PrimaryButton
-  //   style={{ fontFamily: "light" }}
-  //   onPress={this.props.onReply}
-  //   title="Reply"
-  //   containerStyle={{ paddingLeft: 0 }}
-  //   buttonStyle={{ backgroundColor: "#448AFF", fontFamily: "regular" }}
-  // />
 
-  handleToggleExpect = async () => {
-    // console.log(`handling expect...${request.id} at index ${index}`);
-    try {
-      let { data } = await Api.toggleExpectator(this.props.uRequestId, {
-        id: this.props.uUserId,
-        points: 50
-      });
 
-      if (data) {
-        this.setState({ isExpecting: data.isExpecting });
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+
 }
