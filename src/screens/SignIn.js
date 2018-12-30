@@ -73,7 +73,7 @@ export default class SignIn extends React.Component {
           <Text
             style={{ fontSize: 38, color: "#E64A19", fontFamily: "semiBold" }}
           >
-            KyaScene
+            PhotoDollar
           </Text>
           <Text style={{ fontSize: 16, color: "#616161", fontFamily: "light" }}>
             Request pics from all over Bengaluru.

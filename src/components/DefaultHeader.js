@@ -24,7 +24,7 @@ export default class DefaultHeader extends React.Component {
       >
         <View style={{ width: "66%" }}>
           <Text style={{ fontFamily: "light", fontSize: 22, color: "#616161" }}>
-            KyaScene
+            PhotoDollar
           </Text>
         </View>
         <View
