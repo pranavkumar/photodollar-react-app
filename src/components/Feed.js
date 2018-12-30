@@ -23,20 +23,27 @@ export default class Feed extends React.Component {
       refresh: false,
       uUserId: props.uUserId || null
     };
+    
   }
-  componentWillReceiveProps(props) {
-    this.setState(
+  componentWillReceiveProps = async props => {
+    await this.setState(
       update(this.state, {
         uUserId: { $set: props.uUserId },
         refresh: { $set: !this.state.refresh }
       })
     );
-  }
+
+    await this.loadFeed.bind(this)();
+  };
   componentDidMount = async () => {
+    await this.loadFeed.bind(this)();
+  };
+  loadFeed = async () => {
     let { uUserId } = this.state;
     if (!uUserId) return;
     try {
       let { status, data } = await Api.getFeed(uUserId);
+      console.log(status);
       if (status == 200) {
         this.setState(update(this.state, { requests: { $set: data } }));
       }

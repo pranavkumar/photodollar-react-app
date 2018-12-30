@@ -14,7 +14,7 @@ export default class RequestActions extends React.Component {
   componentWillReceiveProps(props) {
     // console.log(props);
     this.setState({ isExpecting: props.isExpecting });
-    console.log(this.state);
+    
   }
   render() {
     let { isExpecting } = this.state;

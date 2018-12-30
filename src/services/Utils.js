@@ -1,7 +1,9 @@
 import * as _ from "lodash";
 import { Font, Permissions, Contacts } from "expo";
 import * as Api from "./Api";
+import update from "immutability-helper";
 const moment = require("moment");
+import { AsyncStorage } from "react-native";
 export function formDataFromImage(image, meta) {
   let data = new FormData();
   let filename = image.uri.split("/").pop();
@@ -78,4 +80,15 @@ export async function loadFonts() {
     regular: require("../../assets/fonts/OpenSans-Regular.ttf")
   });
   this.setState({ fontLoaded: true });
+}
+
+export async function getUser() {
+  try {
+    let uUser = await AsyncStorage.getItem("uUser", JSON.stringify(uUser));
+    if (uUser) {
+      this.setState(update(this.state, { uUser: { $set: JSON.parse(uUser) } }));
+    }
+  } catch (err) {
+    throw err;
+  }
 }

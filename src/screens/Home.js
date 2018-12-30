@@ -21,8 +21,7 @@ export default class Home extends React.Component {
     super(props);
     this.state = {
       requests: [],
-      UUser: null,
-      uUserId: "5c11ff3f19d3da6e905ec39c",
+      uUser: {},
       location: {
         addressLine1: "1st a main road, 15th cross",
         addressLine2: "HSR Layout, Sector 6",
@@ -35,28 +34,32 @@ export default class Home extends React.Component {
       }
     };
     this.loadFonts = Utils.loadFonts.bind(this);
+    this.getUser = Utils.getUser.bind(this);
   }
 
   render() {
-    let { fontLoaded, requests, uUserId, location } = this.state;
+    let { fontLoaded, requests, uUser, location } = this.state;
     if (!fontLoaded) return null;
+
     return (
       <View style={{ padding: 0, flexDirection: "column", flex: 1 }}>
         <DefaultHeader />
-        <Feed uUserId={uUserId} navigation={this.props.navigation} location={location}/>
-        <DefaultFooter navigation={this.props.navigation} uUserId={uUserId} location={location} />
+        <Feed uUserId={uUser.id} navigation={this.props.navigation} location={location}/>
+        <DefaultFooter navigation={this.props.navigation} uUserId={uUser.id} location={location} />
       </View>
     );
   }
 
   componentWillMount = async () => {
     await this.loadFonts();
+    await this.getUser();
+
   };
   componentDidMount = async () => {
     try {
-      if (this.state.uUserId) {
+      if (this.state.uUser.id) {
         console.log("loading user...");
-        let { status, data } = await Api.getUserProfile(this.state.uUserId);
+        let { status, data } = await Api.getUserProfile(this.state.uUser.id);
         let uUser = data;
         await Utils.syncContacts(uUser.id, uUser.lastContactSync);
       }
