@@ -14,7 +14,7 @@ export default class RequestActions extends React.Component {
   componentWillReceiveProps = async(props) =>{
     // console.log(props);
     await this.setState({ isExpecting: props.isExpecting });
-    console.log(this.state);
+    // console.log(this.state);
 
   }
   render() {
@@ -60,6 +60,7 @@ export default class RequestActions extends React.Component {
           }}
         >
           <TouchableOpacity
+            onPress = {this.props.onShare}
             style={{
               width: "100%",
               alignItems: "center",

@@ -5,7 +5,8 @@ import {
   View,
   Image,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  Share
 } from "react-native";
 
 import * as Utils from "../services/Utils";
@@ -14,6 +15,8 @@ import * as Api from "../services/Api";
 import update from "immutability-helper";
 import RequestActions from "../components/RequestActions";
 import { PrimaryButton, Separator } from "../components/CommonUI";
+// import {Share} from "expo";
+// import Share from 'react-native-share';
 
 export default class Feed extends React.Component {
   constructor(props) {
@@ -112,6 +115,7 @@ export default class Feed extends React.Component {
           isExpecting={item.isExpecting}
           onExpectToggle={this.handleToggleExpect.bind(this, item, index)}
           onForward={this.handleForward.bind(this, item)}
+          onShare={this.handleShare.bind(this, item)}
           onReply={this.handleReply.bind(this, item)}
         />
         <Separator />
@@ -193,6 +197,21 @@ export default class Feed extends React.Component {
     this.props.navigation.navigate("ForwardRequest", {
       URequestId: request.id
     });
+  };
+  handleShare = async (request, index) => {
+    console.log(`sharing req id ${request.id}`);
+    try {
+      let share = await Share.share(
+        {
+          message: "test message and url",
+          title: "test title"
+        },
+        { dialogTitle: "android dialog title" }
+      );
+      console.log(share);
+    } catch (err) {
+      console.log(err);
+    }
   };
   handleToggleExpect = async (request, index) => {
     console.log(`gonna toggle expect for ${request.id}`);
