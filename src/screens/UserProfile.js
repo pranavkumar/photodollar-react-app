@@ -29,7 +29,7 @@ export default class UserProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      UUserId: props.navigation.getParam("UUserId", "5c11ff3f19d3da6e905ec39c"),
+      UUserId: props.navigation.getParam("uUserId", null),
       UUser: null
     };
     this.loadFonts = Util.loadFonts.bind(this);
@@ -39,7 +39,7 @@ export default class UserProfile extends React.Component {
     await this.loadFonts();
   };
   render() {
-    const { UUser, fontLoaded} = this.state;
+    const { UUser, fontLoaded } = this.state;
     if (!fontLoaded) return null;
     return (
       <View style={{ padding: 0 }}>
@@ -76,7 +76,6 @@ export default class UserProfile extends React.Component {
                   onPress={() => console.log("Works!")}
                   activeOpacity={0.7}
                 />
-
               </View>
 
               <Text
@@ -85,7 +84,7 @@ export default class UserProfile extends React.Component {
                   fontFamily: "semiBold",
                   color: "#616161"
                 }}
-              >{`${UUser.firstname} ${UUser.lastname}`}</Text>
+              >{`${UUser.name}`}</Text>
               <Text style={{ fontFamily: "regular", color: "#616161" }}>{`${
                 UUser.points
               } Pts`}</Text>
@@ -133,9 +132,9 @@ export default class UserProfile extends React.Component {
                   }}
                 >
                   <Text style={{ fontFamily: "semiBold" }}>Mobile</Text>
-                  <Text style={{ fontFamily: "regular" }}>{`+91 ${
-                    UUser.mobile
-                  }`}</Text>
+                  <Text style={{ fontFamily: "regular" }}>
+                    {UUser.mobile ? `+91 ${UUser.mobile}` : "Unknown"}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -145,16 +144,22 @@ export default class UserProfile extends React.Component {
                 >
                   <Text style={{ fontFamily: "semiBold" }}>Location</Text>
                   <View style={{ alignItems: "flex-end" }}>
-                    <Text style={{ fontFamily: "regular" }}>{`${
-                      UUser.location.addressLine1
-                    }`}</Text>
-                    <Text style={{ fontFamily: "regular" }}>{`${
-                      UUser.location.addressLine2
-                    }`}</Text>
-                    <Text style={{ fontFamily: "regular" }}>{`${
-                      UUser.location.country
-                    }`}</Text>
-                    <Text />
+                    {UUser.location ? (
+                      <View>
+                        <Text style={{ fontFamily: "regular" }}>{`${
+                          UUser.location.addressLine1
+                        }`}</Text>
+                        <Text style={{ fontFamily: "regular" }}>{`${
+                          UUser.location.addressLine2
+                        }`}</Text>
+                        <Text style={{ fontFamily: "regular" }}>{`${
+                          UUser.location.country
+                        }`}</Text>
+                        <Text />
+                      </View>
+                    ) : (
+                      <Text style={{fontFamily:"regular"}}>Unknown</Text>
+                    )}
                   </View>
                 </View>
               </Card>
@@ -171,19 +176,8 @@ export default class UserProfile extends React.Component {
       if (res.status == 200) {
         let UUser = res.data;
         UUser.profileImage = UUser.profileImage || { name: "default.png" };
-        UUser.location = UUser.location || {
-          lat: 0,
-          lng: 0,
-          latDelta: 0,
-          lngDelta: 0,
-          addressLine1: "46, 4th B Cross Road",
-          addressLine2: "5th Block, Koramangala, Bengaluru",
-          country: "India",
-          placeId: "abc",
-          id: "123"
-        };
+
         this.setState(update(this.state, { UUser: { $set: res.data } }));
-        // console.log(this.state);
       }
     } catch (err) {
       console.log(err);

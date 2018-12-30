@@ -43,7 +43,7 @@ export default class Home extends React.Component {
 
     return (
       <View style={{ padding: 0, flexDirection: "column", flex: 1 }}>
-        <DefaultHeader />
+        <DefaultHeader navigation={this.props.navigation} uUserId={uUser.id} location={location}/>
         <Feed uUserId={uUser.id} navigation={this.props.navigation} location={location}/>
         <DefaultFooter navigation={this.props.navigation} uUserId={uUser.id} location={location} />
       </View>

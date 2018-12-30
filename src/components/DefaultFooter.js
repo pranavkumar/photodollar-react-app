@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import * as Utils from "../services/Utils";
 
@@ -20,11 +15,17 @@ import {
 export default class DefaultFooter extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      uUserId: null
+    };
     this.navigation = props.navigation;
   }
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps = async props => {
     this.navigation = props.navigation;
-  }
+
+    await this.setState({ uUserId: props.uUserId });
+    console.log(this.state);
+  };
   render() {
     return (
       <View
@@ -80,7 +81,7 @@ export default class DefaultFooter extends React.Component {
           }}
         >
           <TouchableOpacity
-            onPress={this.gotoSearch.bind(this)}
+            onPress={this.gotoNotifications.bind(this)}
             style={{
               width: "100%",
               alignItems: "center",
@@ -95,13 +96,14 @@ export default class DefaultFooter extends React.Component {
   }
   gotoProfile() {
     if (!this.navigation) return;
-    this.navigation.navigate("UserProfile");
+    this.navigation.navigate("UserProfile", { uUserId: this.state.uUserId });
   }
   gotoRequest() {
     if (!this.navigation) return;
-    this.navigation.navigate("CreateRequest");
+    this.navigation.navigate("CreateRequest", { uUserId: this.state.uUserId });
   }
-  gotoSearch() {
+  gotoNotifications() {
     if (!this.navigation) return;
+    this.navigation.navigate("Notifications", { uUserId: this.state.uUserId });
   }
 }

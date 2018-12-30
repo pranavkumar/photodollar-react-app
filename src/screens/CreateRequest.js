@@ -17,7 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Api from "../services/Api";
 import * as Utils from "../services/Utils";
 
-export default class Home extends React.Component {
+export default class CreateRequest extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       header: ({ state }) => {
@@ -43,7 +43,7 @@ export default class Home extends React.Component {
       isCurrent: true
     };
     this.state = {
-      uUserId: props.navigation.getParam("uUserId", "5c11ff3f19d3da6e905ec39c"),
+      uUserId: props.navigation.getParam("uUserId", null),
       title: "",
       placeholderTitle: "Request title e.g. A drowsy cat",
       refresh: false,
@@ -52,6 +52,7 @@ export default class Home extends React.Component {
       destLocation: props.navigation.getParam("sourceLocation", mockLocation)
     };
     this.loadFonts = Utils.loadFonts.bind(this);
+    
   }
   componentWillMount = async () => {
     await this.loadFonts();

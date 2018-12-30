@@ -10,7 +10,8 @@ import CreateResponse from "./src/screens/CreateResponse";
 import UserProfile from "./src/screens/UserProfile";
 import SignIn from "./src/screens/SignIn";
 import ForwardRequest from "./src/screens/ForwardRequest";
-import VerifyOTP from "./src/screens/VerifyOTP";
+import Search from "./src/screens/Search";
+import Notifications from "./src/screens/Notifications";
 
 
 export default class App extends React.Component {
@@ -31,7 +32,8 @@ const RootStack = createStackNavigator(
     UserProfile:UserProfile,
     SignIn:SignIn,
     ForwardRequest:ForwardRequest,
-    VerifyOTP:VerifyOTP
+    Search: Search,
+    Notifications:Notifications
   },
   {
     initialRouteName: "Home"
