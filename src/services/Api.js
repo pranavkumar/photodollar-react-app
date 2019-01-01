@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const API_ENDPOINT = "http://192.168.0.100:3000/api/";
-export const FILE_ENDPOINT = "http://192.168.0.100:5500/files/";
+export const API_ENDPOINT = "http://192.168.0.101:3000/api/";
+export const FILE_ENDPOINT = "http://192.168.0.101:5500/files/";
 
 async function errorHandler(promise) {
   try {
