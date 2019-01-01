@@ -6,7 +6,8 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  Share
+  Share,
+  ScrollView
 } from "react-native";
 
 import * as Utils from "../services/Utils";
@@ -15,6 +16,9 @@ import * as Api from "../services/Api";
 import update from "immutability-helper";
 import RequestActions from "../components/RequestActions";
 import { PrimaryButton, Separator } from "../components/CommonUI";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import * as _ from "lodash";
+
 // import {Share} from "expo";
 // import Share from 'react-native-share';
 
@@ -47,6 +51,11 @@ export default class Feed extends React.Component {
       let { status, data } = await Api.getFeed(uUserId);
       console.log(status);
       if (status == 200) {
+        data = _.map(data, function(item) {
+          item.isMenuShown = true;
+          return item;
+        });
+        console.log(data[0]);
         this.setState(update(this.state, { requests: { $set: data } }));
       }
     } catch (e) {
@@ -55,13 +64,15 @@ export default class Feed extends React.Component {
   };
   render() {
     return (
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        extraData={this.state.refresh}
-        keyExtractor={(item, index) => index.toString()}
-        data={this.state.requests}
-        renderItem={({ item, index }) => this.renderRequest(item, index)}
-      />
+      <ScrollView>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          extraData={this.state.refresh}
+          keyExtractor={(item, index) => index.toString()}
+          data={this.state.requests}
+          renderItem={({ item, index }) => this.renderRequest(item, index)}
+        />
+      </ScrollView>
     );
   }
   renderRequest(item, index) {
@@ -94,7 +105,7 @@ export default class Feed extends React.Component {
                 fontSize: 18,
                 fontWeight: "normal",
                 fontFamily: "regular",
-                width: "85%",
+                width: "70%",
                 paddingLeft: 8,
                 paddingRight: 8
               }}
@@ -102,7 +113,37 @@ export default class Feed extends React.Component {
               {item.title}
             </Text>
           </View>
+          <View style={{ width: "15%" }}>
+            <TouchableOpacity
+              onPress={this.toggleRequestMenu.bind(this, item, index)}
+              style={{
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "flex-start"
+              }}
+            >
+              <Ionicons
+                name={item.isMenuShown ? "ios-arrow-up" : "ios-arrow-down"}
+                size={20}
+                color="#BDBDBD"
+              />
+            </TouchableOpacity>
+          </View>
         </View>
+        {item.isMenuShown && (
+          <View style={{ padding: 16 }}>
+            <TouchableOpacity
+              style={{ width: "100%", alignItems: "center", height: 40,justifyContent:"center" }}
+            >
+              <Text style={{ fontFamily: "regular" }}>Hide Request</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ width: "100%", alignItems: "center", height: 40,justifyContent:"center" }}
+            >
+              <Text style={{ fontFamily: "regular",fontSize:14 }}>Flag Request</Text>
+            </TouchableOpacity>
+          </View>
+        )}
         {(!item.UResponses || item.UResponses.length == 0) &&
           this.renderObjectives(item)}
         {item.UResponses &&
@@ -234,5 +275,15 @@ export default class Feed extends React.Component {
     } catch (err) {
       console.log(err);
     }
+  };
+  toggleRequestMenu = async (request, index) => {
+    console.log(`show menu for ${request.id}`);
+    request.isMenuShown = !request.isMenuShown;
+    this.setState(
+      update(this.state, {
+        requests: { index: { $set: request } },
+        refresh: { $set: !this.state.refresh }
+      })
+    );
   };
 }
