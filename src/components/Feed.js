@@ -55,7 +55,7 @@ export default class Feed extends React.Component {
         //   item.isMenuShown = true;
         //   return item;
         // });
-        console.log(data[0]);
+        // console.log(data[0]);
         this.setState(update(this.state, { requests: { $set: data } }));
       }
     } catch (e) {
@@ -142,7 +142,7 @@ export default class Feed extends React.Component {
               }}
             >
               <TouchableOpacity
-                onPress={this.toggleHide.bind(this, item, index)}
+                onPress={this.toggleHideRequest.bind(this, item, index)}
                 style={{
                   width: "100%",
                   alignItems: "center",
@@ -161,6 +161,7 @@ export default class Feed extends React.Component {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={this.flagRequest.bind(this, item, index)}
                 style={{
                   width: "100%",
                   alignItems: "center",
@@ -175,7 +176,7 @@ export default class Feed extends React.Component {
                     color: "#1976D2"
                   }}
                 >
-                  Flag Request
+                  {!item.isFlagged ? `Flag Request` : `Unflag Request`}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -217,8 +218,8 @@ export default class Feed extends React.Component {
             }}
           >
             <TouchableOpacity
-              onPress={this.toggleHide.bind(this, request, index)}
-              style={{width:"100%",alignItems:"flex-end"}}
+              onPress={this.toggleHideRequest.bind(this, request, index)}
+              style={{ width: "100%", alignItems: "flex-end" }}
             >
               <Text
                 style={{
@@ -336,7 +337,7 @@ export default class Feed extends React.Component {
       });
 
       if (status == 200) {
-        console.log(data);
+        // console.log(data);
         request.isExpecting = data.isExpecting;
         this.setState(
           update(this.state, {
@@ -359,10 +360,10 @@ export default class Feed extends React.Component {
       })
     );
   };
-  toggleHide = async (request, index) => {
-    console.log(`hiding post id ${request.id}`);
+  toggleHideRequest = async (request, index) => {
+    console.log(`hiding post request ${request.id}`);
     try {
-      let { status, data } = await Api.toggleHide(
+      let { status, data } = await Api.toggleHideRequest(
         request.id,
         this.state.uUserId
       );
@@ -378,5 +379,27 @@ export default class Feed extends React.Component {
         );
       }
     } catch (err) {}
+  };
+  flagRequest = async (request, index) => {
+    console.log(`flagging request ${request.id}`);
+    try {
+      let { status, data } = await Api.flagRequest(request.id, {
+        id: this.state.uUserId
+      });
+      // console.log(status);
+      // console.log(data);
+      if(status == 200){
+        request.isFlagged = data.isFlagged;
+        this.setState(
+          update(this.state, {
+            requests: { index: { $set: request } },
+            refresh: { $set: !this.state.refresh }
+          })
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+    }
   };
 }

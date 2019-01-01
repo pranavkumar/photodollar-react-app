@@ -73,9 +73,15 @@ export function toggleExpectator(requestId, expectator) {
   );
 }
 
-export function toggleHide(requestId, uUserId) {
+export function toggleHideRequest(requestId, uUserId) {
   return errorHandler(
     axios.get(`${API_ENDPOINT}/URequests/${requestId}/toggleHide/${uUserId}`)
+  );
+}
+
+export function flagRequest(requestId, flagger) {
+  return errorHandler(
+    axios.post(`${API_ENDPOINT}/URequests/${requestId}/flag/`, flagger)
   );
 }
 
