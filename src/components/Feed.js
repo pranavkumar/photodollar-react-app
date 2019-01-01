@@ -51,10 +51,10 @@ export default class Feed extends React.Component {
       let { status, data } = await Api.getFeed(uUserId);
       console.log(status);
       if (status == 200) {
-        data = _.map(data, function(item) {
-          item.isMenuShown = true;
-          return item;
-        });
+        // data = _.map(data, function(item) {
+        //   item.isMenuShown = true;
+        //   return item;
+        // });
         console.log(data[0]);
         this.setState(update(this.state, { requests: { $set: data } }));
       }
@@ -76,6 +76,9 @@ export default class Feed extends React.Component {
     );
   }
   renderRequest(item, index) {
+    if (item.isHidden) {
+      return this.renderHiddenRequest.bind(this, item, index)();
+    }
     return (
       <View style={{ margin: 0, marginTop: 10, paddingBottom: 0 }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -130,15 +133,16 @@ export default class Feed extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-        
+
         {item.isMenuShown && (
           <View style={{ padding: 16 }}>
             <View
               style={{
-                backgroundColor: "#F5F5F5"
+                backgroundColor: "#FAFAFA"
               }}
             >
               <TouchableOpacity
+                onPress={this.toggleHide.bind(this, item, index)}
                 style={{
                   width: "100%",
                   alignItems: "center",
@@ -192,6 +196,42 @@ export default class Feed extends React.Component {
           onShare={this.handleShare.bind(this, item)}
           onReply={this.handleReply.bind(this, item)}
         />
+        <Separator />
+      </View>
+    );
+  }
+  renderHiddenRequest(request, index) {
+    return (
+      <View>
+        <View style={{ padding: 16, flexDirection: "row" }}>
+          <View style={{ width: "70%" }}>
+            <Text style={{ fontFamily: "regular", fontSize: 16 }}>
+              This request is hidden.
+            </Text>
+          </View>
+          <View
+            style={{
+              width: "30%",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <TouchableOpacity
+              onPress={this.toggleHide.bind(this, request, index)}
+              style={{width:"100%",alignItems:"flex-end"}}
+            >
+              <Text
+                style={{
+                  fontFamily: "regular",
+                  fontSize: 12,
+                  color: "#1E88E5"
+                }}
+              >
+                SHOW
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
         <Separator />
       </View>
     );
@@ -318,5 +358,25 @@ export default class Feed extends React.Component {
         refresh: { $set: !this.state.refresh }
       })
     );
+  };
+  toggleHide = async (request, index) => {
+    console.log(`hiding post id ${request.id}`);
+    try {
+      let { status, data } = await Api.toggleHide(
+        request.id,
+        this.state.uUserId
+      );
+      console.log(status);
+      console.log(data);
+      if (status == 200) {
+        request.isHidden = data.isHidden;
+        this.setState(
+          update(this.state, {
+            requests: { index: { $set: request } },
+            refresh: { $set: !this.state.refresh }
+          })
+        );
+      }
+    } catch (err) {}
   };
 }

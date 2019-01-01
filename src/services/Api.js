@@ -38,8 +38,12 @@ export function getFeed(uUserId) {
   return errorHandler(axios.get(`${API_ENDPOINT}/UUsers/${uUserId}/feed`));
 }
 
-export function signinUser(type,user) {
-  return errorHandler(axios.get(`${API_ENDPOINT}/UUsers/signin`,{params:{type:type,user:JSON.stringify(user)}}));
+export function signinUser(type, user) {
+  return errorHandler(
+    axios.get(`${API_ENDPOINT}/UUsers/signin`, {
+      params: { type: type, user: JSON.stringify(user) }
+    })
+  );
 }
 
 export function getUserProfile(id) {
@@ -69,6 +73,12 @@ export function toggleExpectator(requestId, expectator) {
   );
 }
 
+export function toggleHide(requestId, uUserId) {
+  return errorHandler(
+    axios.get(`${API_ENDPOINT}/URequests/${requestId}/toggleHide/${uUserId}`)
+  );
+}
+
 export function postContacts(uUserId, contacts) {
   return errorHandler(
     axios.post(`${API_ENDPOINT}/UUsers/${uUserId}/contacts/multi`, contacts)
@@ -81,8 +91,10 @@ export function postForwards(URequestId, forward) {
   );
 }
 
-export function getForwardables(uUserId,uRequestId) {
+export function getForwardables(uUserId, uRequestId) {
   return errorHandler(
-    axios.get(`${API_ENDPOINT}/UUsers/${uUserId}/forwardables`,{params:{uRequestId:uRequestId}})
+    axios.get(`${API_ENDPOINT}/UUsers/${uUserId}/forwardables`, {
+      params: { uRequestId: uRequestId }
+    })
   );
 }
