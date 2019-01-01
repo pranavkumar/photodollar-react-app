@@ -130,18 +130,51 @@ export default class Feed extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
+        
         {item.isMenuShown && (
           <View style={{ padding: 16 }}>
-            <TouchableOpacity
-              style={{ width: "100%", alignItems: "center", height: 40,justifyContent:"center" }}
+            <View
+              style={{
+                backgroundColor: "#F5F5F5"
+              }}
             >
-              <Text style={{ fontFamily: "regular" }}>Hide Request</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ width: "100%", alignItems: "center", height: 40,justifyContent:"center" }}
-            >
-              <Text style={{ fontFamily: "regular",fontSize:14 }}>Flag Request</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  width: "100%",
+                  alignItems: "center",
+                  height: 40,
+                  justifyContent: "center"
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "regular",
+                    fontSize: 16,
+                    color: "#1976D2"
+                  }}
+                >
+                  Hide Request
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  width: "100%",
+                  alignItems: "center",
+                  height: 40,
+                  justifyContent: "center"
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "regular",
+                    fontSize: 16,
+                    color: "#1976D2"
+                  }}
+                >
+                  Flag Request
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
         {(!item.UResponses || item.UResponses.length == 0) &&
