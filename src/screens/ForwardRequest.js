@@ -9,7 +9,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { Card, Avatar, Button } from "react-native-elements";
-import { PrimaryButton, CheckBox } from "../components/CommonUI";
+import { PrimaryButton, CheckBox, Separator } from "../components/CommonUI";
 import * as Api from "../services/Api";
 import * as Util from "../utils";
 
@@ -61,7 +61,7 @@ export default class ForwardRequest extends React.Component {
 
       this.setState(
         update(this.state, {
-          contactsNotForwarded: { $set: contactsNotForwarded.slice(0, 5) },
+          contactsNotForwarded: { $set: contactsNotForwarded.slice(0, 30) },
           contactsForwarded: { $set: contactsForwarded }
         })
       );
@@ -73,7 +73,7 @@ export default class ForwardRequest extends React.Component {
     if (!this.state.fontLoaded) return null;
     let { contactsNotForwarded, contactsForwarded } = this.state;
     return (
-      <View>
+      <ScrollView>
         <View
           style={{
             height: 60,
@@ -98,7 +98,7 @@ export default class ForwardRequest extends React.Component {
           />
         </View>
         {contactsForwarded.length > 0 && (
-          <View style={{ padding: 8 }}>
+          <View style={{ padding: 16}}>
             <Text style={{ fontFamily: "regular" }}>{`Forwarded(${
               contactsForwarded.length
             })`}</Text>
@@ -117,7 +117,8 @@ export default class ForwardRequest extends React.Component {
         )}
 
         <FlatList
-          style={{ paddingTop: 16 }}
+          showsVerticalScrollIndicator={false}
+          style={{ paddingTop: 16,marginBottom:64 }}
           extraData={this.state.refresh}
           keyExtractor={(item, index) => index.toString()}
           data={contactsNotForwarded}
@@ -125,20 +126,19 @@ export default class ForwardRequest extends React.Component {
             this.renderContactNotForwarded(item, index)
           }
         />
-      </View>
+
+      </ScrollView>
     );
   }
   renderContactForwarded(contact, index) {
     return (
       <View
         style={{
-          height: 60,
-          paddingLeft: 8,
-          paddingRight: 8,
+          marginRight:16,
           flexDirection: "column"
         }}
       >
-        <Text style={{ fontFamily: "regular" }}>{contact.name}</Text>
+        <Text style={{ fontFamily: "semiBold" }}>{contact.name}</Text>
         <Text style={{ fontFamily: "regular" }}>
           {contact.normalizedMobile}
         </Text>
@@ -147,49 +147,61 @@ export default class ForwardRequest extends React.Component {
   }
   renderContactNotForwarded(contact, index) {
     return (
-      <View
-        style={{
-          height: 60,
-          paddingLeft: 8,
-          paddingRight: 8,
-          flexDirection: "row"
-        }}
-      >
-        <View style={{ width: "70%" }}>
-          <Text style={{ fontSize: 16, fontFamily: "regular" }}>
-            {contact.name || "Unknown"}
-          </Text>
-          <Text style={{ fontFamily: "regular" }}>
-            {contact.normalizedMobile != 0
-              ? contact.normalizedMobile
-              : "Unknown mobile no"}
-          </Text>
-        </View>
+      <View>
         <View
           style={{
-            width: "30%",
-            alignItems: "center",
-            flexDirection: "column",
-            justifyContent: "center"
+            height: 60,
+            paddingLeft: 8,
+            paddingRight: 8,
+            flexDirection: "row"
           }}
         >
-          {!contact.isForwarded ? (
-            <TouchableOpacity
-              onPress={this.handleForward.bind(this, contact, index)}
-            >
-              <Text style={{ fontFamily: "semiBold", color: "#1E88E5" }}>
-                Forward
+          <View style={{ width: "70%", flexDirection: "row" }}>
+            <View style={{ width: "20%", padding: 8 }}>
+              <Image
+                style={{ width: "100%", height: "100%" }}
+                source={{
+                  uri: `https://robohash.org/${parseInt(Math.random() * 10000)}`
+                }}
+              />
+            </View>
+            <View style={{ width: "80%", justifyContent: "center",paddingRight:8 }}>
+              <Text style={{ fontSize: 14, fontFamily: "semiBold" }}>
+                {contact.name || "Unknown"}
               </Text>
-            </TouchableOpacity>
-          ) : (
-            <Text style={{ fontFamily: "regular" }}>Forwarded</Text>
-          )}
+              <Text style={{ fontFamily: "regular", color:"#757575" }}>
+                {contact.normalizedMobile != 0
+                  ? contact.normalizedMobile
+                  : "Unknown mobile no"}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              width: "30%",
+              alignItems: "center",
+              flexDirection: "column",
+              justifyContent: "center"
+            }}
+          >
+            {!contact.isForwarded ? (
+              <TouchableOpacity
+                onPress={this.handleForward.bind(this, contact, index)}
+              >
+                <Text style={{ fontFamily: "regular", color: "#E64A19" }}>
+                  Forward
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <Text style={{ fontFamily: "regular" }}>Forwarded</Text>
+            )}
+          </View>
         </View>
+        <Separator style={{ marginTop: 0 }} />
       </View>
     );
   }
   handleForward = async (contact, index) => {
-    console.log("forwarding");
     if (contact.isForwarded) return;
     let { uUserId, uRequestId, refresh } = this.state;
     let forward = _.cloneDeep(contact);
