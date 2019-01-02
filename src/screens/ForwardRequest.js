@@ -12,6 +12,7 @@ import { Card, Avatar, Button } from "react-native-elements";
 import { PrimaryButton, CheckBox } from "../components/CommonUI";
 import * as Api from "../services/Api";
 import * as Util from "../utils";
+
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";
 import { ImagePicker, Permissions, Contacts } from "expo";
@@ -30,20 +31,24 @@ export default class ForwardRequest extends React.Component {
     super(props);
 
     this.state = {
-      URequestId: props.navigation.getParam(
-        "URequestId",
+      uRequestId: props.navigation.getParam(
+        "uRequestId",
         "5c12015d1781236f919ca834"
       ),
-      UUserId: props.navigation.getParam("UUserId", "5c11ff3f19d3da6e905ec39c"),
+      uUserId: props.navigation.getParam("uUserId", "5c11ff3f19d3da6e905ec39c"),
       contactsForwarded: [],
       contactsNotForwarded: [],
       refresh: false
     };
+    this.loadFonts = Utils.loadFonts.bind(this);
   }
+  componentWillMount = async () => {
+    await this.loadFonts();
+  };
   componentDidMount = async () => {
-    let { UUserId, URequestId } = this.state;
+    let { uUserId, uRequestId } = this.state;
     try {
-      let { status, data } = await Api.getForwardables(UUserId, URequestId);
+      let { status, data } = await Api.getForwardables(uUserId, uRequestId);
       let contacts = data;
 
       let contactsNotForwarded = _.filter(contacts, contact => {
@@ -65,19 +70,22 @@ export default class ForwardRequest extends React.Component {
     }
   };
   render() {
+    if (!this.state.fontLoaded) return null;
     let { contactsNotForwarded, contactsForwarded } = this.state;
     return (
       <View>
         <View
           style={{
-            height: 50,
-            backgroundColor: "#448AFF",
+            height: 60,
+            backgroundColor: "#EEEEEE",
             padding: 16,
             flexDirection: "row"
           }}
         >
           <View style={{ width: "65%" }}>
-            <Text style={{ fontSize: 18, color: "white" }}>
+            <Text
+              style={{ fontSize: 18, color: "#616161", fontFamily: "regular" }}
+            >
               Forward Request
             </Text>
           </View>
@@ -89,20 +97,25 @@ export default class ForwardRequest extends React.Component {
             }}
           />
         </View>
-        <View style={{ padding: 8 }}>
-          <Text>{`Forwarded(${contactsForwarded.length})`}</Text>
-          <FlatList
-            showsHorizontalScrollIndicator={false}
-            horizontal={true}
-            style={{ paddingTop: 16 }}
-            extraData={this.state.refresh}
-            keyExtractor={(item, index) => index.toString()}
-            data={contactsForwarded}
-            renderItem={({ item, index }) =>
-              this.renderContactForwarded(item, index)
-            }
-          />
-        </View>
+        {contactsForwarded.length > 0 && (
+          <View style={{ padding: 8 }}>
+            <Text style={{ fontFamily: "regular" }}>{`Forwarded(${
+              contactsForwarded.length
+            })`}</Text>
+            <FlatList
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}
+              style={{ paddingTop: 16 }}
+              extraData={this.state.refresh}
+              keyExtractor={(item, index) => index.toString()}
+              data={contactsForwarded}
+              renderItem={({ item, index }) =>
+                this.renderContactForwarded(item, index)
+              }
+            />
+          </View>
+        )}
+
         <FlatList
           style={{ paddingTop: 16 }}
           extraData={this.state.refresh}
@@ -125,8 +138,10 @@ export default class ForwardRequest extends React.Component {
           flexDirection: "column"
         }}
       >
-        <Text>{contact.name}</Text>
-        <Text>{contact.normalizedMobile}</Text>
+        <Text style={{ fontFamily: "regular" }}>{contact.name}</Text>
+        <Text style={{ fontFamily: "regular" }}>
+          {contact.normalizedMobile}
+        </Text>
       </View>
     );
   }
@@ -141,8 +156,8 @@ export default class ForwardRequest extends React.Component {
         }}
       >
         <View style={{ width: "70%" }}>
-          <Text style={{ fontSize: 16 }}>{contact.name || "Unknown"}</Text>
-          <Text>
+          <Text style={{ fontSize: 16, fontFamily:"regular" }}>{contact.name || "Unknown"}</Text>
+          <Text style={{fontFamily:"regular"}}>
             {contact.normalizedMobile != 0
               ? contact.normalizedMobile
               : "Unknown mobile no"}
@@ -163,7 +178,7 @@ export default class ForwardRequest extends React.Component {
               onPress={this.handleForward.bind(this, contact, index)}
             />
           ) : (
-            <Text>Forwarded</Text>
+            <Text style={{fontFamily:"regular"}}>Forwarded</Text>
           )}
         </View>
       </View>
@@ -171,18 +186,18 @@ export default class ForwardRequest extends React.Component {
   }
   handleForward = async (contact, index) => {
     if (contact.isForwarded) return;
-    let { UUserId, URequestId, refresh } = this.state;
+    let { uUserId, uRequestId, refresh } = this.state;
     let forward = _.cloneDeep(contact);
 
-    forward.receiverId = forward.UUserId;
-    forward.forwarderId = UUserId;
+    forward.receiverId = forward.uUserId;
+    forward.forwarderId = uUserId;
     forward.contactId = forward.id;
-    delete forward.UUserId;
+    delete forward.uUserId;
     delete forward.id;
     delete forward.isForwarded;
 
     try {
-      let { status, data } = await Api.postForwards(URequestId, forward);
+      let { status, data } = await Api.postForwards(uRequestId, forward);
 
       if ((status = 200 && data == true)) {
         contact.isForwarded = true;

@@ -337,7 +337,7 @@ export default class Feed extends React.Component {
       });
 
       if (status == 200) {
-        // console.log(data);
+        
         request.isExpecting = data.isExpecting;
         this.setState(
           update(this.state, {
@@ -351,7 +351,6 @@ export default class Feed extends React.Component {
     }
   };
   toggleRequestMenu = async (request, index) => {
-    console.log(`show menu for ${request.id}`);
     request.isMenuShown = !request.isMenuShown;
     this.setState(
       update(this.state, {
@@ -361,14 +360,12 @@ export default class Feed extends React.Component {
     );
   };
   toggleHideRequest = async (request, index) => {
-    console.log(`hiding post request ${request.id}`);
     try {
       let { status, data } = await Api.toggleHideRequest(
         request.id,
         this.state.uUserId
       );
-      console.log(status);
-      console.log(data);
+
       if (status == 200) {
         request.isHidden = data.isHidden;
         this.setState(
@@ -381,14 +378,11 @@ export default class Feed extends React.Component {
     } catch (err) {}
   };
   flagRequest = async (request, index) => {
-    console.log(`flagging request ${request.id}`);
     try {
       let { status, data } = await Api.flagRequest(request.id, {
         id: this.state.uUserId
       });
-      // console.log(status);
-      // console.log(data);
-      if(status == 200){
+      if (status == 200) {
         request.isFlagged = data.isFlagged;
         this.setState(
           update(this.state, {

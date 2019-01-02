@@ -36,7 +36,7 @@ const RootStack = createStackNavigator(
     Notifications:Notifications
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "ForwardRequest"
   }
 );
 
