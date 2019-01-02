@@ -51,6 +51,13 @@ export default class ForwardRequest extends React.Component {
       let { status, data } = await Api.getForwardables(uUserId, uRequestId);
       let contacts = data;
 
+      contacts = contacts.map(contact => {
+        contact.image = {
+          name: `https://robohash.org/${parseInt(Math.random() * 10000)}`
+        };
+        return contact;
+      });
+
       let contactsNotForwarded = _.filter(contacts, contact => {
         return !contact.isForwarded;
       });
@@ -73,7 +80,7 @@ export default class ForwardRequest extends React.Component {
     if (!this.state.fontLoaded) return null;
     let { contactsNotForwarded, contactsForwarded } = this.state;
     return (
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             height: 60,
@@ -98,7 +105,7 @@ export default class ForwardRequest extends React.Component {
           />
         </View>
         {contactsForwarded.length > 0 && (
-          <View style={{ padding: 16}}>
+          <View style={{ padding: 16 }}>
             <Text style={{ fontFamily: "regular" }}>{`Forwarded(${
               contactsForwarded.length
             })`}</Text>
@@ -118,7 +125,7 @@ export default class ForwardRequest extends React.Component {
 
         <FlatList
           showsVerticalScrollIndicator={false}
-          style={{ paddingTop: 16,marginBottom:64 }}
+          style={{ paddingTop: 16, marginBottom: 64 }}
           extraData={this.state.refresh}
           keyExtractor={(item, index) => index.toString()}
           data={contactsNotForwarded}
@@ -126,7 +133,6 @@ export default class ForwardRequest extends React.Component {
             this.renderContactNotForwarded(item, index)
           }
         />
-
       </ScrollView>
     );
   }
@@ -134,7 +140,7 @@ export default class ForwardRequest extends React.Component {
     return (
       <View
         style={{
-          marginRight:16,
+          marginRight: 16,
           flexDirection: "column"
         }}
       >
@@ -161,15 +167,21 @@ export default class ForwardRequest extends React.Component {
               <Image
                 style={{ width: "100%", height: "100%" }}
                 source={{
-                  uri: `https://robohash.org/${parseInt(Math.random() * 10000)}`
+                  uri: contact.image.name
                 }}
               />
             </View>
-            <View style={{ width: "80%", justifyContent: "center",paddingRight:8 }}>
+            <View
+              style={{
+                width: "80%",
+                justifyContent: "center",
+                paddingRight: 8
+              }}
+            >
               <Text style={{ fontSize: 14, fontFamily: "semiBold" }}>
                 {contact.name || "Unknown"}
               </Text>
-              <Text style={{ fontFamily: "regular", color:"#757575" }}>
+              <Text style={{ fontFamily: "regular", color: "#757575" }}>
                 {contact.normalizedMobile != 0
                   ? contact.normalizedMobile
                   : "Unknown mobile no"}
@@ -188,7 +200,7 @@ export default class ForwardRequest extends React.Component {
               <TouchableOpacity
                 onPress={this.handleForward.bind(this, contact, index)}
               >
-                <Text style={{ fontFamily: "regular", color: "#E64A19" }}>
+                <Text style={{ fontFamily: "regular", color: "#1976D2" }}>
                   Forward
                 </Text>
               </TouchableOpacity>
