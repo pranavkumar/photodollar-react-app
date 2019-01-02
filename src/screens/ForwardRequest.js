@@ -40,6 +40,7 @@ export default class ForwardRequest extends React.Component {
       contactsNotForwarded: [],
       refresh: false
     };
+    console.log(this.state);
     this.loadFonts = Utils.loadFonts.bind(this);
   }
   componentWillMount = async () => {

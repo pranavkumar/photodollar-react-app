@@ -18,6 +18,7 @@ import RequestActions from "../components/RequestActions";
 import { PrimaryButton, Separator } from "../components/CommonUI";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import * as _ from "lodash";
+const moment = require("moment");
 
 // import {Share} from "expo";
 // import Share from 'react-native-share';
@@ -105,9 +106,9 @@ export default class Feed extends React.Component {
             </View>
             <Text
               style={{
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: "normal",
-                fontFamily: "regular",
+                fontFamily: "semiBold",
                 width: "70%",
                 paddingLeft: 8,
                 paddingRight: 8
@@ -182,6 +183,26 @@ export default class Feed extends React.Component {
             </View>
           </View>
         )}
+        <View style={{ paddingLeft: 16, paddingRight: 16, paddingBottom: 8 }}>
+          <View style={{ flexDirection: "row" }}>
+            <Image
+              style={{ width: "15%", height: 35 }}
+              source={{
+                uri: `https://robohash.org/789/${parseInt(
+                  Math.random() * 1000
+                )}`
+              }}
+            />
+            <View style={{ width: "85%",paddingLeft:8 }}>
+              <Text style={{ fontFamily: "regular" }}>
+                {(item.UUser.name) ? item.UUser.name : `${item.UUser.firstname} ${item.UUser.lastname}`}
+              </Text>
+              <Text style={{ fontFamily: "regular", color:"#616161"}}>
+                {moment(item.createdAt).fromNow()}
+              </Text>
+            </View>
+          </View>
+        </View>
         {(!item.UResponses || item.UResponses.length == 0) &&
           this.renderObjectives(item)}
         {item.UResponses &&
@@ -242,20 +263,20 @@ export default class Feed extends React.Component {
     return (
       <View style={{ padding: 16 }}>
         <View
-          style={{ backgroundColor: "#EEEEEE", borderRadius: 4, padding: 8 }}
+          style={{ backgroundColor: "#FDD835", borderRadius: 4, padding: 8 }}
         >
           <Text style={{ fontFamily: "regular" }}>
             {`Do you know someone around ${_to.addressLine1}?`}
           </Text>
           <Text
-            style={{ color: "#1E88E5", fontFamily: "semiBold", fontSize: 14 }}
+            style={{ color: "#FFFDE7", fontFamily: "semiBold", fontSize: 14 }}
           >
             Forward Post +50 pts.
           </Text>
         </View>
         <View
           style={{
-            backgroundColor: "#EEEEEE",
+            backgroundColor: "#FF8A65",
             borderRadius: 4,
             padding: 8,
             marginTop: 8
@@ -265,7 +286,7 @@ export default class Feed extends React.Component {
             {`Be the first one to reply.`}
           </Text>
           <Text
-            style={{ color: "#1E88E5", fontFamily: "semiBold", fontSize: 14 }}
+            style={{ color: "#FFFDE7", fontFamily: "semiBold", fontSize: 14 }}
           >
             Reply Post +50 pts.
           </Text>
@@ -298,7 +319,7 @@ export default class Feed extends React.Component {
             {item.comment || "No comment available"}
           </Text>
           <Text style={{ fontFamily: "regular", color: "#BDBDBD" }}>
-            {item.createdAt}
+            {moment(item.createdAt).fromNow()}
           </Text>
         </View>
       </View>
@@ -310,7 +331,7 @@ export default class Feed extends React.Component {
   handleForward = async request => {
     console.log("Forwarding...");
     this.props.navigation.navigate("ForwardRequest", {
-      URequestId: request.id
+      uRequestId: request.id
     });
   };
   handleShare = async (request, index) => {
@@ -337,7 +358,6 @@ export default class Feed extends React.Component {
       });
 
       if (status == 200) {
-        
         request.isExpecting = data.isExpecting;
         this.setState(
           update(this.state, {

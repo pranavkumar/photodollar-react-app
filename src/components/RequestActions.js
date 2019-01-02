@@ -99,25 +99,28 @@ export default class RequestActions extends React.Component {
             padding: 8
           }}
         >
-          <TouchableOpacity
-            onPress={this.props.onReply}
+        <TouchableOpacity
+          onPress={this.props.onReply}
+          style={{
+            width: 60,
+            height: 25,
+            borderWidth: 1,
+            borderRadius: 4,
+            borderColor: "#E64A19",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <Text
             style={{
-              width: "100%",
-              height: 35,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#E64A19",
-              color: "white",
-              borderRadius: 4,
-              margin: 4
+              borderWidth: 0,
+              color: "#E64A19",
+              fontFamily: "regular"
             }}
           >
-            <Text
-              style={{ fontFamily: "regular", fontSize: 16, color: "white" }}
-            >
-              Reply
-            </Text>
-          </TouchableOpacity>
+            Reply
+          </Text>
+        </TouchableOpacity>
         </View>
       </View>
     );
