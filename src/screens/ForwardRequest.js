@@ -156,8 +156,10 @@ export default class ForwardRequest extends React.Component {
         }}
       >
         <View style={{ width: "70%" }}>
-          <Text style={{ fontSize: 16, fontFamily:"regular" }}>{contact.name || "Unknown"}</Text>
-          <Text style={{fontFamily:"regular"}}>
+          <Text style={{ fontSize: 16, fontFamily: "regular" }}>
+            {contact.name || "Unknown"}
+          </Text>
+          <Text style={{ fontFamily: "regular" }}>
             {contact.normalizedMobile != 0
               ? contact.normalizedMobile
               : "Unknown mobile no"}
@@ -172,19 +174,22 @@ export default class ForwardRequest extends React.Component {
           }}
         >
           {!contact.isForwarded ? (
-            <PrimaryButton
-              title="Forward"
-              type="outline"
+            <TouchableOpacity
               onPress={this.handleForward.bind(this, contact, index)}
-            />
+            >
+              <Text style={{ fontFamily: "semiBold", color: "#1E88E5" }}>
+                Forward
+              </Text>
+            </TouchableOpacity>
           ) : (
-            <Text style={{fontFamily:"regular"}}>Forwarded</Text>
+            <Text style={{ fontFamily: "regular" }}>Forwarded</Text>
           )}
         </View>
       </View>
     );
   }
   handleForward = async (contact, index) => {
+    console.log("forwarding");
     if (contact.isForwarded) return;
     let { uUserId, uRequestId, refresh } = this.state;
     let forward = _.cloneDeep(contact);
@@ -198,7 +203,7 @@ export default class ForwardRequest extends React.Component {
 
     try {
       let { status, data } = await Api.postForwards(uRequestId, forward);
-
+      console.log(data);
       if ((status = 200 && data == true)) {
         contact.isForwarded = true;
         this.setState(
