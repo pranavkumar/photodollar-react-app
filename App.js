@@ -10,6 +10,7 @@ import CreateResponse from "./src/screens/CreateResponse";
 import UserProfile from "./src/screens/UserProfile";
 import SignIn from "./src/screens/SignIn";
 import ForwardRequest from "./src/screens/ForwardRequest";
+import Exp from "./src/screens/Exp";
 import Search from "./src/screens/Search";
 import Notifications from "./src/screens/Notifications";
 
@@ -33,10 +34,11 @@ const RootStack = createStackNavigator(
     SignIn:SignIn,
     ForwardRequest:ForwardRequest,
     Search: Search,
-    Notifications:Notifications
+    Notifications:Notifications,
+    Exp:Exp
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "Exp"
   }
 );
 
