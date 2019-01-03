@@ -1,8 +1,6 @@
 import { Shaders, Node, GLSL } from "gl-react";
 import React from "react";
-
 import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource";
-
 import { Surface } from "gl-react-expo";
 
 const shaders = Shaders.create({
@@ -30,28 +28,22 @@ const shaders = Shaders.create({
   }
 });
 
+module.exports = ({ children: t }) => {
+  let t1 = resolveAssetSource(require("./resources/blackboard1024.png"));
+  let t2 = resolveAssetSource(require("./resources/overlayMap.png"));
+  let t3 = resolveAssetSource(require("./resources/amaroMap.png"));
 
-
-const Amaro = ({ children: t }) => {
   return (
-
+    <Surface style={{ width: "100%", height: "100%" }}>
       <Node
         shader={shaders.Amaro}
         uniforms={{
-          inputImageTexture:t,
-          inputImageTexture2: resolveAssetSource(
-            require("./resources/blackboard1024.png")
-          ),
-          inputImageTexture3: resolveAssetSource(
-            require("./resources/overlayMap.png")
-          ),
-          inputImageTexture4: resolveAssetSource(
-            require("./resources/amaroMap.png")
-          )
+          inputImageTexture: t,
+          inputImageTexture2: t1,
+          inputImageTexture3: t2,
+          inputImageTexture4: t3
         }}
       />
-    
+    </Surface>
   );
 };
-
-module.exports = Amaro;

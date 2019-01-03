@@ -10,30 +10,11 @@ import {
 } from "react-native";
 import * as Api from "../services/Api";
 import update from "immutability-helper";
-import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource";
-
-import { Shaders, Node, GLSL } from "gl-react";
-import { Surface } from "gl-react-expo";
 
 import { Amaro } from "../components/filters";
+import GLImage from "gl-react-image";
 
-const shaders = Shaders.create({
-  helloBlue: {
-    frag: GLSL`
-precision highp float;
-varying vec2 uv;
-uniform float blue;
-void main() {
-  gl_FragColor = vec4(uv.x, uv.y, blue, 1.0);
-}`
-  }
-});
-class HelloBlue extends React.Component {
-  render() {
-    const { blue } = this.props;
-    return <Node shader={shaders.helloBlue} uniforms={{ blue }} />;
-  }
-}
+
 
 export default class Exp extends React.Component {
   constructor(props) {
@@ -45,7 +26,7 @@ export default class Exp extends React.Component {
       function() {
         this.setState({ showFilter: true });
       }.bind(this),
-      0
+      1000
     );
     return;
   };
@@ -54,9 +35,9 @@ export default class Exp extends React.Component {
     return (
       <View>
         {showFilter && (
-          <Surface style={{ width: "100%", height: 300 }}>
-            <Amaro />
-          </Surface>
+            <Amaro>
+              {{uri:"https://c.static-nike.com/a/images/t_PDP_1280_v1/f_auto/bozwnlrrb9sevx4ygiel/flex-2018-rn-mens-running-shoe-zREVkk.jpg"}}
+            </Amaro>
         )}
       </View>
     );
