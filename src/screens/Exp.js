@@ -15,6 +15,8 @@ import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource"
 import { Shaders, Node, GLSL } from "gl-react";
 import { Surface } from "gl-react-expo";
 
+import { Amaro } from "../components/filters";
+
 const shaders = Shaders.create({
   helloBlue: {
     frag: GLSL`
@@ -30,8 +32,6 @@ class HelloBlue extends React.Component {
   render() {
     const { blue } = this.props;
     return <Node shader={shaders.helloBlue} uniforms={{ blue }} />;
-
-
   }
 }
 
@@ -54,8 +54,8 @@ export default class Exp extends React.Component {
     return (
       <View>
         {showFilter && (
-          <Surface style={{ width: "100%", height: "100%" }}>
-            <HelloBlue blue={0.5} />
+          <Surface style={{ width: "100%", height: 300 }}>
+            <Amaro />
           </Surface>
         )}
       </View>
