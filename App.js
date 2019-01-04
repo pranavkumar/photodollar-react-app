@@ -17,6 +17,7 @@ import Notifications from "./src/screens/Notifications";
 
 export default class App extends React.Component {
   render() {
+    console.disableYellowBox = true;
     return <AppContainer />;
   }
   componentDidMount() {}

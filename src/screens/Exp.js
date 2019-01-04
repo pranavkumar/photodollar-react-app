@@ -11,34 +11,56 @@ import {
 import * as Api from "../services/Api";
 import update from "immutability-helper";
 
-import { Amaro } from "../components/filters";
-import GLImage from "gl-react-image";
-
-
+import { Amaro, Brannan } from "../components/filters";
+import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource";
 
 export default class Exp extends React.Component {
   constructor(props) {
     super(props);
     this.state = { showFilter: false };
+    this.filters = [Amaro, Brannan];
   }
   componentDidMount = async () => {
     setTimeout(
       function() {
         this.setState({ showFilter: true });
       }.bind(this),
-      1000
+      0
     );
     return;
   };
   render() {
     let { showFilter } = this.state;
+    let selectedFilter = 0;
     return (
-      <View>
-        {showFilter && (
+      <View
+        style={{
+          flex: 1,
+          height: "100%",
+
+          width: "100%",
+          flexDirection: "column"
+        }}
+      >
+        <View style={{ height: "80%" }}>
+          {showFilter && selectedFilter == 0 && (
             <Amaro>
-              {{uri:"https://c.static-nike.com/a/images/t_PDP_1280_v1/f_auto/bozwnlrrb9sevx4ygiel/flex-2018-rn-mens-running-shoe-zREVkk.jpg"}}
+              {resolveAssetSource(
+                require("../components/filters/testimages/running.jpg")
+              )}
             </Amaro>
-        )}
+          )}
+        </View>
+        <View
+          style={{
+            alignSelf: "flex-end",
+            height: "20%",
+            width: "100%",
+            padding: 16
+          }}
+        >
+          <Text>Holla</Text>
+        </View>
       </View>
     );
   }
@@ -46,3 +68,18 @@ export default class Exp extends React.Component {
     console.log("some error");
   }
 }
+
+// {showFilter && selectedFilter == 0 && (
+//   <Amaro>
+//     {resolveAssetSource(
+//       require("../components/filters/testimages/running.jpg")
+//     )}
+//   </Amaro>
+// )}
+// {showFilter && selectedFilter == 1 && (
+//   <Brannan>
+//     {resolveAssetSource(
+//       require("../components/filters/testimages/running.jpg")
+//     )}
+//   </Brannan>
+// )}

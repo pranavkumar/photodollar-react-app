@@ -28,13 +28,13 @@ const shaders = Shaders.create({
   }
 });
 
-module.exports = ({ children: t }) => {
+module.exports = ({ children: t}) => {
   let t1 = resolveAssetSource(require("./resources/blackboard1024.png"));
   let t2 = resolveAssetSource(require("./resources/overlayMap.png"));
   let t3 = resolveAssetSource(require("./resources/amaroMap.png"));
 
   return (
-    <Surface style={{ width: "100%", height: "100%" }}>
+    <Surface style={{ width: "100%", height: 200 }}>
       <Node
         shader={shaders.Amaro}
         uniforms={{
