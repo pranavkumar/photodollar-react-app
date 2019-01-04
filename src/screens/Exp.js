@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import * as Api from "../services/Api";
 import update from "immutability-helper";
+import * as Utils from "../services/Utils";
 
 import { Amaro, Brannan } from "../components/filters";
 import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource";
@@ -19,6 +20,7 @@ export default class Exp extends React.Component {
     super(props);
     this.state = { showFilter: false };
     this.filters = [Amaro, Brannan];
+    this.loadFonts = Utils.loadFonts.bind(this);
   }
   componentDidMount = async () => {
     setTimeout(
@@ -29,9 +31,16 @@ export default class Exp extends React.Component {
     );
     return;
   };
+  componentWillMount = async () => {
+    await this.loadFonts();
+
+
+  };
   render() {
+    if(!this.state.fontLoaded) return null;
     let { showFilter } = this.state;
     let selectedFilter = 0;
+
     return (
       <View
         style={{
@@ -42,44 +51,56 @@ export default class Exp extends React.Component {
           flexDirection: "column"
         }}
       >
-        <View style={{ height: "80%" }}>
+        <View style={{ height: "70%" }}>
           {showFilter && selectedFilter == 0 && (
-            <Amaro>
-              {resolveAssetSource(
+            <Amaro
+              width="100%"
+              height={200}
+              image={resolveAssetSource(
                 require("../components/filters/testimages/running.jpg")
               )}
-            </Amaro>
+            />
           )}
         </View>
         <View
           style={{
             alignSelf: "flex-end",
-            height: "20%",
+            height: "30%",
             width: "100%",
             padding: 16
           }}
         >
-          <Text>Holla</Text>
+          <FlatList
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            extraData={this.state.refresh}
+            keyExtractor={(item, index) => index.toString()}
+            data={this.filters}
+            renderItem={({ item, index }) =>
+              this.renderFilterPreview(item, index)
+            }
+          />
         </View>
       </View>
     );
   }
+
+  renderFilterPreview(Filter, index) {
+    return (
+      <View style={{ width: 100 }}>
+        <Filter
+          width="100%"
+          height="75%"
+          image={resolveAssetSource(
+            require("../components/filters/testimages/running.jpg")
+          )}
+        />
+        <Text style={{fontFamily:"regular"}}>{Filter.getMeta().name}</Text>
+      </View>
+    );
+  }
+
   onError() {
     console.log("some error");
   }
 }
-
-// {showFilter && selectedFilter == 0 && (
-//   <Amaro>
-//     {resolveAssetSource(
-//       require("../components/filters/testimages/running.jpg")
-//     )}
-//   </Amaro>
-// )}
-// {showFilter && selectedFilter == 1 && (
-//   <Brannan>
-//     {resolveAssetSource(
-//       require("../components/filters/testimages/running.jpg")
-//     )}
-//   </Brannan>
-// )}

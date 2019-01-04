@@ -67,30 +67,40 @@ const shaders = Shaders.create({
   }
 });
 
-module.exports = ({ children: inputImageTexture }) => {
-  return (
-    <Surface style={{ width: "100%", height: 200 }}>
-      <Node
-        shader={shaders.Brannan}
-        uniforms={{
-          inputImageTexture,
-          inputImageTexture2: resolveAssetSource(
-            require("./resources/brannanProcess.png")
-          ),
-          inputImageTexture3: resolveAssetSource(
-            require("./resources/brannanBlowout.png")
-          ),
-          inputImageTexture4: resolveAssetSource(
-            require("./resources/brannanContrast.png")
-          ),
-          inputImageTexture5: resolveAssetSource(
-            require("./resources/brannanLuma.png")
-          ),
-          inputImageTexture6: resolveAssetSource(
-            require("./resources/brannanScreen.png")
-          )
-        }}
-      />
-    </Surface>
-  );
-};
+export default class Amaro extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  static  getMeta() {
+    return { name: "Brannan" };
+  }
+  render() {
+    let { width, height, image } = this.props;
+
+    return (
+      <Surface style={{ width: width, height: height }}>
+        <Node
+          shader={shaders.Brannan}
+          uniforms={{
+            inputImageTexture: image,
+            inputImageTexture2: resolveAssetSource(
+              require("./resources/brannanProcess.png")
+            ),
+            inputImageTexture3: resolveAssetSource(
+              require("./resources/brannanBlowout.png")
+            ),
+            inputImageTexture4: resolveAssetSource(
+              require("./resources/brannanContrast.png")
+            ),
+            inputImageTexture5: resolveAssetSource(
+              require("./resources/brannanLuma.png")
+            ),
+            inputImageTexture6: resolveAssetSource(
+              require("./resources/brannanScreen.png")
+            )
+          }}
+        />
+      </Surface>
+    );
+  }
+}

@@ -28,22 +28,34 @@ const shaders = Shaders.create({
   }
 });
 
-module.exports = ({ children: t}) => {
-  let t1 = resolveAssetSource(require("./resources/blackboard1024.png"));
-  let t2 = resolveAssetSource(require("./resources/overlayMap.png"));
-  let t3 = resolveAssetSource(require("./resources/amaroMap.png"));
+export default class Amaro extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  static getMeta() {
+    return { name: "Amaro" };
+  }
+  render() {
+    let { width, height, image } = this.props;
 
-  return (
-    <Surface style={{ width: "100%", height: 200 }}>
-      <Node
-        shader={shaders.Amaro}
-        uniforms={{
-          inputImageTexture: t,
-          inputImageTexture2: t1,
-          inputImageTexture3: t2,
-          inputImageTexture4: t3
-        }}
-      />
-    </Surface>
-  );
-};
+    return (
+      <Surface style={{ width: width, height: height }}>
+        <Node
+          shader={shaders.Amaro}
+          uniforms={{
+            inputImageTexture: image,
+            inputImageTexture2: resolveAssetSource(
+              require("./resources/blackboard1024.png")
+            ),
+            inputImageTexture3: resolveAssetSource(
+              require("./resources/overlayMap.png")
+            ),
+            inputImageTexture4: resolveAssetSource(
+              require("./resources/amaroMap.png")
+            )
+          }}
+        />
+      </Surface>
+    );
+  }
+}
