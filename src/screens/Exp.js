@@ -18,28 +18,18 @@ import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource"
 export default class Exp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { showFilter: false };
+    this.state = { selectedFilterIndex: 1 };
     this.filters = [Amaro, Brannan];
     this.loadFonts = Utils.loadFonts.bind(this);
   }
-  componentDidMount = async () => {
-    setTimeout(
-      function() {
-        this.setState({ showFilter: true });
-      }.bind(this),
-      0
-    );
-    return;
-  };
+  componentDidMount = async () => {};
   componentWillMount = async () => {
     await this.loadFonts();
-
-
   };
   render() {
-    if(!this.state.fontLoaded) return null;
-    let { showFilter } = this.state;
-    let selectedFilter = 0;
+    if (!this.state.fontLoaded) return null;
+    let { selectedFilterIndex } = this.state;
+    let SelectedFilter = this.filters[selectedFilterIndex];
 
     return (
       <View
@@ -52,15 +42,13 @@ export default class Exp extends React.Component {
         }}
       >
         <View style={{ height: "70%" }}>
-          {showFilter && selectedFilter == 0 && (
-            <Amaro
-              width="100%"
-              height={200}
-              image={resolveAssetSource(
-                require("../components/filters/testimages/running.jpg")
-              )}
-            />
-          )}
+          <SelectedFilter
+            width="100%"
+            height={200}
+            image={resolveAssetSource(
+              require("../components/filters/testimages/running.jpg")
+            )}
+          />
         </View>
         <View
           style={{
@@ -88,17 +76,23 @@ export default class Exp extends React.Component {
   renderFilterPreview(Filter, index) {
     return (
       <View style={{ width: 100 }}>
-        <Filter
-          width="100%"
-          height="75%"
-          image={resolveAssetSource(
-            require("../components/filters/testimages/running.jpg")
-          )}
-        />
-        <Text style={{fontFamily:"regular"}}>{Filter.getMeta().name}</Text>
+        <TouchableOpacity onPress={this.applyFilter.bind(this, index)}>
+          <Filter
+            width="100%"
+            height="75%"
+            image={resolveAssetSource(
+              require("../components/filters/testimages/running.jpg")
+            )}
+          />
+          <Text style={{ fontFamily: "regular" }}>{Filter.getMeta().name}</Text>
+        </TouchableOpacity>
       </View>
     );
   }
+  applyFilter = async index => {
+    console.log(`Applying filter ...${index}`);
+    await this.setState({ selectedFilterIndex: index });
+  };
 
   onError() {
     console.log("some error");
