@@ -4,10 +4,10 @@ import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource"
 import { Surface } from "gl-react-expo";
 
 const shaders = Shaders.create({
-  Amaro: {
+  Hudson: {
     frag: GLSL`
       precision highp float;
-      varying highp vec2 uv;
+      varying vec2 uv;
       uniform sampler2D inputImageTexture;
       uniform sampler2D inputImageTexture2;
       uniform sampler2D inputImageTexture3;
@@ -28,53 +28,29 @@ const shaders = Shaders.create({
   }
 });
 
-export default class Amaro extends React.Component {
+export default class F1977 extends React.Component {
   constructor(props) {
     super(props);
-    // this.Surface = Surface;
-    this.surface = null;
-  }
-  componentWillReceiveProps(props) {
-    console.log(props);
-  }
-  componentDidMount() {
-
   }
   static getMeta() {
-    return { name: "Amaro" };
-  }
-
-  snap = async () => {
-    if(!this.surface) throw new Error("Surface ref is null");
-    console.log(`taking snap...`);
-    return;
-  };
-  onSurfaceLoad(){
-    console.log("surface loaded");
+    return { name: "Hudson" };
   }
   render() {
     let { width, height, image } = this.props;
-
     return (
-      <Surface
-        onLoad={this.onSurfaceLoad}
-        style={{ width: width, height: height }}
-        ref={ref => {
-          this.surface = ref;
-        }}
-      >
+      <Surface style={{ width: width, height: height }}>
         <Node
-          shader={shaders.Amaro}
+          shader={shaders.Hudson}
           uniforms={{
             inputImageTexture: image,
             inputImageTexture2: resolveAssetSource(
-              require("./resources/blackboard1024.png")
+              require("./resources/hudsonBackground.png")
             ),
             inputImageTexture3: resolveAssetSource(
               require("./resources/overlayMap.png")
             ),
             inputImageTexture4: resolveAssetSource(
-              require("./resources/amaroMap.png")
+              require("./resources/hudsonMap.png")
             )
           }}
         />
