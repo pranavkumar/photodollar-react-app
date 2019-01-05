@@ -81,7 +81,7 @@ export default class Exp extends React.Component {
     let SelectedFilter = this.filters[selectedFilterIndex];
 
     return (
-      <ScrollView showsHorizontalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             height: 70,
