@@ -12,7 +12,7 @@ import { PrimaryButton } from "../components/CommonUI";
 import * as Api from "../services/Api";
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";
-import { Camera, Permissions } from "expo";
+import { Camera, Permissions, ImageManipulator } from "expo";
 import CameraControls from "../components/CameraControls";
 
 export default class CameraReply extends React.Component {
@@ -67,15 +67,40 @@ export default class CameraReply extends React.Component {
   }
   snap = async () => {
     console.log("taking pic...");
-    if (this.camera) {
-      this.setState({ isTakingPicture: true });
-      let photo = await this.camera.takePictureAsync();
-      console.log(photo);
-      this.setState({ isTakingPicture: false });
-      this.props.navigation.navigate("CreateResponse", {
-        image: photo,
-        request: this.state.request
-      });
+    try {
+      if (this.camera) {
+        this.setState({ isTakingPicture: true });
+
+        let photo = await this.camera.takePictureAsync();
+this.camera.pausePreview();
+
+        this.setState({ isTakingPicture: false });
+        let dim = photo.width <= photo.height ? photo.width : photo.height;
+        let originX = parseInt((photo.width - dim) / 2);
+        let originY = parseInt((photo.height - dim) / 2);
+
+        const resizedImage = await ImageManipulator.manipulate(photo.uri, [
+          {
+            crop: {
+              originX: originX,
+              originY: originY,
+              width: dim,
+              height: dim
+            }
+          },
+          {
+            resize:{
+              width:2000
+            }
+          }
+        ]);
+        this.props.navigation.navigate("Exp", {
+          image: resizedImage,
+          request: this.state.request
+        });
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
   toggleFlash() {

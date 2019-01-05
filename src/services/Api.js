@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const API_ENDPOINT = "http://192.168.0.101:6161/api/";
-export const FILE_ENDPOINT = "http://192.168.0.101:5500/files/";
+export const API_ENDPOINT = "http://192.168.0.100:6161/api/";
+export const FILE_ENDPOINT = "http://192.168.0.100:5500/files/";
 // export const FILTER_ENDPOINT = "http://192.168.0.101:7700/";
 // export const FILTER_ENDPOINT = "https://github.com/facebook/react-native/issues/5974";
 
