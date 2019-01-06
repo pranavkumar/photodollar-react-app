@@ -47,7 +47,9 @@ export default class Amaro extends React.Component {
   snap = async () => {
     if(!this.surface) throw new Error("Surface ref is null");
     console.log(`taking snap...`);
-    return;
+    let capture = await this.surface.glView.capture();
+    console.log(capture);
+    return capture;
   };
   onSurfaceLoad(){
     console.log("surface loaded");

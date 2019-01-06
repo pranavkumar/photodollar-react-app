@@ -35,10 +35,19 @@ export default class F1977 extends React.Component {
   static getMeta() {
     return { name: "Hudson" };
   }
+  snap = async () => {
+    if(!this.surface) throw new Error("Surface ref is null");
+    console.log(`taking snap...`);
+    let capture = await this.surface.glView.capture();
+    console.log(capture);
+    return capture;
+  };
   render() {
     let { width, height, image } = this.props;
     return (
-      <Surface style={{ width: width, height: height }}>
+      <Surface style={{ width: width, height: height }} ref={ref => {
+        this.surface = ref;
+      }}>
         <Node
           shader={shaders.Hudson}
           uniforms={{

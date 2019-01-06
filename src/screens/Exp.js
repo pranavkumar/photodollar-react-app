@@ -38,13 +38,12 @@ export default class Exp extends React.Component {
     super(props);
     let navigation = props.navigation;
     let _image = {
-      height: 666,
+      height: 500,
       uri:
-        "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540pranav.fullstack%252Fapp/ImageManipulator/75e5d6f8-b136-4e98-a370-5ec186e4ddd1.jpg",
+        "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540pranav.fullstack%252Fapp/ImageManipulator/ef232090-1b63-4144-8664-1d0ae52bfa3d.jpg",
       width: 500
     };
     var { height, width } = Dimensions.get("window");
-
 
     let image = navigation.getParam("image", _image);
 
@@ -121,11 +120,11 @@ export default class Exp extends React.Component {
               alignSelf: "flex-end",
               width: "100%",
               padding: 16,
-              paddingRight:0
+              paddingRight: 0
             }}
           >
             <FlatList
-              style={{ margin: 0}}
+              style={{ margin: 0 }}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               extraData={this.state.refresh}
@@ -152,6 +151,14 @@ export default class Exp extends React.Component {
             value={this.state.comment}
           />
         </View>
+        <View>
+          <TouchableOpacity
+            style={{ width: "100%", height: 60 }}
+            onPress={this.handlePost.bind(this)}
+          >
+            <Text>Post</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     );
   }
@@ -176,4 +183,28 @@ export default class Exp extends React.Component {
   onError() {
     console.log("some error");
   }
+  handlePost = async () => {
+    console.log("gonna post");
+    if (this.selectedFilter) {
+      console.log("filter available...");
+      try {
+        let capture = await this.selectedFilter.snap();
+        console.log(capture);
+        let formData = Utils.formDataFromImage(capture);
+        let imageResponse = await Api.postFile("responseImages", formData);
+        let {
+          result: {
+            files: {
+              image: [firstImage]
+            }
+          }
+        } = await imageResponse.json();
+        console.log(firstImage);
+      } catch (err) {
+        throw err;
+      }
+    } else {
+      console.log("no filter...");
+    }
+  };
 }
