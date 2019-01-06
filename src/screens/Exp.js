@@ -44,8 +44,7 @@ export default class Exp extends React.Component {
       width: 500
     };
     var { height, width } = Dimensions.get("window");
-    console.log(width);
-    console.log(height);
+
 
     let image = navigation.getParam("image", _image);
 
@@ -121,7 +120,8 @@ export default class Exp extends React.Component {
             style={{
               alignSelf: "flex-end",
               width: "100%",
-              padding: 8
+              padding: 16,
+              paddingRight:0
             }}
           >
             <FlatList
@@ -160,7 +160,7 @@ export default class Exp extends React.Component {
     let image = this.state.image;
     let _height = parseInt((100 / image.width) * image.height);
     return (
-      <View style={{ width: 100, marginRight: 8 }}>
+      <View style={{ width: 100, marginRight: 16 }}>
         <TouchableOpacity onPress={this.applyFilter.bind(this, Filter, index)}>
           <Filter width={100} height={_height} image={this.state.image} />
           <Text style={{ fontFamily: "regular" }}>{Filter.getMeta().name}</Text>

@@ -23,10 +23,11 @@ export default class CameraControls extends React.Component {
       <View
         style={{
           height: 80,
-          alignSelf: "flex-end",
+          justifyContent: "center",
           width: "100%",
-          flexDirection: "column",
-          alignItems: "center"
+
+          position: "absolute",
+          bottom: 0
         }}
       >
         <View
