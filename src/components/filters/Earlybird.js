@@ -92,18 +92,21 @@ export default class Earlybird extends React.Component {
     return { name: "Earlybird" };
   }
   snap = async () => {
-    if(!this.surface) throw new Error("Surface ref is null");
+    if (!this.surface) throw new Error("Surface ref is null");
     console.log(`taking snap...`);
     let capture = await this.surface.glView.capture();
     console.log(capture);
     return capture;
   };
   render() {
-    let { width, height, image } = this.props;
+    let { width, height, image, style } = this.props;
     return (
-      <Surface style={{ width: width, height: height }} ref={ref => {
-        this.surface = ref;
-      }}>
+      <Surface
+        style={{ width: width, height: height, ...style }}
+        ref={ref => {
+          this.surface = ref;
+        }}
+      >
         <Node
           shader={shaders.Earlybird}
           uniforms={{

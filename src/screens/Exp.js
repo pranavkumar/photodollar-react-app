@@ -153,14 +153,33 @@ export default class Exp extends React.Component {
             value={this.state.comment}
           />
         </View>
-        <View>
+
+        <View style={{ alignItems: "center", marginTop: 32 }}>
           <TouchableOpacity
-            style={{ width: "100%", height: 60 }}
             onPress={this.handlePost.bind(this)}
+            style={{
+              minWidth: 70,
+              height: 35,
+              borderWidth: 1,
+              borderRadius: 4,
+              borderColor: "#E64A19",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 8
+            }}
           >
-            <Text>Post</Text>
+            <Text
+              style={{
+                borderWidth: 0,
+                color: "#E64A19",
+                fontFamily: "regular"
+              }}
+            >
+              POST REPLY
+            </Text>
           </TouchableOpacity>
         </View>
+        <View style={{ height: 100 }} />
       </ScrollView>
     );
   }
@@ -171,7 +190,12 @@ export default class Exp extends React.Component {
     return (
       <View style={{ width: 100, marginRight: 16 }}>
         <TouchableOpacity onPress={this.applyFilter.bind(this, Filter, index)}>
-          <Filter width={100} height={_height} image={this.state.thumbnail} />
+          <Filter
+            width={100}
+            height={_height}
+            image={this.state.thumbnail}
+            style={{ borderRadius: 4 }}
+          />
           <Text style={{ fontFamily: "regular" }}>{Filter.getMeta().name}</Text>
         </TouchableOpacity>
       </View>

@@ -37,30 +37,28 @@ export default class Amaro extends React.Component {
   componentWillReceiveProps(props) {
     console.log(props);
   }
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
   static getMeta() {
     return { name: "Amaro" };
   }
 
   snap = async () => {
-    if(!this.surface) throw new Error("Surface ref is null");
+    if (!this.surface) throw new Error("Surface ref is null");
     console.log(`taking snap...`);
     let capture = await this.surface.glView.capture();
     console.log(capture);
     return capture;
   };
-  onSurfaceLoad(){
+  onSurfaceLoad() {
     console.log("surface loaded");
   }
   render() {
-    let { width, height, image } = this.props;
-
+    let { width, height, image, style } = this.props;
+    console.log(style);
     return (
       <Surface
         onLoad={this.onSurfaceLoad}
-        style={{ width: width, height: height }}
+        style={{ width: width, height: height, ...style }}
         ref={ref => {
           this.surface = ref;
         }}

@@ -55,9 +55,9 @@ export default class F1977 extends React.Component {
     return capture;
   };
   render() {
-    let { width, height, image } = this.props;
+    let { width, height, image, style } = this.props;
     return (
-      <Surface style={{ width: width, height: height }} ref={ref => {
+      <Surface style={{ width: width, height: height,...style }} ref={ref => {
         this.surface = ref;
       }}>
         <Node
