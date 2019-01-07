@@ -98,9 +98,9 @@ export default class Feed extends React.Component {
           >
             <View
               style={{
-                width: "15%",
+                width: 50,
                 backgroundColor: "#F5F5F5",
-                borderRadius: 12,
+                borderRadius: 4,
                 alignItems: "center",
                 justifyContent: "center",
                 height: 35
@@ -189,12 +189,14 @@ export default class Feed extends React.Component {
         )}
         <View style={{ paddingLeft: 16, paddingRight: 16, paddingBottom: 8 }}>
           <View style={{ flexDirection: "row" }}>
+            <View style={{ width: "15%", height: 50, borderRadius:2, borderColor:"#F5F5F5",borderWidth:1 }}>
             <Image
-              style={{ width: "15%", height: 35 }}
+              style={{ width: 45, height: 45 }}
               source={{
                 uri: item.UUser.image.src
               }}
             />
+            </View>
             <View style={{ width: "85%", paddingLeft: 8 }}>
               <Text style={{ fontFamily: "regular" }}>
                 {item.UUser.name

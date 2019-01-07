@@ -5,19 +5,23 @@ import {
   View,
   FlatList,
   ScrollView,
-  Image,
-  TextInput,
+  TouchableOpacity,
   Dimensions,
-  ImageBackground,
-  TouchableOpacity
+  TextInput
 } from "react-native";
-import { Card, Avatar } from "react-native-elements";
-import { PrimaryButton, Separator } from "../components/CommonUI";
 import * as Api from "../services/Api";
 import update from "immutability-helper";
-import { Ionicons } from "@expo/vector-icons";
-import { ImagePicker, Permissions } from "expo";
 import * as Utils from "../services/Utils";
+
+import {
+  Amaro,
+  Brannan,
+  Earlybird,
+  F1977,
+  Hefe,
+  Hudson
+} from "../components/filters";
+import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource";
 
 export default class CreateResponse extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -32,160 +36,215 @@ export default class CreateResponse extends React.Component {
   };
   constructor(props) {
     super(props);
-    // let mockImage = {
-    //   cancelled: false,
-    //   height: 420,
-    //   type: "image",
-    //   uri:
-    //     "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540pranav.fullstack%252Fapp/ImagePicker/84fd529a-9686-4b34-9f5f-fb02ac518712.jpg",
-    //   width: 480
-    // };
-    //image: this.props.navigation.getParam("image", null)
-    let { height, width } = Dimensions.get("window");
-    let { navigation } = this.props;
-    let image = navigation.getParam("image", null);
+    let navigation = props.navigation;
+
+    let _image = {
+      height: 500,
+      uri:
+        "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540pranav.fullstack%252Fapp/ImageManipulator/ef232090-1b63-4144-8664-1d0ae52bfa3d.jpg",
+      width: 500
+    };
+    var { height, width } = Dimensions.get("window");
+    let image = navigation.getParam("image", _image);
+    let thumbnail = navigation.getParam("thumbnail", image);
+    let _request = {
+      id: "5c1201181781236f919ca833"
+    };
     let request = navigation.getParam("request", null);
+    if (!request) {
+      request = _request;
+    }
 
     this.state = {
-      image,
-      comment: null,
-      placeholderComment: "Optional comment...",
-      height,
-      width,
-      isShowingOptions: false,
-      request
+      selectedFilterIndex: 0,
+      placeholderComment: "Optional comment",
+      image: image,
+      thumbnail: thumbnail,
+      request: request,
+      imageWidth: width,
+      imageHeight: parseInt((width / image.width) * image.height),
+      comment: null
     };
 
-    // console.log(this.state);
-  }
-  render() {
-    let { image, isShowingOptions, request } = this.state;
-    let screen = ({ height, width } = this.state);
-    let { width, height } = this.getImageDimensions(image, screen);
+    console.log(this.state);
 
-    // console.log(this.getImageDimensions(image, screen));
+    this.filters = [Amaro, Brannan, Earlybird, F1977, Hefe, Hudson];
+    this.loadFonts = Utils.loadFonts.bind(this);
+  }
+  componentDidMount = async () => {};
+  componentWillMount = async () => {
+    await this.loadFonts();
+  };
+  render() {
+    if (!this.state.fontLoaded) return null;
+    let { selectedFilterIndex, imageWidth, imageHeight } = this.state;
+    let SelectedFilter = this.filters[selectedFilterIndex];
+
     return (
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View
-          style={{ backgroundColor: "#424242", width: width, height: height }}
+          style={{
+            height: 70,
+            backgroundColor: "#EEEEEE",
+            padding: 16,
+            paddingBottom: 20
+          }}
         >
-          {this.state.image && (
-            <ImageBackground
-              style={{
-                height: height,
-                width: width,
-                alignItems: "flex-end",
-                flexDirection: "row"
-              }}
-              source={{ uri: image.uri }}
-            >
-              <View
-                style={{
-                  height: 60,
-                  width: width,
-                  backgroundColor: "#424242",
-                  opacity: 0.9,
-                  padding: 8
-                }}
-              >
-                <Text style={{ color: "#42A5F5", fontSize: 16 }}>
-                  {request.title}
-                </Text>
-                <Text style={{ color: "#F5F5F5", fontSize: 14 }}>
-                  By {`${request.UUser.firstname} ${request.UUser.lastname}`}
-                </Text>
-              </View>
-            </ImageBackground>
-          )}
+          <Text
+            style={{ fontFamily: "regular", fontSize: 18, color: "#757575" }}
+          >
+            Create Reply
+          </Text>
+          <Text
+            style={{ fontFamily: "regular", color: "#9E9E9E", marginTop: 4 }}
+          >
+            To : Shoes you are most fond of
+          </Text>
         </View>
-        <View style={{ marginLeft: 8, marginRight: 8 }}>
+        <View
+          style={{
+            width: "100%",
+            flexDirection: "column"
+          }}
+        >
+          <View>
+            <SelectedFilter
+              ref={ref => {
+                this.selectedFilter = ref;
+              }}
+              width={imageWidth}
+              height={imageHeight}
+              image={this.state.image}
+            />
+          </View>
+          <View
+            style={{
+              alignSelf: "flex-end",
+              width: "100%",
+              padding: 16,
+              paddingRight: 0
+            }}
+          >
+            <FlatList
+              style={{ margin: 0 }}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              extraData={this.state.refresh}
+              keyExtractor={(item, index) => index.toString()}
+              data={this.filters}
+              renderItem={({ item, index }) =>
+                this.renderFilterPreview.bind(this)(item, index)
+              }
+            />
+          </View>
+        </View>
+        <View style={{ marginLeft: 16, marginRight: 16 }}>
           <TextInput
             style={{
               height: 45,
               borderBottomWidth: 1,
-              fontSize: 18,
+              fontSize: 16,
               borderBottomColor: "#BDBDBD",
-              marginBottom: 8
+              marginBottom: 8,
+              fontFamily: "regular"
             }}
             placeholder={this.state.placeholderComment}
             onChangeText={text => this.setState({ comment: text })}
             value={this.state.comment}
           />
-          <View style={{ marginBottom: 8 }}>
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({ isShowingOptions: !isShowingOptions });
+        </View>
+
+        <View style={{ alignItems: "center", marginTop: 32 }}>
+          <TouchableOpacity
+            onPress={this.handlePost.bind(this)}
+            style={{
+              minWidth: 70,
+              height: 35,
+              borderWidth: 1,
+              borderRadius: 4,
+              borderColor: "#E64A19",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 8
+            }}
+          >
+            <Text
+              style={{
+                borderWidth: 0,
+                color: "#E64A19",
+                fontFamily: "regular"
               }}
             >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between"
-                }}
-              >
-                <Text style={{ color: "#616161" }}>View more options</Text>
-                <Ionicons
-                  name={isShowingOptions ? "ios-arrow-up" : "ios-arrow-down"}
-                  size={16}
-                  color="#424242"
-                  style={{ marginRight: 8 }}
-                />
-              </View>
-            </TouchableOpacity>
-            {isShowingOptions && (
-              <View style={{ marginTop: 8 }}>
-                <Text>Some options</Text>
-              </View>
-            )}
-          </View>
-          <Separator />
-          <View style={{ alignItems: "center" }}>
-            <PrimaryButton
-              title="Post Reply"
-              onPress={this.postResponse.bind(this)}
-              containerStyle={{ width: 150 }}
-              buttonStyle={{
-                backgroundColor: "#42A5F5",
-                borderRadius: 16,
-                width: "100%",
-                height: 35
-              }}
-            />
-          </View>
+              POST REPLY
+            </Text>
+          </TouchableOpacity>
         </View>
+        <View style={{ height: 100 }} />
       </ScrollView>
     );
   }
 
-  getImageDimensions(image, screen) {
-    return {
-      height: (image.height / image.width) * screen.width,
-      width: screen.width
-    };
+  renderFilterPreview(Filter, index) {
+    let image = this.state.image;
+    let _height = parseInt((100 / image.width) * image.height);
+    return (
+      <View style={{ width: 100, marginRight: 16 }}>
+        <TouchableOpacity onPress={this.applyFilter.bind(this, Filter, index)}>
+          <Filter
+            width={100}
+            height={_height}
+            image={this.state.thumbnail}
+            style={{ borderRadius: 4 }}
+          />
+          <Text style={{ fontFamily: "regular" }}>{Filter.getMeta().name}</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
+  applyFilter = async (Filter, index) => {
+    console.log(`Applying filter ...${index}`);
+    await this.setState({ selectedFilterIndex: index });
+  };
 
-  postResponse = async () => {
-    let { image } = this.state;
-    let formData = Utils.formDataFromImage(image);
-    try {
-      let imageResponse = await Api.postFile("responseImages", formData);
-      let {
-        result: {
-          files: {
-            image: [firstImage]
+  onError() {
+    console.log("some error");
+  }
+  handlePost = async () => {
+    console.log("gonna post");
+    if (this.selectedFilter) {
+      console.log("filter available...");
+      try {
+        let capture = await this.selectedFilter.snap();
+        console.log(capture);
+        let formData = Utils.formDataFromImage(capture);
+        let imageResponse = await Api.postFile("responseImages", formData);
+        let {
+          result: {
+            files: {
+              image: [firstImage]
+            }
           }
-        }
-      } = await imageResponse.json();
-      let { comment, request } = this.state;
-      let { data } = await Api.postResponse({
-        comment,
-        UUserId: "1234",
-        requestId: request.id,
-        image: firstImage
-      });
-      console.log(data);
-    } catch (err) {
-      console.log(err);
+        } = await imageResponse.json();
+        console.log(firstImage);
+
+        let { comment, request } = this.state;
+        // console.log(this.state);
+        let response = {
+          comment,
+          UUserId: "5c274acc5d90de6eb2981509",
+          requestId: request.id,
+          image: firstImage
+        };
+        console.log(response);
+        let { status, data } = await Api.postResponse(response);
+        console.log(status);
+        console.log(data);
+        this.props.navigation.navigate("Home");
+      } catch (err) {
+        throw err;
+      }
+    } else {
+      console.log("no filter...");
     }
   };
 }

@@ -159,7 +159,7 @@ export default class CameraReply extends React.Component {
     ]);
     this.camera.resumePreview();
     this.setState({ isTakingPicture: false });
-    this.props.navigation.navigate("Exp", {
+    this.props.navigation.navigate("CreateResponse", {
       image: resizedImage,
       thumbnail: thumbnail,
       request: this.state.request

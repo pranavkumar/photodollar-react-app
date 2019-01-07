@@ -51,7 +51,7 @@ export default class DefaultFooter extends React.Component {
               justifyContent: "center"
             }}
           >
-            <SimpleLineIcons name="user" size={28} color="#616161" />
+            <SimpleLineIcons name="user" size={26} color="#616161" />
           </TouchableOpacity>
         </View>
 
@@ -88,7 +88,7 @@ export default class DefaultFooter extends React.Component {
               justifyContent: "center"
             }}
           >
-            <AntDesign name="folder1" size={32} color="#616161" />
+            <AntDesign name="folder1" size={28} color="#616161" />
           </TouchableOpacity>
         </View>
       </View>
