@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   FlatList,
   Share,
-  ScrollView
+  ScrollView,
+  Dimensions
 } from "react-native";
 
 import * as Utils from "../services/Utils";
@@ -26,10 +27,13 @@ const moment = require("moment");
 export default class Feed extends React.Component {
   constructor(props) {
     super(props);
+    var { height, width } = Dimensions.get("window");
     this.state = {
       requests: [],
       refresh: false,
-      uUserId: props.uUserId || null
+      uUserId: props.uUserId || null,
+      screenWidth: width,
+      screenHeight: height
     };
   }
   componentWillReceiveProps = async props => {
@@ -52,10 +56,10 @@ export default class Feed extends React.Component {
       let { status, data } = await Api.getFeed(uUserId);
       console.log(status);
       if (status == 200) {
-        // data = _.map(data, function(item) {
-        //   item.isMenuShown = true;
-        //   return item;
-        // });
+        data = _.map(data, function(item) {
+          item.UUser.image = { src: `https://robohash.org/789/` };
+          return item;
+        });
         // console.log(data[0]);
         this.setState(update(this.state, { requests: { $set: data } }));
       }
@@ -65,7 +69,7 @@ export default class Feed extends React.Component {
   };
   render() {
     return (
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <FlatList
           showsVerticalScrollIndicator={false}
           extraData={this.state.refresh}
@@ -188,9 +192,7 @@ export default class Feed extends React.Component {
             <Image
               style={{ width: "15%", height: 35 }}
               source={{
-                uri: `https://robohash.org/789/${parseInt(
-                  Math.random() * 1000
-                )}`
+                uri: item.UUser.image.src
               }}
             />
             <View style={{ width: "85%", paddingLeft: 8 }}>
@@ -198,6 +200,9 @@ export default class Feed extends React.Component {
                 {item.UUser.name
                   ? item.UUser.name
                   : `${item.UUser.firstname} ${item.UUser.lastname}`}
+              </Text>
+              <Text style={{ fontFamily: "regular", color: "#616161" }}>
+                {`Local - around 2km away`}
               </Text>
               <Text style={{ fontFamily: "regular", color: "#616161" }}>
                 {moment(item.createdAt).fromNow()}
@@ -297,32 +302,61 @@ export default class Feed extends React.Component {
     );
   }
   renderResponses(items) {
-    let shape = this.getShape(items.length);
+    let shape = this.getShape.bind(this)(items.length);
+    // console.log(items[0]);
     return (
       <View>
         {shape[0] &&
-          this.getResponseList(items.slice(shape[0].initial, shape[0].final))}
+          this.getResponseList(
+            items.slice(shape[0].initial, shape[0].final),
+            shape[0]
+          )}
         {shape[1] &&
-          this.getResponseList(items.slice(shape[1].initial, shape[1].final))}
+          this.getResponseList(
+            items.slice(shape[1].initial, shape[1].final),
+            shape[1]
+          )}
         {shape[2] &&
-          this.getResponseList(items.slice(shape[2].initial, shape[2].final))}
+          this.getResponseList(
+            items.slice(shape[2].initial, shape[2].final),
+            shape[2]
+          )}
         {shape[3] &&
-          this.getResponseList(items.slice(shape[3].initial, shape[3].final))}
+          this.getResponseList(
+            items.slice(shape[3].initial, shape[3].final),
+            shape[3]
+          )}
         {shape[4] &&
-          this.getResponseList(items.slice(shape[4].initial, shape[4].final))}
+          this.getResponseList(
+            items.slice(shape[4].initial, shape[4].final),
+            shape[4]
+          )}
         {shape[5] &&
-          this.getResponseList(items.slice(shape[5].initial, shape[5].final))}
+          this.getResponseList(
+            items.slice(shape[5].initial, shape[5].final),
+            shape[5]
+          )}
         {shape[6] &&
-          this.getResponseList(items.slice(shape[6].initial, shape[6].final))}
+          this.getResponseList(
+            items.slice(shape[6].initial, shape[6].final),
+            shape[6]
+          )}
         {shape[7] &&
-          this.getResponseList(items.slice(shape[7].initial, shape[7].final))}
+          this.getResponseList(
+            items.slice(shape[7].initial, shape[7].final),
+            shape[7]
+          )}
       </View>
     );
   }
-  getResponseList(items) {
+  getResponseList(items, shape) {
+    items = items.map((item)=>{
+      item.shape = shape;
+      return item;
+    });
     return (
       <FlatList
-        style={{marginLeft:16}}
+        style={{ marginLeft: 16 }}
         showsHorizontalScrollIndicator={false}
         horizontal={true}
         keyExtractor={(item, index) => index.toString()}
@@ -332,19 +366,27 @@ export default class Feed extends React.Component {
     );
   }
   renderResponse(item) {
+    console.log(item.shape);
     return (
-      <View style={{ marginBottom: 16, marginRight: 16, width: 150 }}>
+      <View style={{ marginBottom: 16, marginRight: 16, width: item.shape.width }}>
         <Image
-          style={{ width: "100%", height: 150,borderRadius:2 }}
+          style={{ width: "100%", height: item.shape.height, borderRadius: 2 }}
           source={{
             uri: Api.FILE_ENDPOINT + "responseImages/" + item.image.name
           }}
         />
-        <View style={{ marginTop: 0}}>
-          <Text style={{ fontFamily: "regular", marginTop: 8, fontSize: 14 }}>
+        <View style={{ marginTop: 0 }}>
+          {item.user && (
+            <Text style={{ fontFamily: "semiBold" }}>
+              {item.user.name || "Unknown"}
+            </Text>
+          )}
+          <Text style={{ fontFamily: "regular", fontSize: 14 }}>
             {item.comment || "No comment available"}
           </Text>
-          <Text style={{ fontFamily: "regular", color: "#BDBDBD",fontSize: 12 }}>
+          <Text
+            style={{ fontFamily: "regular", color: "#BDBDBD", fontSize: 12 }}
+          >
             {moment(item.createdAt).fromNow()}
           </Text>
         </View>
@@ -352,13 +394,25 @@ export default class Feed extends React.Component {
     );
   }
   getShape = l => {
+    let { screenWidth, screenHeight } = this.state;
+    // console.log(screenWidth);
+    // console.log(screenHeight);
+    let width = null;
+    let height = null;
+    if (l == 1) {
+      width = screenWidth;
+      height = screenWidth;
+    } else if (l > 1) {
+      width = parseInt(screenWidth * 0.55);
+      height = width;
+    }
     let shape = [];
     let rows = Math.min(parseInt(Math.sqrt(l)), 8);
-    console.log(rows);
+    // console.log(rows);
     for (let i = 0; i < rows; i++) {
       shape.push(parseInt(l / rows));
     }
-    console.log(shape);
+    // console.log(shape);
     let remaining = l % rows;
     let index = 0;
     while (index < remaining) {
@@ -367,11 +421,17 @@ export default class Feed extends React.Component {
     }
     let offset = 0;
     shape = shape.map(elem => {
-      let _elem = { size: elem, initial: offset, final: offset + elem };
+      let _elem = {
+        size: elem,
+        initial: offset,
+        final: offset + elem,
+        width: width,
+        height: height
+      };
       offset = offset + elem;
       return _elem;
     });
-    console.log(shape);
+    // console.log(shape);
     return shape;
   };
   handleReply = async request => {
