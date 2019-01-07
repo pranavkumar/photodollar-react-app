@@ -65,6 +65,7 @@ export default class CameraReply extends React.Component {
               backgroundColor: "blue",
               justifyContent: "center"
             }}
+
             type={this.state.type}
             ref={ref => {
               this.camera = ref;
@@ -126,13 +127,14 @@ export default class CameraReply extends React.Component {
           onPictureSaved: this.onPictureSaved.bind(this)
         });
         this.camera.pausePreview();
+
       }
     } catch (err) {
       console.log(err);
     }
   };
   onPictureSaved = async photo => {
-    this.setState({ isTakingPicture: false });
+
     let dim = photo.width <= photo.height ? photo.width : photo.height;
     let originX = parseInt((photo.width - dim) / 2);
     let originY = parseInt((photo.height - dim) / 2);
@@ -152,9 +154,14 @@ export default class CameraReply extends React.Component {
         }
       }
     ]);
+    const thumbnail = await ImageManipulator.manipulate(resizedImage.uri, [
+      { resize: { width: 200 } }
+    ]);
     this.camera.resumePreview();
+    this.setState({ isTakingPicture: false });
     this.props.navigation.navigate("Exp", {
       image: resizedImage,
+      thumbnail: thumbnail,
       request: this.state.request
     });
   };

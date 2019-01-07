@@ -39,7 +39,7 @@ const RootStack = createStackNavigator(
     Exp:Exp
   },
   {
-    initialRouteName: "CameraReply"
+    initialRouteName: "Home"
   }
 );
 

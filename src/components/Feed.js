@@ -193,11 +193,13 @@ export default class Feed extends React.Component {
                 )}`
               }}
             />
-            <View style={{ width: "85%",paddingLeft:8 }}>
+            <View style={{ width: "85%", paddingLeft: 8 }}>
               <Text style={{ fontFamily: "regular" }}>
-                {(item.UUser.name) ? item.UUser.name : `${item.UUser.firstname} ${item.UUser.lastname}`}
+                {item.UUser.name
+                  ? item.UUser.name
+                  : `${item.UUser.firstname} ${item.UUser.lastname}`}
               </Text>
-              <Text style={{ fontFamily: "regular", color:"#616161"}}>
+              <Text style={{ fontFamily: "regular", color: "#616161" }}>
                 {moment(item.createdAt).fromNow()}
               </Text>
             </View>
@@ -295,8 +297,32 @@ export default class Feed extends React.Component {
     );
   }
   renderResponses(items) {
+    let shape = this.getShape(items.length);
+    return (
+      <View>
+        {shape[0] &&
+          this.getResponseList(items.slice(shape[0].initial, shape[0].final))}
+        {shape[1] &&
+          this.getResponseList(items.slice(shape[1].initial, shape[1].final))}
+        {shape[2] &&
+          this.getResponseList(items.slice(shape[2].initial, shape[2].final))}
+        {shape[3] &&
+          this.getResponseList(items.slice(shape[3].initial, shape[3].final))}
+        {shape[4] &&
+          this.getResponseList(items.slice(shape[4].initial, shape[4].final))}
+        {shape[5] &&
+          this.getResponseList(items.slice(shape[5].initial, shape[5].final))}
+        {shape[6] &&
+          this.getResponseList(items.slice(shape[6].initial, shape[6].final))}
+        {shape[7] &&
+          this.getResponseList(items.slice(shape[7].initial, shape[7].final))}
+      </View>
+    );
+  }
+  getResponseList(items) {
     return (
       <FlatList
+        style={{marginLeft:16}}
         showsHorizontalScrollIndicator={false}
         horizontal={true}
         keyExtractor={(item, index) => index.toString()}
@@ -307,24 +333,47 @@ export default class Feed extends React.Component {
   }
   renderResponse(item) {
     return (
-      <View style={{ marginBottom: 32, marginRight: 16, marginLeft: 16 }}>
+      <View style={{ marginBottom: 16, marginRight: 16, width: 150 }}>
         <Image
-          style={{ width: 200, height: 200 }}
+          style={{ width: "100%", height: 150,borderRadius:2 }}
           source={{
             uri: Api.FILE_ENDPOINT + "responseImages/" + item.image.name
           }}
         />
-        <View style={{ marginTop: 8 }}>
-          <Text style={{ fontFamily: "regular", marginTop: 8, fontSize: 16 }}>
+        <View style={{ marginTop: 0}}>
+          <Text style={{ fontFamily: "regular", marginTop: 8, fontSize: 14 }}>
             {item.comment || "No comment available"}
           </Text>
-          <Text style={{ fontFamily: "regular", color: "#BDBDBD" }}>
+          <Text style={{ fontFamily: "regular", color: "#BDBDBD",fontSize: 12 }}>
             {moment(item.createdAt).fromNow()}
           </Text>
         </View>
       </View>
     );
   }
+  getShape = l => {
+    let shape = [];
+    let rows = Math.min(parseInt(Math.sqrt(l)), 8);
+    console.log(rows);
+    for (let i = 0; i < rows; i++) {
+      shape.push(parseInt(l / rows));
+    }
+    console.log(shape);
+    let remaining = l % rows;
+    let index = 0;
+    while (index < remaining) {
+      shape[index] = shape[index] + 1;
+      index++;
+    }
+    let offset = 0;
+    shape = shape.map(elem => {
+      let _elem = { size: elem, initial: offset, final: offset + elem };
+      offset = offset + elem;
+      return _elem;
+    });
+    console.log(shape);
+    return shape;
+  };
   handleReply = async request => {
     this.props.navigation.navigate("CameraReply", { request: request });
   };

@@ -37,6 +37,7 @@ export default class Exp extends React.Component {
   constructor(props) {
     super(props);
     let navigation = props.navigation;
+
     let _image = {
       height: 500,
       uri:
@@ -44,16 +45,25 @@ export default class Exp extends React.Component {
       width: 500
     };
     var { height, width } = Dimensions.get("window");
-
     let image = navigation.getParam("image", _image);
+    let thumbnail = navigation.getParam("thumbnail", image);
+    let _request = {
+      id: "5c1201181781236f919ca833"
+    };
+    let request = navigation.getParam("request", null);
+    if (!request) {
+      request = _request;
+    }
 
     this.state = {
       selectedFilterIndex: 0,
       placeholderComment: "Optional comment",
       image: image,
-      request: navigation.getParam("request", null),
+      thumbnail: thumbnail,
+      request: request,
       imageWidth: width,
-      imageHeight: parseInt((width / image.width) * image.height)
+      imageHeight: parseInt((width / image.width) * image.height),
+      comment: null
     };
 
     console.log(this.state);
@@ -61,15 +71,7 @@ export default class Exp extends React.Component {
     this.filters = [Amaro, Brannan, Earlybird, F1977, Hefe, Hudson];
     this.loadFonts = Utils.loadFonts.bind(this);
   }
-  componentDidMount = async () => {
-    setTimeout(
-      function() {
-        console.log(typeof this.selectedFilter);
-        // this.selectedFilter.snap();
-      }.bind(this),
-      3000
-    );
-  };
+  componentDidMount = async () => {};
   componentWillMount = async () => {
     await this.loadFonts();
   };
@@ -169,7 +171,7 @@ export default class Exp extends React.Component {
     return (
       <View style={{ width: 100, marginRight: 16 }}>
         <TouchableOpacity onPress={this.applyFilter.bind(this, Filter, index)}>
-          <Filter width={100} height={_height} image={this.state.image} />
+          <Filter width={100} height={_height} image={this.state.thumbnail} />
           <Text style={{ fontFamily: "regular" }}>{Filter.getMeta().name}</Text>
         </TouchableOpacity>
       </View>
@@ -200,6 +202,20 @@ export default class Exp extends React.Component {
           }
         } = await imageResponse.json();
         console.log(firstImage);
+
+        let { comment, request } = this.state;
+        // console.log(this.state);
+        let response = {
+          comment,
+          UUserId: "5c274acc5d90de6eb2981509",
+          requestId: request.id,
+          image: firstImage
+        };
+        console.log(response);
+        let { status, data } = await Api.postResponse(response);
+        console.log(status);
+        console.log(data);
+        this.props.navigation.navigate("Home");
       } catch (err) {
         throw err;
       }
