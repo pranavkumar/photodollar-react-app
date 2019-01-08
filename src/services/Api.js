@@ -73,6 +73,18 @@ export function addNotificationToken(id, tokenObj) {
   );
 }
 
+export function saveDeviceLocation(id, locationObj) {
+  return errorHandler(
+    axios.post(`${API_ENDPOINT}/UUsers/${id}/saveDeviceLocation`, locationObj)
+  );
+}
+
+export function geocodeReverse(lat, lng) {
+  return errorHandler(
+    axios.get(`${API_ENDPOINT}/maps/geocodeReverse`, { params: { lat, lng } })
+  );
+}
+
 export function toggleExpectator(requestId, expectator) {
   return errorHandler(
     axios.post(

@@ -22,20 +22,12 @@ export default class Home extends React.Component {
     this.state = {
       requests: [],
       uUser: {},
-      location: {
-        addressLine1: "1st a main road, 15th cross",
-        addressLine2: "HSR Layout, Sector 6",
-        city: "Bengaluru",
-        country: "Karnataka",
-        lat: 12.9081,
-        lng: 77.6476,
-        latDelta: 0.0222,
-        lngDelta: 0.0121
-      }
+      location: null
     };
     this.loadFonts = Utils.loadFonts.bind(this);
     this.getUser = Utils.getUser.bind(this);
     this.registerForPushNotifications = Utils.registerForPushNotifications.bind(this);
+    this.resolveLocation = Utils.resolveLocation.bind(this);
   }
 
   render() {
@@ -55,6 +47,8 @@ export default class Home extends React.Component {
     await this.loadFonts();
     await this.getUser();
     await this.registerForPushNotifications();
+    await this.resolveLocation();
+    console.log(this.state);
 
   };
   componentDidMount = async () => {
@@ -64,9 +58,13 @@ export default class Home extends React.Component {
         let { status, data } = await Api.getUserProfile(this.state.uUser.id);
         let uUser = data;
         await Utils.syncContacts(uUser.id, uUser.lastContactSync);
+        this._notificationSubscription = Notifications.addListener(this.handleNotification);
       }
     } catch (err) {
       console.log(err);
     }
   };
+  handleNotification = (notification)=>{
+    console.log(notification);
+  }
 }

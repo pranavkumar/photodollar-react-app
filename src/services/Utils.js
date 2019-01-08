@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { Font, Permissions, Contacts, Notifications } from "expo";
+import { Font, Permissions, Contacts, Notifications, Location } from "expo";
 import * as Api from "./Api";
 import update from "immutability-helper";
 const moment = require("moment");
@@ -100,7 +100,7 @@ export async function registerForPushNotifications() {
   );
 
   let finalStatus = existingStatus;
-  if (true) {
+  if (existingStatus !== "granted") {
     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
     finalStatus = status;
   }
@@ -117,4 +117,51 @@ export async function registerForPushNotifications() {
   });
   console.log(status);
   console.log(data);
+}
+
+export async function resolveLocation() {
+  console.log(`resolving location`);
+  if (!this.state.uUser || !this.state.uUser._defaultLocation) {
+    try {
+      let { status } = await Permissions.getAsync(Permissions.LOCATION);
+      console.log(`resolving...${status}`);
+      let finalStatus = status;
+      if (status !== "granted") {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        finalStatus = status;
+      }
+      console.log(`${finalStatus}`);
+      if (finalStatus != "granted") {
+        return;
+      } else {
+        let currentLocation = await Location.getCurrentPositionAsync({});
+        console.log(currentLocation);
+        if (this.state.uUser) {
+          let { status, data } = await Api.saveDeviceLocation(
+            this.state.uUser.id,
+            currentLocation
+          );
+          this.setState(
+            update(this.state, { $set: { location: data.location } })
+          );
+        } else {
+          let { status, data } = await Api.geocodeReverse(
+            currentLocation.coords.latitude,
+            currentLocation.coords.longitude
+          );
+          this.setState(
+            update(this.state, { $set: { location: data.location } })
+          );
+        }
+      }
+    } catch (err) {
+      throw err;
+    }
+  } else {
+    this.setState(
+      update(this.state, {
+        $set: { location: this.state.uUser._defaultLocation }
+      })
+    );
+  }
 }
