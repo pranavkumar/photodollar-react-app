@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { Font, Permissions, Contacts } from "expo";
+import { Font, Permissions, Contacts, Notifications } from "expo";
 import * as Api from "./Api";
 import update from "immutability-helper";
 const moment = require("moment");
@@ -91,4 +91,30 @@ export async function getUser() {
   } catch (err) {
     throw err;
   }
+}
+
+export async function registerForPushNotifications() {
+  if (!this.state.uUser || !this.state.uUser.id) return;
+  const { status: existingStatus } = await Permissions.getAsync(
+    Permissions.NOTIFICATIONS
+  );
+
+  let finalStatus = existingStatus;
+  if (true) {
+    const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+    finalStatus = status;
+  }
+
+  if (finalStatus !== "granted") {
+    return;
+  }
+
+  console.log("gonna fetch tokens...");
+  let token = await Notifications.getExpoPushTokenAsync();
+  console.log(token);
+  let { status, data } = await Api.addNotificationToken(this.state.uUser.id, {
+    token
+  });
+  console.log(status);
+  console.log(data);
 }

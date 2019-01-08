@@ -24,7 +24,9 @@
       "supportsTablet": true
     },
     "android":{
-      "permissions":["CONTACTS"]
+      "permissions":["CONTACTS"],
+      "package":"app.photodollar.photodollar",
+      "googleServicesFile": "./google-services.json"
     },
     "androidStatusBar":{
       "barStyle":"light-content",

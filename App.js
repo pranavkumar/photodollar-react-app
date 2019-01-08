@@ -13,7 +13,6 @@ import ForwardRequest from "./src/screens/ForwardRequest";
 import Search from "./src/screens/Search";
 import Notifications from "./src/screens/Notifications";
 
-
 export default class App extends React.Component {
   render() {
     console.disableYellowBox = true;
@@ -25,16 +24,16 @@ export default class App extends React.Component {
 const RootStack = createStackNavigator(
   {
     Home: Home,
-    Map:Map,
+    Map: Map,
     CoverageCategories: CoverageCategories,
     CreateRequest: CreateRequest,
     CameraReply: CameraReply,
-    CreateResponse:CreateResponse,
-    UserProfile:UserProfile,
-    SignIn:SignIn,
-    ForwardRequest:ForwardRequest,
+    CreateResponse: CreateResponse,
+    UserProfile: UserProfile,
+    SignIn: SignIn,
+    ForwardRequest: ForwardRequest,
     Search: Search,
-    Notifications:Notifications
+    Notifications: Notifications
   },
   {
     initialRouteName: "Home"

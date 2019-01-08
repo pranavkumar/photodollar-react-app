@@ -4,7 +4,7 @@ import { View } from "react-native";
 import * as Api from "../services/Api";
 import * as Utils from "../services/Utils";
 import update from "immutability-helper";
-import { Permissions } from "expo";
+import { Permissions, Notifications } from "expo";
 import DefaultHeader from "../components/DefaultHeader";
 import DefaultFooter from "../components/DefaultFooter";
 import Feed from "../components/Feed";
@@ -35,6 +35,7 @@ export default class Home extends React.Component {
     };
     this.loadFonts = Utils.loadFonts.bind(this);
     this.getUser = Utils.getUser.bind(this);
+    this.registerForPushNotifications = Utils.registerForPushNotifications.bind(this);
   }
 
   render() {
@@ -53,6 +54,7 @@ export default class Home extends React.Component {
   componentWillMount = async () => {
     await this.loadFonts();
     await this.getUser();
+    await this.registerForPushNotifications();
 
   };
   componentDidMount = async () => {

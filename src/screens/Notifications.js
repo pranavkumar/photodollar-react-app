@@ -18,10 +18,55 @@ import * as Api from "../services/Api";
 import * as Utils from "../services/Utils";
 
 export default class Notifications extends React.Component {
-  constructor(props){
+  static navigationOptions = ({ navigation }) => {
+    return {
+      header: ({ state }) => {
+        return null;
+      },
+      headerStyle: {
+        backgroundColor: "transparent"
+      }
+    };
+  };
+  constructor(props) {
     super(props);
+    this.state = {};
+    this.loadFonts = Utils.loadFonts.bind(this);
   }
-  render(){
-    return (<View><Text>Notifications</Text></View>);
+  componentWillMount = async () => {
+    await this.loadFonts();
+  };
+
+  render() {
+    let { fontLoaded } = this.state;
+    if (!fontLoaded) {
+      return null;
+    }
+    return (
+      <View>
+        <View
+          style={{
+            height: 60,
+            backgroundColor: "#EEEEEE",
+            padding: 16,
+            paddingBottom: 20
+          }}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ width: "66%" }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: "#616161",
+                  fontFamily: "regular"
+                }}
+              >
+                Notifications
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
   }
 }

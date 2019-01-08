@@ -3,7 +3,6 @@ import axios from "axios";
 export const API_ENDPOINT = "http://192.168.0.100:6161/api/";
 export const FILE_ENDPOINT = "http://192.168.0.100:5500/files/";
 
-
 async function errorHandler(promise) {
   try {
     let res = await promise;
@@ -64,6 +63,13 @@ export function postResponse(response) {
       `${API_ENDPOINT}/URequests/${response.requestId}/UResponses/`,
       response
     )
+  );
+}
+
+export function addNotificationToken(id, tokenObj) {
+  // console.log(tokenObj);
+  return errorHandler(
+    axios.post(`${API_ENDPOINT}/UUsers/${id}/notificationTokens`, tokenObj)
   );
 }
 

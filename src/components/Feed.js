@@ -21,9 +21,6 @@ import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import * as _ from "lodash";
 const moment = require("moment");
 
-// import {Share} from "expo";
-// import Share from 'react-native-share';
-
 export default class Feed extends React.Component {
   constructor(props) {
     super(props);
@@ -58,6 +55,7 @@ export default class Feed extends React.Component {
       if (status == 200) {
         data = _.map(data, function(item) {
           item.UUser.image = { src: `https://robohash.org/789/` };
+          item.isMenuShown = false;
           return item;
         });
         // console.log(data[0]);
@@ -189,13 +187,21 @@ export default class Feed extends React.Component {
         )}
         <View style={{ paddingLeft: 16, paddingRight: 16, paddingBottom: 8 }}>
           <View style={{ flexDirection: "row" }}>
-            <View style={{ width: "15%", height: 50, borderRadius:2, borderColor:"#F5F5F5",borderWidth:1 }}>
-            <Image
-              style={{ width: 45, height: 45 }}
-              source={{
-                uri: item.UUser.image.src
+            <View
+              style={{
+                width: "15%",
+                height: 50,
+                borderRadius: 2,
+                borderColor: "#F5F5F5",
+                borderWidth: 1
               }}
-            />
+            >
+              <Image
+                style={{ width: 45, height: 45 }}
+                source={{
+                  uri: item.UUser.image.src
+                }}
+              />
             </View>
             <View style={{ width: "85%", paddingLeft: 8 }}>
               <Text style={{ fontFamily: "regular" }}>
@@ -352,7 +358,7 @@ export default class Feed extends React.Component {
     );
   }
   getResponseList(items, shape) {
-    items = items.map((item)=>{
+    items = items.map(item => {
       item.shape = shape;
       return item;
     });
@@ -368,9 +374,11 @@ export default class Feed extends React.Component {
     );
   }
   renderResponse(item) {
-    console.log(item.shape);
+    // console.log(item.shape);
     return (
-      <View style={{ marginBottom: 16, marginRight: 16, width: item.shape.width }}>
+      <View
+        style={{ marginBottom: 16, marginRight: 16, width: item.shape.width }}
+      >
         <Image
           style={{ width: "100%", height: item.shape.height, borderRadius: 2 }}
           source={{
@@ -397,8 +405,7 @@ export default class Feed extends React.Component {
   }
   getShape = l => {
     let { screenWidth, screenHeight } = this.state;
-    // console.log(screenWidth);
-    // console.log(screenHeight);
+
     let width = null;
     let height = null;
     if (l == 1) {
@@ -483,12 +490,14 @@ export default class Feed extends React.Component {
   };
   toggleRequestMenu = async (request, index) => {
     request.isMenuShown = !request.isMenuShown;
-    this.setState(
+    console.log(this.state.requests[index]);
+    await this.setState(
       update(this.state, {
         requests: { index: { $set: request } },
         refresh: { $set: !this.state.refresh }
       })
     );
+    console.log(this.state.requests[index]);
   };
   toggleHideRequest = async (request, index) => {
     try {
