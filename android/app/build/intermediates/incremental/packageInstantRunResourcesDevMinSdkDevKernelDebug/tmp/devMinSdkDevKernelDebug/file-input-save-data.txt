@@ -1,0 +1,19 @@
+#Internal package file, do not edit.
+#Thu Jan 10 02:55:27 IST 2019
+1.base=/Users/pranavkumar/workspace/coverage/app/android/app/build/intermediates/assets/devMinSdkDevKernel/debug
+2.path=kernel-manifest.json
+0.baseType=DIRECTORY
+3.baseType=DIRECTORY
+2.base=/Users/pranavkumar/workspace/coverage/app/android/app/build/intermediates/assets/devMinSdkDevKernel/debug
+3.set=ASSET
+2.set=ASSET
+1.baseType=DIRECTORY
+3.path=fonts/EmojiOne.ttf
+count=4
+1.set=ASSET
+0.path=ula.kml
+3.base=/Users/pranavkumar/workspace/coverage/app/android/app/build/intermediates/assets/devMinSdkDevKernel/debug
+0.set=ASSET
+0.base=/Users/pranavkumar/workspace/coverage/app/android/app/build/intermediates/assets/devMinSdkDevKernel/debug
+2.baseType=DIRECTORY
+1.path=kernel.android.bundle

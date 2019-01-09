@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "360050592439",
+    "firebase_url": "https://photodollar-dd02a.firebaseio.com",
+    "project_id": "photodollar-dd02a",
+    "storage_bucket": "photodollar-dd02a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:360050592439:android:2d98630bef3fed1d",
+        "android_client_info": {
+          "package_name": "app.photodollar.photodollar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "360050592439-a617hf843j8fjkituokk6kjckhniah9k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.photodollar.photodollar",
+            "certificate_hash": ""
+          }
+        },
+        {
+          "client_id": "360050592439-nse0lkfm3g87bvd0hr7hkbbkirqh352u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "360050592439-nse0lkfm3g87bvd0hr7hkbbkirqh352u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
