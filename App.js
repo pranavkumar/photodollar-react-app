@@ -1,5 +1,9 @@
 import React from "react";
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import {
+  createStackNavigator,
+  createAppContainer,
+  withNavigation
+} from "react-navigation";
 
 import Home from "./src/screens/Home";
 import Map from "./src/screens/Map";
@@ -11,15 +15,49 @@ import UserProfile from "./src/screens/UserProfile";
 import SignIn from "./src/screens/SignIn";
 import ForwardRequest from "./src/screens/ForwardRequest";
 import Search from "./src/screens/Search";
-import Notifications from "./src/screens/Notifications";
+import UserNotifications from "./src/screens/UserNotifications";
+import NavigationService from "./src/services/NavigationService";
+import { Permissions, Notifications } from "expo";
 
-export default class App extends React.Component {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    if (props.exp && props.exp.notification) {
+      console.log(props.exp.notification);
+    }
+  }
   render() {
     console.disableYellowBox = true;
-    return <AppContainer />;
+    return (
+      <AppContainer
+        ref={navigatorRef => {
+          NavigationService.setTopLevelNavigator(navigatorRef);
+        }}
+      />
+    );
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this._notificationSubscription = Notifications.addListener(
+      this.handleNotification.bind(this)
+    );
+  }
+  handleNotification = async notification => {
+    console.log(notification);
+    if (notification.origin == "selected") {
+      if (notification.data) {
+        let { type, uRequestId } = notification.data;
+        if (type == "NEW_LOCAL_REQUEST" && uRequestId) {
+          console.log("trying to redirect...");
+          NavigationService.navigate("CameraReply", {
+            request: { id: uRequestId }
+          });
+        }
+      }
+    }
+  };
 }
+
+export default App;
 
 const RootStack = createStackNavigator(
   {
@@ -33,7 +71,7 @@ const RootStack = createStackNavigator(
     SignIn: SignIn,
     ForwardRequest: ForwardRequest,
     Search: Search,
-    Notifications: Notifications
+    UserNotifications: UserNotifications
   },
   {
     initialRouteName: "Home"

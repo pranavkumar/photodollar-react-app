@@ -17,7 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Api from "../services/Api";
 import * as Utils from "../services/Utils";
 
-export default class Notifications extends React.Component {
+export default class UserNotifications extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       header: ({ state }) => {

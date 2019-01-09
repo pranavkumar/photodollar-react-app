@@ -19,6 +19,8 @@ export default class Home extends React.Component {
   };
   constructor(props) {
     super(props);
+    // console.log(props.exp);
+
     this.state = {
       requests: [],
       uUser: {},
@@ -48,7 +50,7 @@ export default class Home extends React.Component {
     await this.getUser();
     await this.registerForPushNotifications();
     await this.resolveLocation();
-    console.log(this.state);
+    // console.log(this.state);
 
   };
   componentDidMount = async () => {
@@ -58,13 +60,13 @@ export default class Home extends React.Component {
         let { status, data } = await Api.getUserProfile(this.state.uUser.id);
         let uUser = data;
         await Utils.syncContacts(uUser.id, uUser.lastContactSync);
-        this._notificationSubscription = Notifications.addListener(this.handleNotification);
+        
       }
     } catch (err) {
       console.log(err);
     }
   };
   handleNotification = (notification)=>{
-    console.log(notification);
+    console.log("we have notification");
   }
 }

@@ -104,6 +104,6 @@ export default class DefaultFooter extends React.Component {
   }
   gotoNotifications() {
     if (!this.navigation) return;
-    this.navigation.navigate("Notifications", { uUserId: this.state.uUserId });
+    this.navigation.navigate("UserNotifications", { uUserId: this.state.uUserId });
   }
 }

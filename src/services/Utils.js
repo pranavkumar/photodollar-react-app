@@ -124,18 +124,18 @@ export async function resolveLocation() {
   if (!this.state.uUser || !this.state.uUser._defaultLocation) {
     try {
       let { status } = await Permissions.getAsync(Permissions.LOCATION);
-      console.log(`resolving...${status}`);
+      // console.log(`resolving...${status}`);
       let finalStatus = status;
       if (status !== "granted") {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         finalStatus = status;
       }
-      console.log(`${finalStatus}`);
+      // console.log(`${finalStatus}`);
       if (finalStatus != "granted") {
         return;
       } else {
         let currentLocation = await Location.getCurrentPositionAsync({});
-        console.log(currentLocation);
+        // console.log(currentLocation);
         if (this.state.uUser) {
           let { status, data } = await Api.saveDeviceLocation(
             this.state.uUser.id,
