@@ -350,6 +350,7 @@
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="fb0"/>
 
     <meta-data android:name="standaloneStripeScheme" android:value="fa5996c7-b468-4888-a349-3a5b174a37bd" />
+      <service android:name="com.reactlibrary.NotificationIntentService"/>
   </application>
 
 </manifest>

@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Jan 11 18:47:48 IST 2019
+#Fri Jan 11 20:06:55 IST 2019
 5.base=/Users/pranavkumar/workspace/coverage/napp/android/app/build/intermediates/transforms/stripDebugSymbol/devMinSdkDevKernel/debug/0
 42.base=/Users/pranavkumar/workspace/coverage/napp/android/app/build/intermediates/transforms/stripDebugSymbol/devMinSdkDevKernel/debug/0
 22.path=classes.dex

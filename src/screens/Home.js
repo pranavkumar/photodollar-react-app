@@ -63,12 +63,20 @@ export default class Home extends React.Component {
   componentWillMount = async () => {
     await this.loadFonts();
     await this.getUser();
-    console.log(this.state);
-    await this.registerForPushNotifications();
     await this.resolveLocation();
-    DeviceEventEmitter.addListener("notifying", function(e: Event) {
-      // handle event.
-      console.log("notifying....");
+    await this.registerForPushNotifications();
+
+    if (this.state.uUser.id) {
+      console.log(`loading user with id ${this.state.uUser.id}`);
+      let { status, data } = await Api.getUserProfile(this.state.uUser.id);
+      let uUser = data;
+      await Utils.syncContacts(uUser.id, uUser.lastContactSync);
+    } else {
+      console.log("no user found...");
+      this.props.navigation.navigate("SignIn");
+    }
+    DeviceEventEmitter.addListener("notifying", function(e) {
+      console.log("notifying...." + JSON.stringify(e));
     });
   };
   onNotifying() {
@@ -76,31 +84,16 @@ export default class Home extends React.Component {
   }
   componentDidMount = async () => {
     try {
-      await RNPdnative.show("holla...");
-      let echoMsg = await RNPdnative.echo("message is here fuckers");
-      console.log(echoMsg);
-
-      setTimeout(async function() {
-        await RNPdnative.showNotification(
-          "Vinodini Sinha has request for your best food pics in your area."
-        );
-      }, 5000);
-
-      if (this.state.uUser.id) {
-        console.log("loading user...");
-        console.log(this.state.uUser);
-        let { status, data } = await Api.getUserProfile(this.state.uUser.id);
-        let uUser = data;
-        await Utils.syncContacts(uUser.id, uUser.lastContactSync);
-      } else {
-        console.log("no user found...");
-        // this.props.navigation.navigate("SignIn");
-      }
+      //   setTimeout(async function() {
+      //     await RNPdnative.showNotification({
+      //       uRequestTitle: "Greatest request of all times...",
+      //       uRequestId: "1234",
+      //       uUserName: "Pranav Kumar",
+      //       uResponseImages:[]
+      //     });
+      //   }, 5000);
     } catch (err) {
       console.log(err);
     }
-  };
-  handleNotification = notification => {
-    console.log("we have notification");
   };
 }

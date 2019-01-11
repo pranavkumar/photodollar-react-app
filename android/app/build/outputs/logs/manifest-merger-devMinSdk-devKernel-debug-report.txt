@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-355:12
-INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-355:12
-INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-355:12
-INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-355:12
+ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-356:12
+INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-356:12
+INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-356:12
+INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-356:12
 MERGED from [:pdnative] /Users/pranavkumar/workspace/coverage/napp/pdnative/android/build/intermediates/manifests/full/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-webgl] /Users/pranavkumar/workspace/coverage/napp/node_modules/react-native-webgl/android/build/intermediates/manifests/full/debug/AndroidManifest.xml:2:1-18:12
 MERGED from [:react-native-share] /Users/pranavkumar/workspace/coverage/napp/node_modules/react-native-share/android/build/intermediates/manifests/full/debug/AndroidManifest.xml:2:1-13:12
@@ -150,22 +150,22 @@ MERGED from [com.crashlytics.sdk.android:answers:1.3.6] /Users/pranavkumar/.grad
 MERGED from [io.fabric.sdk.android:fabric:1.3.10] /Users/pranavkumar/.gradle/caches/transforms-1/files-1.1/fabric-1.3.10.aar/fd1f795860858d63b1c77aa4de4a060d/AndroidManifest.xml:18:1-29:12
 MERGED from [com.crashlytics.sdk.android:beta:1.1.4] /Users/pranavkumar/.gradle/caches/transforms-1/files-1.1/beta-1.1.4.aar/29afc42816086125c720fd85adcb2314/AndroidManifest.xml:2:1-13:12
 MERGED from [android.arch.lifecycle:runtime:1.0.0] /Users/pranavkumar/.gradle/caches/transforms-1/files-1.1/runtime-1.0.0.aar/47ed6f4b542c81e41600507f2f8c560e/AndroidManifest.xml:17:1-30:12
-INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-355:12
-INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-355:12
-INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-355:12
+INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-356:12
+INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-356:12
+INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-356:12
 	package
 		ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:3:3-30
 		INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml
 		INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml
 	android:versionName
 		INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml
-		ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-355:12
+		ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-356:12
 		INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml
 	xmlns:tools
 		ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:5:3-49
 	android:versionCode
 		INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml
-		ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-355:12
+		ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:2:1-356:12
 		INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml
 	xmlns:android
 		ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:4:3-61
@@ -500,7 +500,7 @@ ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/Andro
 	android:name
 		ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:52:17-60
 application
-ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:54:3-353:17
+ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:54:3-354:17
 MERGED from [host.exp.exponent:expoview:31.0.0] /Users/pranavkumar/.gradle/caches/transforms-1/files-1.1/expoview-31.0.0.aar/48c691d1018bf71edce07a9e921a5b60/AndroidManifest.xml:72:5-90:19
 MERGED from [host.exp.exponent:expoview:31.0.0] /Users/pranavkumar/.gradle/caches/transforms-1/files-1.1/expoview-31.0.0.aar/48c691d1018bf71edce07a9e921a5b60/AndroidManifest.xml:72:5-90:19
 MERGED from [com.facebook.react:react-native:31.0.0] /Users/pranavkumar/.gradle/caches/transforms-1/files-1.1/react-native-31.0.0.aar/69c8da11ad279a72edb7b6a8814ba99d/AndroidManifest.xml:13:5-20
@@ -1059,6 +1059,10 @@ ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/Andro
 		ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:352:54-106
 	android:name
 		ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:352:16-53
+service#com.reactlibrary.NotificationIntentService
+ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:353:7-75
+	android:name
+		ADDED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml:353:16-73
 uses-sdk
 INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from /Users/pranavkumar/workspace/coverage/napp/android/app/src/main/AndroidManifest.xml

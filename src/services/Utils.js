@@ -86,7 +86,7 @@ export async function getUser() {
   try {
     let uUser = await AsyncStorage.getItem("uUser", JSON.stringify(uUser));
     if (uUser) {
-      this.setState(update(this.state, { uUser: { $set: JSON.parse(uUser) } }));
+      await this.setState(update(this.state, { uUser: { $set: JSON.parse(uUser) } }));
     }
   } catch (err) {
     throw err;
