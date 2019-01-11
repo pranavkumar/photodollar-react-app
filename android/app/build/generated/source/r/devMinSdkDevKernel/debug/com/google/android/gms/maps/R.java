@@ -33,11 +33,11 @@ public final class R {
         public static final int zOrderOnTop = 0x7f040220;
     }
     public static final class id {
-        public static final int hybrid = 0x7f0900dd;
-        public static final int none = 0x7f090111;
-        public static final int normal = 0x7f090112;
-        public static final int satellite = 0x7f09014b;
-        public static final int terrain = 0x7f090187;
+        public static final int hybrid = 0x7f0900de;
+        public static final int none = 0x7f090117;
+        public static final int normal = 0x7f090118;
+        public static final int satellite = 0x7f090151;
+        public static final int terrain = 0x7f09018d;
     }
     public static final class styleable {
         public static final int[] MapAttrs = { 0x7f040031, 0x7f040061, 0x7f040062, 0x7f040063, 0x7f040064, 0x7f040065, 0x7f040066, 0x7f040067, 0x7f040125, 0x7f040126, 0x7f040127, 0x7f040128, 0x7f040140, 0x7f04014f, 0x7f040207, 0x7f040208, 0x7f040209, 0x7f04020a, 0x7f04020b, 0x7f04020c, 0x7f04020d, 0x7f040210, 0x7f040220 };

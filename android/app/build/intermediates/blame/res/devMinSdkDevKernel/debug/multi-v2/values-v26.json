@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/pranavkumar/workspace/coverage/app/android/app/build/intermediates/incremental/mergeDevMinSdkDevKernelDebugResources/merged.dir/values-v26/values-v26.xml",
+            "outputFile": "/Users/pranavkumar/workspace/coverage/napp/android/app/build/intermediates/incremental/mergeDevMinSdkDevKernelDebugResources/merged.dir/values-v26/values-v26.xml",
             "map": [
                 {
                     "source": "/Users/pranavkumar/.gradle/caches/transforms-1/files-1.1/design-26.1.0.aar/632028ae21bfad3e8fd746f42d7023d8/res/values-v26/values-v26.xml",

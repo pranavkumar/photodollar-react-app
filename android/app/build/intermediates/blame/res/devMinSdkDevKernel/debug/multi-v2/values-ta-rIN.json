@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/pranavkumar/workspace/coverage/app/android/app/build/intermediates/incremental/mergeDevMinSdkDevKernelDebugResources/merged.dir/values-ta-rIN/values-ta-rIN.xml",
+            "outputFile": "/Users/pranavkumar/workspace/coverage/napp/android/app/build/intermediates/incremental/mergeDevMinSdkDevKernelDebugResources/merged.dir/values-ta-rIN/values-ta-rIN.xml",
             "map": [
                 {
                     "source": "/Users/pranavkumar/.gradle/caches/transforms-1/files-1.1/exoplayer-ui-2.6.1.aar/60ac2c88afae490f6f9229479c7ff4e2/res/values-ta-rIN/values-ta-rIN.xml",

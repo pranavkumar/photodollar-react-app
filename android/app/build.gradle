@@ -97,6 +97,7 @@ apply from: 'expo.gradle'
 
 
 dependencies {
+    compile project(':pdnative')
     compile project(':react-native-webgl')
     compile project(':react-native-share')
     compile project(':react-native-maps')

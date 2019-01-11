@@ -11,7 +11,7 @@ import {
 import { Card, Avatar, Button } from "react-native-elements";
 import { PrimaryButton, CheckBox, Separator } from "../components/CommonUI";
 import * as Api from "../services/Api";
-import * as Util from "../utils";
+// import * as Util from "../utils";
 
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";

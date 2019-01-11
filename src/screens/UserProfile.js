@@ -13,7 +13,7 @@ import {
 import { Card, Avatar } from "react-native-elements";
 import { PrimaryButton } from "../components/CommonUI";
 import * as Api from "../services/Api";
-import * as Util from "../utils/index.js";
+// import * as Util from "../utils/index.js";
 import update from "immutability-helper";
 import { Ionicons } from "@expo/vector-icons";
 import { ImagePicker, Permissions, Contacts } from "expo";

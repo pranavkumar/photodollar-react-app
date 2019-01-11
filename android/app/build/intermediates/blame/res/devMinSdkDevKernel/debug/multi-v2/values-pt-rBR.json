@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/pranavkumar/workspace/coverage/app/android/app/build/intermediates/incremental/mergeDevMinSdkDevKernelDebugResources/merged.dir/values-pt-rBR/values-pt-rBR.xml",
+            "outputFile": "/Users/pranavkumar/workspace/coverage/napp/android/app/build/intermediates/incremental/mergeDevMinSdkDevKernelDebugResources/merged.dir/values-pt-rBR/values-pt-rBR.xml",
             "map": [
                 {
                     "source": "/Users/pranavkumar/.gradle/caches/transforms-1/files-1.1/android-image-cropper-2.4.7.aar/3ebd44b6c0987509519d7d9d9da5771d/res/values-pt-rBR/values-pt-rBR.xml",

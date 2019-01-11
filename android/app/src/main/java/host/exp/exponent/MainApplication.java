@@ -10,6 +10,7 @@ import expolib_v1.okhttp3.OkHttpClient;
 
 // Needed for `react-native link`
 // import com.facebook.react.ReactApplication;
+import com.reactlibrary.RNPdnativePackage;
 import fr.greweb.rnwebgl.BuildConfig;
 import fr.greweb.rnwebgl.RNWebGLPackage;
 import cl.json.RNSharePackage;
@@ -31,6 +32,7 @@ public class MainApplication extends ExpoApplication {
 
         // Needed for `react-native link`
         // new MainReactPackage(),
+            new RNPdnativePackage(),
             new RNWebGLPackage(),
             new RNSharePackage(),
             new MapsPackage(),

@@ -1,4 +1,6 @@
 include ':app'
+include ':pdnative'
+project(':pdnative').projectDir = new File(rootProject.projectDir, '../pdnative/android')
 include ':react-native-webgl'
 project(':react-native-webgl').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webgl/android')
 include ':react-native-share'

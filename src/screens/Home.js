@@ -1,5 +1,7 @@
 import React from "react";
-import { View, NativeModules } from "react-native";
+import { View, NativeModules, DeviceEventEmitter } from "react-native";
+
+import RNPdnative from "../../pdnative";
 
 import * as Api from "../services/Api";
 import * as Utils from "../services/Utils";
@@ -8,6 +10,7 @@ import { Permissions, Notifications } from "expo";
 import DefaultHeader from "../components/DefaultHeader";
 import DefaultFooter from "../components/DefaultFooter";
 import Feed from "../components/Feed";
+
 export default class Home extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -18,7 +21,6 @@ export default class Home extends React.Component {
   };
   constructor(props) {
     super(props);
-    // console.log(props.exp);
 
     this.state = {
       requests: [],
@@ -64,10 +66,26 @@ export default class Home extends React.Component {
     console.log(this.state);
     await this.registerForPushNotifications();
     await this.resolveLocation();
+    DeviceEventEmitter.addListener("notifying", function(e: Event) {
+      // handle event.
+      console.log("notifying....");
+    });
   };
+  onNotifying() {
+    console.log("some notifying...");
+  }
   componentDidMount = async () => {
     try {
-      console.log(typeof NativeModules.ToastModule);
+      await RNPdnative.show("holla...");
+      let echoMsg = await RNPdnative.echo("message is here fuckers");
+      console.log(echoMsg);
+
+      setTimeout(async function() {
+        await RNPdnative.showNotification(
+          "Vinodini Sinha has request for your best food pics in your area."
+        );
+      }, 5000);
+
       if (this.state.uUser.id) {
         console.log("loading user...");
         console.log(this.state.uUser);

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/pranavkumar/workspace/coverage/app/android/app/build/intermediates/incremental/mergeDevMinSdkDevKernelDebugResources/merged.dir/values-ja/values-ja.xml",
+            "outputFile": "/Users/pranavkumar/workspace/coverage/napp/android/app/build/intermediates/incremental/mergeDevMinSdkDevKernelDebugResources/merged.dir/values-ja/values-ja.xml",
             "map": [
                 {
                     "source": "/Users/pranavkumar/.gradle/caches/transforms-1/files-1.1/stripe-android-6.0.0.aar/4f9182a2289e7ee67abeb3e23bb12a5e/res/values-ja/values-ja.xml",

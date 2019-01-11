@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: host.exp.exponent:expo-barcode-scanner-1.1.0">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/expo-barcode-scanner-1.1.0.aar/d05ab732d1f3e0dc1c2c5eeb1c46d9c0/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/expo-barcode-scanner-1.1.0.aar/d05ab732d1f3e0dc1c2c5eeb1c46d9c0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/expo-barcode-scanner-1.1.0.aar/23dac22ac75e009f81cc9069fa13cac5/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/expo-barcode-scanner-1.1.0.aar/23dac22ac75e009f81cc9069fa13cac5/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

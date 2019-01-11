@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/pranavkumar/workspace/coverage/app/android/app/build/intermediates/incremental/mergeDevMinSdkDevKernelDebugResources/merged.dir/values-v23/values-v23.xml",
+            "outputFile": "/Users/pranavkumar/workspace/coverage/napp/android/app/build/intermediates/incremental/mergeDevMinSdkDevKernelDebugResources/merged.dir/values-v23/values-v23.xml",
             "map": [
                 {
                     "source": "/Users/pranavkumar/.gradle/caches/transforms-1/files-1.1/cardview-v7-26.1.0.aar/6ccf7b2c67cff6db037e59f7dfdf71dc/res/values-v23/values-v23.xml",
