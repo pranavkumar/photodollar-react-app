@@ -21,22 +21,57 @@ export default class Home extends React.Component {
   };
   constructor(props) {
     super(props);
-
     this.state = {
-      requests: [],
       uUser: {},
       location: null
     };
     this.loadFonts = Utils.loadFonts.bind(this);
     this.getUser = Utils.getUser.bind(this);
+    this.resolveLocation = Utils.resolveLocation.bind(this);
     this.registerForPushNotifications = Utils.registerForPushNotifications.bind(
       this
     );
-    this.resolveLocation = Utils.resolveLocation.bind(this);
   }
 
+  componentWillMount = async () => {
+    await this.loadFonts();
+    await this.getUser();
+    await this.resolveLocation();
+    await this.registerForPushNotifications();
+
+    if (this.state.uUser.id) {
+      console.log(`loading user with id ${this.state.uUser.id}`);
+      let { status, data } = await Api.getUserProfile(this.state.uUser.id);
+      let uUser = data;
+      await Utils.syncContacts(uUser.id, uUser.lastContactSync);
+    } else {
+      console.log("no user found...");
+      this.props.navigation.navigate("SignIn");
+    }
+    // DeviceEventEmitter.addListener("notifying", function(e) {
+    //   console.log("notifying...." + JSON.stringify(e));
+    // });
+  };
+  onNotifying() {
+    console.log("some notifying...");
+  }
+  componentDidMount = async () => {
+    try {
+      //   setTimeout(async function() {
+      //     await RNPdnative.showNotification({
+      //       uRequestTitle: "Greatest request of all times...",
+      //       uRequestId: "1234",
+      //       uUserName: "Pranav Kumar",
+      //       uResponseImages:[]
+      //     });
+      //   }, 5000);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   render() {
-    let { fontLoaded, requests, uUser, location } = this.state;
+    let { fontLoaded, uUser, location } = this.state;
     if (!fontLoaded) return null;
 
     return (
@@ -59,41 +94,4 @@ export default class Home extends React.Component {
       </View>
     );
   }
-
-  componentWillMount = async () => {
-    await this.loadFonts();
-    await this.getUser();
-    await this.resolveLocation();
-    await this.registerForPushNotifications();
-
-    if (this.state.uUser.id) {
-      console.log(`loading user with id ${this.state.uUser.id}`);
-      let { status, data } = await Api.getUserProfile(this.state.uUser.id);
-      let uUser = data;
-      await Utils.syncContacts(uUser.id, uUser.lastContactSync);
-    } else {
-      console.log("no user found...");
-      this.props.navigation.navigate("SignIn");
-    }
-    DeviceEventEmitter.addListener("notifying", function(e) {
-      console.log("notifying...." + JSON.stringify(e));
-    });
-  };
-  onNotifying() {
-    console.log("some notifying...");
-  }
-  componentDidMount = async () => {
-    try {
-      //   setTimeout(async function() {
-      //     await RNPdnative.showNotification({
-      //       uRequestTitle: "Greatest request of all times...",
-      //       uRequestId: "1234",
-      //       uUserName: "Pranav Kumar",
-      //       uResponseImages:[]
-      //     });
-      //   }, 5000);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 }

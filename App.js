@@ -5,19 +5,24 @@ import {
   withNavigation
 } from "react-navigation";
 
+import Navigation from "./src/services/Navigation";
+import { Permissions, Notifications } from "expo";
+
+
 import Home from "./src/screens/Home";
-import Map from "./src/screens/Map";
-import CoverageCategories from "./src/screens/CoverageCategories";
-import CreateRequest from "./src/screens/CreateRequest";
-import CameraReply from "./src/screens/CameraReply";
-import CreateResponse from "./src/screens/CreateResponse";
+// import CoverageCategories from "./src/screens/CoverageCategories";
 import UserProfile from "./src/screens/UserProfile";
 import SignIn from "./src/screens/SignIn";
-import ForwardRequest from "./src/screens/ForwardRequest";
-import Search from "./src/screens/Search";
 import UserNotifications from "./src/screens/UserNotifications";
-import NavigationService from "./src/services/NavigationService";
-import { Permissions, Notifications } from "expo";
+
+import CreateRequest from "./src/screens/CreateRequest";
+import Map from "./src/screens/Map";
+import ForwardRequest from "./src/screens/ForwardRequest";
+
+import CreateResponse from "./src/screens/CreateResponse";
+import CameraReply from "./src/screens/CameraReply";
+
+import Search from "./src/screens/Search";
 
 class App extends React.Component {
   constructor(props) {
@@ -31,7 +36,7 @@ class App extends React.Component {
     return (
       <AppContainer
         ref={navigatorRef => {
-          NavigationService.setTopLevelNavigator(navigatorRef);
+          Navigation.setTopLevelNavigator(navigatorRef);
         }}
       />
     );
@@ -48,7 +53,7 @@ class App extends React.Component {
         let { type, uRequestId } = notification.data;
         if (type == "NEW_LOCAL_REQUEST" && uRequestId) {
           console.log("trying to redirect...");
-          NavigationService.navigate("CameraReply", {
+          Navigation.navigate("CameraReply", {
             request: { id: uRequestId }
           });
         }
@@ -63,7 +68,6 @@ const RootStack = createStackNavigator(
   {
     Home: Home,
     Map: Map,
-    CoverageCategories: CoverageCategories,
     CreateRequest: CreateRequest,
     CameraReply: CameraReply,
     CreateResponse: CreateResponse,

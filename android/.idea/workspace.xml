@@ -40,17 +40,27 @@
       <file leaf-file-name="RNPdnativeModule.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../pdnative/android/src/main/java/com/reactlibrary/RNPdnativeModule.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="130">
-              <caret line="72" column="70" selection-start-line="72" selection-start-column="70" selection-end-line="72" selection-end-column="70" />
+            <state relative-caret-position="256">
+              <caret line="54" column="25" lean-forward="true" selection-start-line="54" selection-start-column="25" selection-end-line="54" selection-end-column="25" />
               <folding>
                 <element signature="e#1566#1722#0" expanded="true" />
                 <element signature="e#1721#1722#0" expanded="true" />
                 <element signature="e#1099#1100#0" expanded="true" />
                 <element signature="e#1175#1176#0" expanded="true" />
-                <element signature="e#1245#1246#0" expanded="true" />
-                <element signature="e#1281#1282#0" expanded="true" />
                 <element signature="e#2806#2807#0" expanded="true" />
                 <element signature="e#2841#2842#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NotificationIntentService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../pdnative/android/src/main/java/com/reactlibrary/NotificationIntentService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="504">
+              <caret line="26" column="45" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="45" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -62,20 +72,8 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="462">
-              <caret line="22" selection-start-line="22" selection-end-line="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NotificationIntentService.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../pdnative/android/src/main/java/com/reactlibrary/NotificationIntentService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="168">
+              <caret line="8" column="43" selection-start-line="8" selection-start-column="43" selection-end-line="8" selection-end-column="43" />
             </state>
           </provider>
         </entry>
@@ -12213,8 +12211,8 @@
         <option value="$PROJECT_DIR$/../pdnative/android/build.gradle" />
         <option value="$PROJECT_DIR$/../pdnative/android/src/main/res/layout/imagenotification.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/../pdnative/android/src/main/java/com/reactlibrary/NotificationIntentService.java" />
         <option value="$PROJECT_DIR$/../pdnative/android/src/main/java/com/reactlibrary/RNPdnativeModule.java" />
+        <option value="$PROJECT_DIR$/../pdnative/android/src/main/java/com/reactlibrary/NotificationIntentService.java" />
       </list>
     </option>
   </component>
@@ -12644,37 +12642,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../pdnative/android/src/main/res/layout/imagenotification.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="8" column="43" selection-start-line="8" selection-start-column="43" selection-end-line="8" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../pdnative/android/src/main/java/com/reactlibrary/NotificationIntentService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="28" column="37" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
+        <state relative-caret-position="504">
+          <caret line="26" column="45" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="45" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../pdnative/android/src/main/res/layout/imagenotification.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="462">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../pdnative/android/src/main/java/com/reactlibrary/RNPdnativeModule.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="72" column="70" selection-start-line="72" selection-start-column="70" selection-end-line="72" selection-end-column="70" />
+        <state relative-caret-position="256">
+          <caret line="54" column="25" lean-forward="true" selection-start-line="54" selection-start-column="25" selection-end-line="54" selection-end-column="25" />
           <folding>
             <element signature="e#1566#1722#0" expanded="true" />
             <element signature="e#1721#1722#0" expanded="true" />
             <element signature="e#1099#1100#0" expanded="true" />
             <element signature="e#1175#1176#0" expanded="true" />
-            <element signature="e#1245#1246#0" expanded="true" />
-            <element signature="e#1281#1282#0" expanded="true" />
             <element signature="e#2806#2807#0" expanded="true" />
             <element signature="e#2841#2842#0" expanded="true" />
           </folding>

@@ -54,6 +54,7 @@ export default class CameraReply extends React.Component {
     if (!this.state.fontLoaded) return null;
     const { hasCameraPermission } = this.state;
     if (!hasCameraPermission) {
+      console.log("no camera Permissions...");
       return null;
     } else {
       return (

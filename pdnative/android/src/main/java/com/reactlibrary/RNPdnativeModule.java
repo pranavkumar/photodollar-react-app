@@ -60,12 +60,7 @@ public class RNPdnativeModule extends ReactContextBaseJavaModule {
         Toast.makeText(reactContext, msg, Toast.LENGTH_SHORT).show();
     }
 
-    @ReactMethod
-    public void echo(String msg, Promise promise) {
-        promise.resolve(msg);
-    }
 
-    ;
 
     @ReactMethod
     public void showNotification(ReadableMap notificationObj, Promise promise) throws IOException, NullPointerException {

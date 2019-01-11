@@ -28,7 +28,6 @@ public class NotificationIntentService extends IntentService {
 
         switch (intent.getAction()) {
             case "reply":
-
                 rintent.putExtra("next", "reply");
 
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(rintent);
