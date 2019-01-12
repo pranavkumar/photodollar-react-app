@@ -28,7 +28,8 @@ export default class Feed extends React.Component {
     this.state = {
       requests: [],
       refresh: false,
-      uUserId: props.uUserId || null,
+      uUser: props.uUser || null,
+      location: props.location || null,
       screenWidth: width,
       screenHeight: height
     };
@@ -36,7 +37,8 @@ export default class Feed extends React.Component {
   componentWillReceiveProps = async props => {
     await this.setState(
       update(this.state, {
-        uUserId: { $set: props.uUserId },
+        uUser: { $set: props.uUser },
+        location: { $set: props.location },
         refresh: { $set: !this.state.refresh }
       })
     );
@@ -47,13 +49,13 @@ export default class Feed extends React.Component {
     await this.loadFeed.bind(this)();
   };
   loadFeed = async () => {
-    let { uUserId } = this.state;
-    if (!uUserId) return;
+    let { uUser } = this.state;
+    if (!uUser) return;
     try {
-      let { status, data } = await Api.getFeed(uUserId);
+      let { status, data } = await Api.getFeed(uUser.id);
       console.log(status);
       if (status == 200) {
-        data = _.map(data, function(item) {
+        data = _.map(data, function (item) {
           item.UUser.image = { src: `https://robohash.org/789/` };
           item.isMenuShown = false;
           return item;
@@ -443,8 +445,13 @@ export default class Feed extends React.Component {
     // console.log(shape);
     return shape;
   };
+
+
+
+
+  
   handleReply = async request => {
-    this.props.navigation.navigate("CameraReply", { request: request });
+    this.props.navigation.navigate("CameraReply", { request: request, uUser });
   };
   handleForward = async request => {
     console.log("Forwarding...");
@@ -471,7 +478,7 @@ export default class Feed extends React.Component {
     console.log(`gonna toggle expect for ${request.id}`);
     try {
       let { data, status } = await Api.toggleExpectator(request.id, {
-        id: this.state.uUserId,
+        id: this.state.uUser.id,
         points: 50
       });
 
@@ -503,7 +510,7 @@ export default class Feed extends React.Component {
     try {
       let { status, data } = await Api.toggleHideRequest(
         request.id,
-        this.state.uUserId
+        this.state.uUser.id
       );
 
       if (status == 200) {
@@ -515,12 +522,12 @@ export default class Feed extends React.Component {
           })
         );
       }
-    } catch (err) {}
+    } catch (err) { }
   };
   flagRequest = async (request, index) => {
     try {
       let { status, data } = await Api.flagRequest(request.id, {
-        id: this.state.uUserId
+        id: this.state.uUser.id
       });
       if (status == 200) {
         request.isFlagged = data.isFlagged;

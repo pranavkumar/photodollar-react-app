@@ -1,4 +1,4 @@
-#Fri Jan 11 20:06:51 IST 2019
-base.0=/Users/pranavkumar/workspace/coverage/napp/android/app/build/intermediates/transforms/dexMerger/devMinSdkDevKernel/debug/1
+#Sat Jan 12 17:25:02 IST 2019
+base.0=/Users/pranavkumar/workspace/coverage/app/android/app/build/intermediates/transforms/dexMerger/devMinSdkDevKernel/debug/1
 path.0=classes.dex
 renamed.0=classes.dex

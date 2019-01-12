@@ -1,18 +1,10 @@
 import React from "react";
 import {
-  StyleSheet,
   Text,
   View,
-  FlatList,
-  ScrollView,
-  TouchableOpacity,
   ActivityIndicator
 } from "react-native";
-import { Card, Avatar } from "react-native-elements";
-import { PrimaryButton } from "../components/CommonUI";
-import * as Api from "../services/Api";
 import update from "immutability-helper";
-import { Ionicons } from "@expo/vector-icons";
 import { Camera, Permissions, ImageManipulator } from "expo";
 import * as Utils from "../services/Utils";
 import CameraControls from "../components/CameraControls";
@@ -32,23 +24,26 @@ export default class CameraReply extends React.Component {
     super(props);
 
     this.state = {
-      hasCameraPermission: null,
       type: Camera.Constants.Type.back,
+      flashMode:Camera.Constants.FlashMode.off,
       isTakingPicture: false,
       request: props.navigation.getParam("request", null)
     };
+
     this.loadFonts = Utils.loadFonts.bind(this);
+    this.resolveCamera = Utils.resolveCamera.bind(this);
   }
   componentWillMount = async () => {
-    await this.loadFonts();
-    console.log("mount back");
+
+
+
   };
   async componentDidMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === "granted" });
+    await this.loadFonts();
+    await this.resolveCamera();
   }
   componentWillUnmount() {
-    console.log("camera unmounting...");
+
   }
   render() {
     if (!this.state.fontLoaded) return null;
@@ -68,6 +63,7 @@ export default class CameraReply extends React.Component {
             }}
 
             type={this.state.type}
+            flashMode={this.state.flashMode}
             ref={ref => {
               this.camera = ref;
             }}
@@ -95,7 +91,7 @@ export default class CameraReply extends React.Component {
                   <ActivityIndicator size="small" color="#9E9E9E" />
                   <Text
                     style={{
-                      fontSize: 18,
+                      fontSize: 16,
                       fontFamily: "regular",
                       color: "#9E9E9E",
                       marginLeft: 8
@@ -123,7 +119,6 @@ export default class CameraReply extends React.Component {
     try {
       if (this.camera) {
         this.setState({ isTakingPicture: true });
-
         await this.camera.takePictureAsync({
           onPictureSaved: this.onPictureSaved.bind(this)
         });
@@ -168,6 +163,12 @@ export default class CameraReply extends React.Component {
   };
   toggleFlash() {
     console.log("toggleFlash");
+    this.setState({
+      flashMode:
+        this.state.flashMode === Camera.Constants.FlashMode.off
+          ? Camera.Constants.FlashMode.on
+          : Camera.Constants.FlashMode.off
+    });
   }
   toggleSide() {
     console.log("toggleSide");

@@ -30,9 +30,7 @@
       "publishManifestPath": "ios/app/Supporting/shell-app-manifest.json"
     },
     "android": {
-      "permissions": [
-        "CONTACTS"
-      ],
+      "permissions": [],
       "package": "app.photodollar.photodollar",
       "googleServicesFile": "./google-services.json",
       "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",

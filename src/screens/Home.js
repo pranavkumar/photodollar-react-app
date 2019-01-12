@@ -22,11 +22,11 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      uUser: {},
+      uUser: null,
       location: null
     };
-    this.loadFonts = Utils.loadFonts.bind(this);
-    this.getUser = Utils.getUser.bind(this);
+    this.resolveUI = Utils.resolveUI.bind(this);
+    this.resolveUser = Utils.resolveUser.bind(this);
     this.resolveLocation = Utils.resolveLocation.bind(this);
     this.registerForPushNotifications = Utils.registerForPushNotifications.bind(
       this
@@ -34,18 +34,18 @@ export default class Home extends React.Component {
   }
 
   componentWillMount = async () => {
-    await this.loadFonts();
-    await this.getUser();
+    await this.resolveUI();
+    await this.resolveUser();
     await this.resolveLocation();
     await this.registerForPushNotifications();
 
-    if (this.state.uUser.id) {
+    if (this.state.uUser && this.state.location) {
       console.log(`loading user with id ${this.state.uUser.id}`);
-      let { status, data } = await Api.getUserProfile(this.state.uUser.id);
-      let uUser = data;
-      await Utils.syncContacts(uUser.id, uUser.lastContactSync);
+      // let { status, data } = await Api.getUserProfile(this.state.uUser.id);
+      // let uUser = data;
+      // await Utils.syncContacts(uUser.id, uUser.lastContactSync);
     } else {
-      console.log("no user found...");
+      console.log("no user found...will be fetching anon feed");
       this.props.navigation.navigate("SignIn");
     }
     // DeviceEventEmitter.addListener("notifying", function(e) {
@@ -69,26 +69,35 @@ export default class Home extends React.Component {
       console.log(err);
     }
   };
+  componentWillReceiveProps = async (props) => {
+    if (props.navigation) {
+      let uUser = props.navigation.getParam("uUser", null);
+      if (uUser) {
+        await this.setState({uUser:uUser});
+        console.log(`setting user after login ${JSON.stringify(uUser)}`);
+      }
+    }
+
+  }
 
   render() {
     let { fontLoaded, uUser, location } = this.state;
-    if (!fontLoaded) return null;
-
+    if (!fontLoaded || !uUser || !location) return null;
     return (
       <View style={{ padding: 0, flexDirection: "column", flex: 1 }}>
         <DefaultHeader
           navigation={this.props.navigation}
-          uUserId={uUser.id}
+          uUser={uUser}
           location={location}
         />
         <Feed
-          uUserId={uUser.id}
+          uUser={uUser}
           navigation={this.props.navigation}
           location={location}
         />
         <DefaultFooter
           navigation={this.props.navigation}
-          uUserId={uUser.id}
+          uUser={uUser}
           location={location}
         />
       </View>

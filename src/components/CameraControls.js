@@ -16,7 +16,7 @@ import { Ionicons } from "@expo/vector-icons";
 export default class CameraControls extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    // console.log(props);
   }
   render() {
     return (
@@ -67,7 +67,5 @@ export default class CameraControls extends React.Component {
   componentWillReceiveProps(props) {
     console.log(props);
   }
-  toggleFlash() {
-    console.log("toggleFlash");
-  }
+  
 }

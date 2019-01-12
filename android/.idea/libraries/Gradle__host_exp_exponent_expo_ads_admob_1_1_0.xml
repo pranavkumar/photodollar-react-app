@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: host.exp.exponent:expo-ads-admob-1.1.0">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/expo-ads-admob-1.1.0.aar/56ffc36a854fc076b299788e6016409d/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/expo-ads-admob-1.1.0.aar/56ffc36a854fc076b299788e6016409d/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/expo-ads-admob-1.1.0.aar/076b2a6aacc1608eac4ad1d08af2c58c/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/expo-ads-admob-1.1.0.aar/076b2a6aacc1608eac4ad1d08af2c58c/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

@@ -66,7 +66,7 @@ export default class CreateResponse extends React.Component {
       comment: null
     };
 
-    console.log(this.state);
+    // console.log(this.state);
 
     this.filters = [Amaro, Brannan, Earlybird, F1977, Hefe, Hudson];
     this.loadFonts = Utils.loadFonts.bind(this);

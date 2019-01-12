@@ -35,6 +35,7 @@ export default class SignIn extends React.Component {
     super(props);
     this.state = { fontLoaded: false, mobile: null };
     this.loadFonts = Utils.loadFonts.bind(this);
+    this.setUser = Utils.setUser.bind(this);
     this.navigation = props.navigation;
   }
   componentWillMount = async () => {
@@ -48,7 +49,7 @@ export default class SignIn extends React.Component {
       console.log("no navigation");
     }
   }
-  componentDidMount = async () => {};
+  componentDidMount = async () => { };
   render() {
     if (!this.state.fontLoaded) return null;
     let { mobile } = this.state;
@@ -258,13 +259,5 @@ export default class SignIn extends React.Component {
   loginTwitter = async () => {
     console.log("logging in with twitter");
   };
-  setUser = async (uUser, token) => {
-    try {
-      await AsyncStorage.setItem("uUser", JSON.stringify(uUser));
-      await AsyncStorage.setItem("token", token);
-      console.log("stored user in db");
-    } catch (err) {
-      throw err;
-    }
-  };
+
 }

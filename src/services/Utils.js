@@ -19,6 +19,7 @@ export function formDataFromImage(image, meta) {
   return data;
 }
 
+
 export async function getContacts() {
   let newStatus = "denied";
   const { status } = await Permissions.getAsync(Permissions.CONTACTS);
@@ -31,7 +32,7 @@ export async function getContacts() {
     let { data } = await Contacts.getContactsAsync({
       fields: [Contacts.PHONE_NUMBERS]
     });
-    data = _.filter(data, function(o) {
+    data = _.filter(data, function (o) {
       let name = o.name;
       return (
         name
@@ -41,7 +42,7 @@ export async function getContacts() {
           .replace(/\-/g, "").length > 0
       );
     });
-    data = _.map(data, function(o) {
+    data = _.map(data, function (o) {
       if (o.id) {
         o.remoteId = o.id;
         delete o.id;
@@ -82,7 +83,18 @@ export async function loadFonts() {
   this.setState({ fontLoaded: true });
 }
 
-export async function getUser() {
+export async function setUser(uUser, token) {
+  try {
+    await AsyncStorage.setItem("uUser", JSON.stringify(uUser));
+    await AsyncStorage.setItem("token", token);
+    console.log("stored user in db");
+  } catch (err) {
+    throw err;
+  }
+
+}
+
+export async function resolveUser() {
   try {
     let uUser = await AsyncStorage.getItem("uUser", JSON.stringify(uUser));
     if (uUser) {
@@ -92,6 +104,29 @@ export async function getUser() {
     throw err;
   }
 }
+
+export async function resolveUI(){
+  return await loadFonts.bind(this)();
+}
+
+export async function resolveCamera() {
+  console.log("resolving camera...");
+  const { status: existingStatus } = await Permissions.getAsync(
+    Permissions.CAMERA
+  );
+
+  let finalStatus = existingStatus;
+  if (existingStatus !== "granted") {
+    console.log("asking for camera...");
+    const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    finalStatus = status;
+  }
+
+  return await this.setState({ hasCameraPermission: finalStatus == "granted" });
+
+  
+}
+
 
 export async function registerForPushNotifications() {
   if (!this.state.uUser || !this.state.uUser.id) return;
@@ -119,49 +154,71 @@ export async function registerForPushNotifications() {
   console.log(data);
 }
 
+export async function resolveLocationPermission() {
+  let { status } = await Permissions.getAsync(Permissions.LOCATION);
+
+  let finalStatus = status;
+  if (status !== "granted") {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    finalStatus = status;
+  }
+  return finalStatus == "granted";
+}
+
 export async function resolveLocation() {
   console.log(`resolving location`);
-  if (!this.state.uUser || !this.state.uUser._defaultLocation) {
-    try {
-      let { status } = await Permissions.getAsync(Permissions.LOCATION);
-      // console.log(`resolving...${status}`);
-      let finalStatus = status;
-      if (status !== "granted") {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        finalStatus = status;
-      }
-      // console.log(`${finalStatus}`);
-      if (finalStatus != "granted") {
-        return;
-      } else {
+  try {
+    if (!this.state.uUser) {
+      // no user present
+      console.log("no user present. setting current location");
+      let hasLocationPermission = await resolveLocationPermission();
+      if (hasLocationPermission) {
         let currentLocation = await Location.getCurrentPositionAsync({});
-        // console.log(currentLocation);
-        if (this.state.uUser) {
-          let { status, data } = await Api.saveDeviceLocation(
-            this.state.uUser.id,
-            currentLocation
-          );
-          this.setState(
-            update(this.state, { $set: { location: data.location } })
-          );
-        } else {
-          let { status, data } = await Api.geocodeReverse(
-            currentLocation.coords.latitude,
-            currentLocation.coords.longitude
-          );
-          this.setState(
-            update(this.state, { $set: { location: data.location } })
-          );
-        }
+        let { status, data } = await Api.geocodeReverse(
+          currentLocation.coords.latitude,
+          currentLocation.coords.longitude
+        );
+        await this.setState(
+          update(this.state, { $set: { location: data.location } })
+        );
       }
-    } catch (err) {
-      throw err;
+    } else {
+      //user is present
+      if (!this.state.location) {
+        //state has no location
+        console.log("user present no location");
+        if (this.state.uUser._defaultLocation) {
+          //user has location
+          console.log("setting location as user's default location");
+          await this.setState({ location: this.state.uUser._defaultLocation });
+        } else {
+          //user has no location
+          console.log("user has no location either");
+          let hasLocationPermission = await resolveLocationPermission();
+          if (hasLocationPermission) {
+            let currentLocation = await Location.getCurrentPositionAsync({});
+            let { status, data } = await Api.geocodeReverse(
+              currentLocation.coords.latitude,
+              currentLocation.coords.longitude
+            );
+            console.log(this.state.uUser);
+            let res = await Api.saveDeviceLocation(
+              this.state.uUser.id,
+              currentLocation
+            );
+            await this.setState(
+              update(this.state, { $set: { location: res.data.location } })
+            );
+          }
+
+        }
+      } else {
+        //state has location
+        return;
+      }
     }
-  } else {
-    this.setState(
-      update(this.state, {
-        $set: { location: this.state.uUser._defaultLocation }
-      })
-    );
+  }
+  catch (err) {
+    throw err;
   }
 }

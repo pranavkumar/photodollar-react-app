@@ -16,15 +16,24 @@ export default class DefaultFooter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      uUserId: null
+      uUser: props.uUser || null,
+      location: props.location || null
     };
-    this.navigation = props.navigation;
+    this.navigation = props.navigation || null;
   }
   componentWillReceiveProps = async props => {
-    this.navigation = props.navigation;
+    console.log("we have received props in footer...");
+    let { navigation, uUser, location } = this.props;
+    if (navigation) this.navigation = navigation;
 
-    await this.setState({ uUserId: props.uUserId });
-    console.log(this.state);
+    if (uUser) {
+      await this.setState({ uUser: uUser });
+      console.log("setting user in footer...");
+    }
+    if (location) {
+      await this.setState({ location: location });
+      console.log("setting location in footer...");
+    }
   };
   render() {
     return (
@@ -96,14 +105,14 @@ export default class DefaultFooter extends React.Component {
   }
   gotoProfile() {
     if (!this.navigation) return;
-    this.navigation.navigate("UserProfile", { uUserId: this.state.uUserId });
+    this.navigation.navigate("UserProfile", { uUserId: this.state.uUser.id });
   }
   gotoRequest() {
     if (!this.navigation) return;
-    this.navigation.navigate("CreateRequest", { uUserId: this.state.uUserId });
+    this.navigation.navigate("CreateRequest", { uUserId: this.state.uUser.id });
   }
   gotoNotifications() {
     if (!this.navigation) return;
-    this.navigation.navigate("UserNotifications", { uUserId: this.state.uUserId });
+    this.navigation.navigate("UserNotifications", { uUserId: this.state.uUser.id });
   }
 }
