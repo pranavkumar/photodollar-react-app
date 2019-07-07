@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  StyleSheet,
   Text,
   View,
   Image,
@@ -11,14 +10,14 @@ import {
   Dimensions
 } from "react-native";
 
-import * as Utils from "../services/Utils";
 import * as Api from "../services/Api";
 
 import update from "immutability-helper";
 import RequestActions from "../components/RequestActions";
-import { PrimaryButton, Separator } from "../components/CommonUI";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Separator } from "../components/CommonUI";
+import { Ionicons } from "@expo/vector-icons";
 import * as _ from "lodash";
+
 const moment = require("moment");
 
 export default class Feed extends React.Component {
@@ -451,7 +450,7 @@ export default class Feed extends React.Component {
 
   
   handleReply = async request => {
-    this.props.navigation.navigate("CameraReply", { request: request, uUser });
+    this.props.navigation.navigate("CameraReply", { request: request});
   };
   handleForward = async request => {
     console.log("Forwarding...");

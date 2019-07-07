@@ -12,6 +12,7 @@ async function errorHandler(promise) {
   }
 }
 
+
 export function autocomplete(str) {
   return axios.get(API_ENDPOINT + "/maps/autocomplete", {
     params: { input: str }
