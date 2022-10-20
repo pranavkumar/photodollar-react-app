@@ -11,7 +11,7 @@
   "dependencies": {
     "@expo/vector-icons": "^8.0.0",
     "axios": "^0.18.0",
-    "expo": "^31.0.2",
+    "expo": "^46.0.16",
     "expokit": "^31.0.2",
     "gl-react": "^3.13.0",
     "gl-react-expo": "^3.16.3",
